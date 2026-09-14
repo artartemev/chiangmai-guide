@@ -18,3 +18,4 @@ analyze_topics.py
 generate_wiki*.py
 daily_digest.py
 daily_summary.md
+smart_assistant.py
