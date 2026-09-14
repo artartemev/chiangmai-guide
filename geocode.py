@@ -31,6 +31,7 @@ UA_EMBED = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 C
 RE_FTID = re.compile(r"(0x[0-9a-f]+:0x[0-9a-f]+)")
 RE_PLACE_PATH = re.compile(r"/maps/place/(.+?)/data=")
 RE_ENTITY = re.compile(r'\["(0x[0-9a-f]+:0x[0-9a-f]+)","([^"]*)",\[(-?\d+\.\d+),(-?\d+\.\d+)\]')
+RE_NAME = re.compile(r'^,"\d+"\],"((?:[^"\\]|\\.)+)"')
 RE_RATING = re.compile(r',(\d(?:\.\d+)?),"([\d,]+) reviews?"')
 RE_PHONE = re.compile(r'"(\+?\d[\d \-]{6,14}\d)"')
 RE_WEBSITE = re.compile(r'\["(https?://[^"]+)","[^"]+",null,null,"[^"]*"\]|/url\?q=([^"&\\]+)')
@@ -109,6 +110,9 @@ def embed_lookup(query, ftid):
     out = {"lat": round(lat, 6), "lng": round(lng, 6), "address": chosen.group(2),
            "place_id": chosen.group(1)}
 
+    m = RE_NAME.match(tail)
+    if m:
+        out["name"] = json.loads('"' + m.group(1) + '"')  # unescape \u0026 etc.
     m = RE_RATING.search(tail)
     if m:
         out["rating"] = round(float(m.group(1)), 1)

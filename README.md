@@ -1,35 +1,72 @@
-# CHIANG MAI // AI FIELD GUIDE [TE-01]
+# Чиангмай — гид сообщества
 
-> Нишевый интерактивный каталог мест, коворкингов, клиник, маршрутов и событий Чиангмая на базе Telegram-сообщества в эстетике Teenage Engineering.
+> Места, события, маршруты и справочник по Чиангмаю, собранные из русскоязычных Telegram-чатов.
 
-🌐 **Live Demo:** [https://artartemev.github.io/chiangmai-guide/](https://artartemev.github.io/chiangmai-guide/)
+🌐 **Live:** [https://artartemev.github.io/chiangmai-guide/](https://artartemev.github.io/chiangmai-guide/)
 
 ---
 
 ## Архитектура
-Проект работает в гибридном режиме:
-1. **Static Jamstack (GitHub Pages):** Фронтенд (`index.html`) читает скомпилированный `static/data.json` и `static/wiki.json`, обеспечивая мгновенную фильтрацию, поиск и работу без серверов.
-2. **Local Python Hub (FastAPI + SQLite):** Мастер-база `chiangmai_guide.db` для парсинга чатов, курации и обогащения данных.
 
----
+Статический сайт (GitHub Pages) поверх экспортированного JSON + локальный Python-хаб для курации данных.
 
-## Обновление данных для продакшна
+```
+chiangmai_guide.db        мастер-база (SQLite): items, reviews, collections, collection_items
+├─ export_static.py       DB → static/data.json (места, коллекции, статистика) + static/reviews.json (цитаты)
+├─ geocode.py             обогащение мест из ссылок Google Maps: координаты, телефон, сайт, рейтинг, часы
+├─ ingest_lists.py        добавление мест из списков чата (название + ссылка на карту)
+├─ seed_collections.py    маршруты и подборки (редактируются прямо в файле)
+├─ update_wiki.py         статьи справочника → static/wiki.json
+└─ app.py                 FastAPI для локальной работы с базой (опционально)
 
-Когда база `chiangmai_guide.db` обновлена (добавлены новые места или спарсены новые события):
+index.html                разметка
+static/css/app.css        стили (светлая/тёмная тема по системной настройке)
+static/js/app.js          приложение: роутинг, фильтры, карта, карточки
+static/wiki.json          справочник (markdown в JSON)
+```
+
+Фронтенд — без фреймворков: Leaflet + OpenStreetMap для карты, `marked` для статей. Роутинг по хэшу, поэтому любой экран можно скинуть ссылкой: `#/place/60`, `#/map?cat=nature`, `#/routes/7`, `#/wiki/visas`, `#/events`.
+
+## Обновление данных
 
 ```bash
-# 1. Экспортировать базу в статический data.json
-python3 export_static.py
+# 1. Добавили/поправили места в базе → обогатить новые ссылки на карты
+python3 geocode.py            # только места без координат; --all чтобы обновить рейтинги и часы у всех
 
-# 2. Запушить изменения на GitHub (сайт обновится за 30 секунд)
-git add static/data.json index.html
+# 2. Пересобрать маршруты/подборки и справочник (если менялись)
+python3 seed_collections.py
+python3 update_wiki.py
+
+# 3. Экспорт и публикация
+python3 export_static.py
+git add static/data.json static/reviews.json static/wiki.json chiangmai_guide.db
 git commit -m "Update catalog data"
 git push
 ```
 
-## Локальный запуск сервера (опционально)
+## Добавление мест из списков чата
+
+Когда в чате появляется список «название — ссылка на Google Maps» (прокаты, глэмпинги, воркшопы):
+
 ```bash
-pip install fastapi uvicorn
-python3 app.py
+python3 ingest_lists.py lists.json   # формат: {"key": {"msg": id, "date": ..., "from": ..., "items": [["заметка", "url"], ...]}}
 ```
-Сервер будет доступен по адресу `http://localhost:8080`.
+
+Категория и вводный текст для каждого `key` задаются в `LIST_META` внутри скрипта. Место получает координаты, официальное название, рейтинг, телефон и часы работы из Google, а в `reviews` записывается ссылка на исходное сообщение.
+
+## Локальный запуск
+
+```bash
+python3 -m http.server 8090      # статика, откройте http://localhost:8090
+```
+
+или с API поверх базы:
+
+```bash
+pip install -r requirements.txt
+python3 app.py                   # http://localhost:8080
+```
+
+## Как устроен геокодер
+
+Ссылка `maps.app.goo.gl/…` редиректит на `maps.google.com/?q=…&ftid=<id>`. По `cid` (вторая половина `ftid`) эндпоинт `maps.google.com/maps?cid=…&output=embed` отдаёт HTML с точными координатами, рейтингом, телефоном, сайтом и часами — без API-ключа. Результат принимается только если `ftid` совпал, поэтому чужие заведения не подмешиваются.
