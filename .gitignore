@@ -4,3 +4,15 @@ __pycache__/
 *.session
 *.session-journal
 .env
+scripts_archive/
+daily_updater.py
+find_dimas.py
+scrape_senders.py
+parse_and_fetch*.py
+parse_dimas_json.py
+parse_fresh.py
+parse_html.py
+test_*.py
+fix_photos_ddg.py
+analyze_topics.py
+generate_wiki*.py
