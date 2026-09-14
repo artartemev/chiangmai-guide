@@ -16,3 +16,5 @@ test_*.py
 fix_photos_ddg.py
 analyze_topics.py
 generate_wiki*.py
+daily_digest.py
+daily_summary.md
