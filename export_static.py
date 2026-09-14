@@ -14,6 +14,8 @@ def export():
     
     items = []
     items_map = {}
+    reviews_map = {}
+    today = datetime.now().strftime("%Y-%m-%d")
     
     for d in raw_items:
         item_id = d["id"]
@@ -85,8 +87,14 @@ def export():
             d["community_summary"] = {}
             
         # Fetch reviews for modal
-        cursor.execute("SELECT review_text, sender_name, msg_date, channel_username FROM reviews WHERE item_id = ? ORDER BY id DESC", (item_id,))
-        d["reviews"] = [dict(r) for r in cursor.fetchall()]
+        cursor.execute("SELECT review_text, sender_name, msg_date, source_link FROM reviews WHERE item_id = ? ORDER BY id DESC", (item_id,))
+        reviews_map[item_id] = [dict(r) for r in cursor.fetchall()]
+        d["review_count"] = len(reviews_map[item_id])
+        d["veg_friendly"] = bool(d.get("veg_friendly"))
+        d.pop("photos_json", None)
+        if d["category"] == "event":
+            iso = d.get("event_iso_date")
+            d["is_active"] = (not iso) or iso >= today
         
         items.append(d)
         items_map[item_id] = d
@@ -98,24 +106,15 @@ def export():
     for col in collections:
         col_id = col["id"]
         cursor.execute("""
-            SELECT i.*, ci.note 
+            SELECT i.id, ci.note 
             FROM items i 
             JOIN collection_items ci ON i.id = ci.item_id 
             WHERE ci.collection_id = ? 
             ORDER BY ci.sort_order ASC
         """, (col_id,))
-        col_items = []
-        for r in cursor.fetchall():
-            it = dict(r)
-            mapped = items_map.get(it["id"], it)
-            col_items.append({
-                **mapped,
-                "note": it.get("note")
-            })
-        col["items"] = col_items
+        col["items"] = [{"id": r["id"], "note": r["note"]} for r in cursor.fetchall()]
         
     # 3. Compute stats
-    today = datetime.now().strftime("%Y-%m-%d")
     cursor.execute("SELECT category, count(*) FROM items GROUP BY category")
     cats = dict(cursor.fetchall())
     cursor.execute("SELECT neighborhood, count(*) FROM items WHERE neighborhood != 'Other' GROUP BY neighborhood")
@@ -124,12 +123,15 @@ def export():
     total_reviews = cursor.fetchone()[0]
     cursor.execute("SELECT count(*) FROM items WHERE category='event' AND (event_iso_date IS NULL OR event_iso_date >= ?)", (today,))
     active_events = cursor.fetchone()[0]
+    cursor.execute("SELECT count(*) FROM items WHERE category='event' AND event_iso_date IS NOT NULL AND event_iso_date < ?", (today,))
+    past_events = cursor.fetchone()[0]
     
     stats = {
         "categories": cats,
         "neighborhoods": neighs,
         "total_reviews": total_reviews,
         "active_events": active_events,
+        "past_events": past_events,
         "total_items": len(items)
     }
     
@@ -146,6 +148,9 @@ def export():
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=None) # compact json
         
+    with open("static/reviews.json", "w", encoding="utf-8") as f:
+        json.dump(reviews_map, f, ensure_ascii=False, indent=None)
+
     size_mb = os.path.getsize(out_path) / (1024 * 1024)
     print(f"Exported static data to {out_path} ({size_mb:.2f} MB, {len(items)} items, {len(collections)} routes)")
 
