@@ -1,1249 +1,144 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CHIANG MAI // AI FIELD GUIDE [TE-01]</title>
-    
-    <!-- Fonts: Space Grotesk + JetBrains Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-
-        function getCategoryFallback(cat) {
-            const fallbacks = {
-                'cafe_restaurant': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
-                'event': 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
-                'wellness': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-                'services': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80',
-                'stay': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-                'workspace': 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80',
-                'nature': 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
-                'hiking_trail': 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80'
-            };
-            return fallbacks[cat] || 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80';
-        }
-
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        obsidian: '#070707',
-                        surface: '#111111',
-                        surfaceAlt: '#181818',
-                        line: '#242424',
-                        lineBright: '#383838',
-                        nothingRed: '#ff2e2e',
-                        vermilion: '#e63946',
-                        inkWhite: '#f5f5f0',
-                        inkMuted: '#828282'
-                    },
-                    fontFamily: {
-                        sans: ['"Space Grotesk"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
-                    },
-                    typography: {
-                        DEFAULT: {
-                            css: {
-                                color: '#828282',
-                                h1: { color: '#f5f5f0', fontFamily: '"JetBrains Mono", monospace', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', borderBottom: '1px solid #ff2e2e', paddingBottom: '0.5em', marginBottom: '1em' },
-                                h2: { color: '#ff2e2e', fontFamily: '"JetBrains Mono", monospace', fontWeight: '600', textTransform: 'uppercase', marginTop: '2em', marginBottom: '1em', letterSpacing: '0.05em' },
-                                h3: { color: '#f5f5f0', fontFamily: '"JetBrains Mono", monospace', fontWeight: '500' },
-                                strong: { color: '#f5f5f0' },
-                                a: { color: '#ff2e2e', textDecoration: 'none', borderBottom: '1px dashed #ff2e2e', '&:hover': { color: '#ffffff', borderBottomStyle: 'solid' } },
-                                blockquote: { borderLeftColor: '#ff2e2e', color: '#828282', fontStyle: 'normal', backgroundColor: '#111111', padding: '1em' },
-                                code: { color: '#ff2e2e', backgroundColor: '#111111', padding: '0.2em 0.4em', borderRadius: '2px', fontWeight: '400' },
-                                'code::before': { content: '""' },
-                                'code::after': { content: '""' },
-                                hr: { borderColor: '#242424' },
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    
-    <style>
-        body {
-            background-color: #070707;
-            color: #f5f5f0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 0);
-            background-size: 24px 24px;
-        }
-        
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #070707;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #282828;
-            border-radius: 2px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #ff2e2e;
-        }
-        
-        .hw-btn-active {
-            background-color: #f5f5f0 !important;
-            color: #070707 !important;
-            border-color: #ffffff !important;
-            box-shadow: 0 0 16px rgba(255, 255, 255, 0.15) !important;
-        }
-        .hw-btn-active .hw-dot {
-            background-color: #ff2e2e !important;
-            box-shadow: 0 0 8px #ff2e2e !important;
-        }
-        
-        .hanko-seal {
-            border: 1px solid #ff2e2e;
-            color: #ff2e2e;
-            font-family: monospace;
-            padding: 1px 4px;
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            display: inline-flex;
-            align-items: center;
-            line-height: 1;
-        }
-        
-        .corner-reticle {
-            position: relative;
-        }
-        .corner-reticle::before {
-            content: "┌";
-            position: absolute;
-            top: 6px;
-            left: 8px;
-            color: #ff2e2e;
-            font-family: monospace;
-            font-size: 12px;
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 10;
-        }
-        .corner-reticle::after {
-            content: "┘";
-            position: absolute;
-            bottom: 6px;
-            right: 8px;
-            color: #ff2e2e;
-            font-family: monospace;
-            font-size: 12px;
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 10;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Чиангмай — гид сообщества</title>
+<meta name="description" content="Места, события, маршруты и справочник по Чиангмаю, собранные русскоязычным Telegram-сообществом.">
+<meta name="theme-color" content="#faf8f4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#141311" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏔</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
+<link rel="stylesheet" href="static/css/app.css?v=3">
 </head>
-<body class="min-h-screen font-sans antialiased text-inkWhite selection:bg-nothingRed selection:text-white pb-20">
+<body>
 
-    <!-- Top Telemetry Ribbon -->
-    <div class="border-b border-line bg-obsidian/90 backdrop-blur-md sticky top-0 z-40 text-[11px] font-mono tracking-wider">
-        <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap items-center justify-between gap-2 text-inkMuted">
-            <div class="flex items-center space-x-3">
-                <span class="inline-block w-2 h-2 rounded-full bg-nothingRed animate-pulse shadow-[0_0_8px_#ff2e2e]"></span>
-                <span class="text-inkWhite font-bold">OP // CHIANG MAI FIELD GUIDE</span>
-                <span class="hidden sm:inline text-lineBright">|</span>
-                <span class="hidden sm:inline">18°47′N 98°59′E</span>
-                <span class="hidden md:inline text-lineBright">|</span>
-                <span class="hidden md:inline">ALT 310M</span>
-            </div>
-            <div class="flex items-center space-x-3 text-right">
-                <a href="offbrand.html" class="px-2.5 py-0.5 border border-neutral-600 hover:border-nothingRed text-inkWhite hover:text-nothingRed transition text-[10px] uppercase font-bold tracking-wider">☀ OFF+BRAND. LIGHT</a>
-                <span id="headerClock" class="text-inkWhite font-medium"></span>
-                <span class="text-lineBright">|</span>
-                <span class="hanko-seal">印 厳選</span>
-                <span class="hidden lg:inline text-inkMuted">[AI VERIFIED]</span>
-            </div>
-        </div>
+<header class="topbar">
+  <a class="brand" href="#/">
+    <span class="brand-mark">CM</span>
+    <span class="brand-text">Чиангмай<small>гид сообщества</small></span>
+  </a>
+  <nav class="nav" id="mainNav">
+    <a href="#/" data-view="places">Места</a>
+    <a href="#/map" data-view="map">Карта</a>
+    <a href="#/events" data-view="events">Афиша</a>
+    <a href="#/routes" data-view="routes">Маршруты</a>
+    <a href="#/wiki" data-view="wiki">Справочник</a>
+  </nav>
+  <div class="search">
+    <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="searchInput" type="search" placeholder="Кофе, стоматолог, водопад, Нимман…" autocomplete="off" aria-label="Поиск">
+    <button id="searchClear" class="search-clear" aria-label="Очистить" hidden>✕</button>
+  </div>
+</header>
 
-        <!-- Main Header -->
-        <div class="border-t border-line/60 py-4">
-            <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 border border-neutral-700 bg-surface rounded-none flex items-center justify-center font-mono font-black text-xl text-nothingRed">
-                        CM
-                    </div>
-                    <div>
-                        <div class="flex items-center space-x-2">
-                            <h1 class="text-lg font-bold tracking-tight uppercase">Chiang Mai Ultimate Guide</h1>
-                            <span class="text-[10px] font-mono text-nothingRed border border-nothingRed/40 px-1.5 py-0.5">v2.5 [TE-OS]</span>
-                        </div>
-                        <p class="text-xs text-inkMuted font-mono">Нишевый каталог мест, коворкингов, клиник и событий на базе Telegram</p>
-                    </div>
-                </div>
-                
-                <div class="space-x-6 text-xs tracking-widest hidden md:flex md:items-center font-bold whitespace-nowrap">
-                    <a href="#" onclick="switchMainTab('catalog')" id="tabCatalog" class="text-nothingRed border-b-2 border-nothingRed pb-1 transition">CATALOG</a>
-                    <a href="#" onclick="switchMainTab('afisha')" id="tabAfisha" class="text-inkMuted hover:text-inkWhite transition pb-1">EVENTS</a>
-                    <a href="#" onclick="switchMainTab('routes')" id="tabRoutes" class="text-inkMuted hover:text-inkWhite transition pb-1">ROUTES</a>
-                    <a href="#" onclick="switchMainTab('wiki')" id="tabWiki" class="text-inkMuted hover:text-inkWhite transition pb-1">WIKI</a>
-                </div>
-
-                <!-- Search bar -->
-                <div class="flex items-center gap-3 w-full md:max-w-md">
-                    
-                    
-                    <div class="relative flex-1">
-                        <span class="absolute left-3.5 top-2.5 font-mono text-xs text-nothingRed">&gt;</span>
-                        <input type="text" id="searchInput" 
-                               placeholder="ПОИСК // КЛИНИКА, КАФЕ, ХАЙК, РАЙОН..." 
-                               oninput="handleSearch()"
-                               class="w-full bg-surface border border-line focus:border-nothingRed rounded-none pl-8 pr-4 py-2 font-mono text-xs text-inkWhite placeholder-neutral-600 focus:outline-none transition">
-                    </div>
-                    <select id="sortSelect" onchange="loadItems()" 
-                            class="bg-surface border border-line text-xs font-mono text-inkMuted px-3 py-2 rounded-none focus:outline-none focus:border-nothingRed">
-                        <option value="mentions">🔥 TOP POPULAR</option>
-                        <option value="newest">🆕 NEWEST</option>
-                        <option value="alpha">🔤 ALPHABETICAL</option>
-                    </select>
-                </div>
-            </div>
-        </div>
+<main id="app">
+  <!-- Places -->
+  <section id="view-places" class="view">
+    <div class="filters">
+      <div class="chips" id="catChips"></div>
+      <div class="filters-row">
+        <select id="areaSelect" class="select" aria-label="Район"><option value="">Все районы</option></select>
+        <button id="nearBtn" class="btn btn-ghost" type="button" title="Показать ближайшие места">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
+          <span>Рядом со мной</span>
+        </button>
+        <label class="toggle" id="vegToggleWrap"><input type="checkbox" id="vegToggle"><span>🌱 Veg-friendly</span></label>
+        <select id="sortSelect" class="select" aria-label="Сортировка">
+          <option value="popular">Популярные в чате</option>
+          <option value="rating">Рейтинг Google</option>
+          <option value="newest">Новые</option>
+          <option value="alpha">По алфавиту</option>
+          <option value="distance">По расстоянию</option>
+        </select>
+        <span class="count" id="placesCount"></span>
+      </div>
     </div>
+    <div id="wikiHits" class="wiki-hits" hidden></div>
+    <div id="placesGrid" class="grid"></div>
+    <div id="placesMore" class="more-wrap" hidden><button class="btn" id="moreBtn" type="button">Показать ещё</button></div>
+  </section>
 
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 pt-6">
-        <!-- ROUTES VIEW -->
-        <div id="routesView" class="hidden relative z-10 min-h-[50vh] mb-10">
-            <div id="collectionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            <div id="routeDetailsView" class="hidden border border-line/60 bg-surfaceAlt/80 flex flex-col w-full relative">
-                <!-- Route Details will be loaded here -->
-            </div>
-        </div>
-
-        <!-- WIKI VIEW -->
-        <div id="wikiView" class="hidden relative z-10 min-h-[50vh] mb-10">
-            <div class="border border-line/60 bg-surfaceAlt/80 flex flex-col md:flex-row min-h-[600px]">
-                <!-- Sidebar -->
-                <div class="w-full md:w-1/3 lg:w-1/4 border-b md:border-b-0 md:border-r border-line/60 flex flex-col bg-obsidian/50 max-h-[300px] md:max-h-none">
-                    <div class="p-4 border-b border-line/60">
-                        <h2 class="text-nothingRed font-mono text-lg font-bold tracking-tight"><i class="fa-solid fa-book-journal-whills mr-2"></i> SURVIVAL GUIDE</h2>
-                    </div>
-                    <div id="wikiNav" class="flex-1 overflow-y-auto">
-                        <!-- Nav items will be loaded here -->
-                    </div>
-                </div>
-                <!-- Main Content -->
-                <div class="w-full md:w-2/3 lg:w-3/4 p-6 md:p-8 overflow-y-auto bg-surface/30">
-                    <div id="wikiContent" class="text-inkWhite font-sans text-sm leading-relaxed prose prose-invert max-w-none">
-                        <div class="animate-pulse text-inkMuted font-mono">LOADING WIKI DATABANKS...</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Telemetry Stats Panel -->
-        <div id="statsBanner" class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6 font-mono text-xs">
-            <!-- Dynamically loaded -->
-        </div>
-
-        <!-- CATEGORIES SELECTOR -->
-        <div class="mb-5 border border-line bg-surface/50 p-2.5">
-            <div class="flex items-center justify-between mb-2 px-1 text-[11px] font-mono text-inkMuted uppercase">
-                <span class="flex items-center space-x-1">
-                    <i class="fa-solid fa-sliders text-nothingRed text-[10px]"></i>
-                    <span>CHANNEL SELECT // КАТЕГОРИИ</span>
-                </span>
-                <span class="text-[10px]">[6 CHANNELS ACTIVE]</span>
-            </div>
-            
-            <div class="flex flex-wrap items-center gap-2">
-                <button onclick="setCategory('all')" id="btn-all" class="cat-btn hw-btn-active px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>ВСЕ // ALL</span>
-                </button>
-                <button onclick="setCategory('cafe_restaurant')" id="btn-cafe_restaurant" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>☕ КАФЕ & ЕДА</span>
-                </button>
-                <button onclick="setCategory('wellness')" id="btn-wellness" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>💆‍♂️ СПА & ЙОГА</span>
-                </button>
-                <button onclick="setCategory('services')" id="btn-services" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>🏥 СЕРВИСЫ & КЛИНИКИ</span>
-                </button>
-                <button onclick="setCategory('stay')" id="btn-stay" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>🏨 ОТЕЛИ & КОНДО</span>
-                </button>
-                <button onclick="setCategory('workspace')" id="btn-workspace" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>💻 КОВОРКИНГИ</span>
-                </button>
-                <button onclick="setCategory('nature')" id="btn-nature" class="cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition">
-                    <span class="hw-dot w-1.5 h-1.5 rounded-full bg-neutral-600"></span>
-                    <span>🌿 ПРИРОДА & ТРОПЫ</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- DYNAMIC EVENT SUB-FILTER -->
-        <div id="eventSubFilter" class="hidden mb-5 border border-line bg-surface/80 p-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 font-mono text-xs">
-            <div class="flex flex-wrap items-center gap-2">
-                <span class="text-inkMuted uppercase tracking-wider text-[11px]">TIMELINE MODE //</span>
-                <button onclick="setEventStatus('active')" id="ev-active" class="ev-btn px-3 py-1.5 border border-nothingRed bg-nothingRed text-white font-bold tracking-wider uppercase text-[11px] flex items-center space-x-1.5 shadow-[0_0_12px_rgba(255,46,46,0.3)]">
-                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
-                    <span>ПРЕДСТОЯЩИЕ (<span id="cntActiveEv">0</span>)</span>
-                </button>
-                <button onclick="setEventStatus('past')" id="ev-past" class="ev-btn px-3 py-1.5 border border-line bg-surface text-inkMuted hover:text-inkWhite hover:border-lineBright tracking-wider uppercase text-[11px]">
-                    АРХИВ ПРОШЕДШИХ (<span id="cntPastEv">0</span>)
-                </button>
-                <button onclick="setEventStatus('all')" id="ev-all" class="ev-btn px-3 py-1.5 border border-line bg-surface text-inkMuted hover:text-inkWhite hover:border-lineBright tracking-wider uppercase text-[11px]">
-                    ВСЕ ДАТЫ
-                </button>
-            </div>
-            <div class="text-[11px] text-inkMuted flex items-center space-x-2">
-                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-                <span>REAL-TIME FILTER: <strong id="filterLiveDate" class="text-inkWhite font-bold"></strong></span>
-            </div>
-        </div>
-
-        <!-- DYNAMIC VEG SUB-FILTER -->
-        <div id="vegSubFilter" class="hidden mb-5 border border-line bg-surface/80 p-3.5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 font-mono text-xs">
-            <div class="flex flex-wrap items-center gap-2">
-                <span class="text-inkMuted uppercase tracking-wider text-[11px]">DIETARY PREFERENCES //</span>
-                <button onclick="toggleVegFilter()" id="btn-veg-filter" class="px-3 py-1.5 border border-line bg-surface text-inkMuted hover:text-inkWhite hover:border-lineBright tracking-wider uppercase text-[11px] flex items-center space-x-1.5 transition">
-                    <i class="fa-solid fa-leaf text-green-500"></i>
-                    <span>ТОЛЬКО VEG-FRIENDLY</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- DISTRICT & HARDWARE FILTERS -->
-        <div class="border border-line bg-surface/30 p-3.5 mb-6 space-y-3 font-mono text-xs">
-            <div class="flex flex-wrap items-center gap-1.5">
-                <span class="text-inkMuted mr-2 text-[11px] uppercase">SECTOR / РАЙОН:</span>
-                <button onclick="setNeighborhood('all')" id="neigh-all" class="neigh-btn px-2.5 py-1 border border-lineBright bg-line text-inkWhite font-medium text-[11px]">ВСЕ СЕКТОРЫ</button>
-                <button onclick="setNeighborhood('Old City')" id="neigh-Old City" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">OLD CITY</button>
-                <button onclick="setNeighborhood('Nimman')" id="neigh-Nimman" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">NIMMAN</button>
-                <button onclick="setNeighborhood('Chang Phueak')" id="neigh-Chang Phueak" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">CHANG PHUEAK</button>
-                <button onclick="setNeighborhood('Suthep / CMU')" id="neigh-Suthep / CMU" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">SUTHEP / CMU</button>
-                <button onclick="setNeighborhood('Night Bazaar / Chang Khlan')" id="neigh-Night Bazaar / Chang Khlan" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">NIGHT BAZAAR</button>
-                <button onclick="setNeighborhood('San Kamphaeng / Doi Saket')" id="neigh-San Kamphaeng / Doi Saket" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">DOI SAKET</button>
-                <button onclick="setNeighborhood('Hang Dong')" id="neigh-Hang Dong" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">HANG DONG</button>
-                <button onclick="setNeighborhood('Mae Rim')" id="neigh-Mae Rim" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">MAE RIM</button>
-                <button onclick="setNeighborhood('Mae Taeng / Chiang Dao')" id="neigh-Mae Taeng / Chiang Dao" class="neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]">CHIANG DAO</button>
-            </div>
-
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-line/60 text-[11px] text-inkMuted">
-                <div class="flex items-center space-x-4">
-                    <label class="inline-flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" id="mapsToggle" onchange="loadItems()" class="accent-nothingRed bg-surface border-line">
-                        <span>GEO VERIFIED ONLY [MAPS PIN]</span>
-                    </label>
-                    <label class="inline-flex items-center space-x-2 cursor-pointer">
-                        <input type="checkbox" id="popularToggle" onchange="loadItems()" class="accent-nothingRed bg-surface border-line">
-                        <span>TOP CURATED [2+ CITATIONS]</span>
-                    </label>
-                </div>
-                <div class="text-inkMuted font-mono">
-                    INDEX // <span id="showingCount" class="text-inkWhite font-bold">0</span> ENTITIES DISPLAYED
-                </div>
-            </div>
-        </div>
-
-        <!-- ITEMS GRID -->
-        <div id="itemsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Dynamic Catalog Items -->
-        </div>
-
-    </main>
-
-    <!-- Detail Modal -->
-    <div id="detailModal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-surface border border-neutral-700 max-w-2xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden font-sans">
-            <div class="p-5 border-b border-line flex items-start justify-between bg-obsidian/70">
-                <div>
-                    <div class="flex items-center space-x-2 font-mono text-[11px] text-inkMuted uppercase mb-1.5">
-                        <span class="hanko-seal">印</span>
-                        <span id="modalCategoryBadge" class="text-nothingRed font-bold"></span>
-                        <span>//</span>
-                        <span id="modalNeighborhood"></span>
-                    </div>
-                    <h2 id="modalTitle" class="text-xl font-bold tracking-tight text-inkWhite"></h2>
-                </div>
-                <button onclick="closeModal()" class="text-inkMuted hover:text-white p-2 font-mono text-lg transition">
-                    [✕]
-                </button>
-            </div>
-
-            <div class="p-6 overflow-y-auto space-y-5 flex-1 font-mono text-xs">
-                <!-- Large Photo Hero -->
-                <div id="modalPhotoContainer" class="w-full h-64 bg-obsidian border border-line relative overflow-hidden">
-                    <img id="modalImg" src="" alt="" class="w-full h-full object-contain bg-black">
-                    <div id="modalPhotoTag" class="absolute bottom-2 left-2 px-2 py-0.5 bg-black/80 border border-line text-[10px] text-inkMuted">
-                        SPEC_IMAGE // HIGH-RES
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3 p-3 bg-obsidian border border-line">
-                    <div>
-                        <span class="text-[10px] text-inkMuted uppercase">VENUE / COORDINATES:</span>
-                        <div id="modalVenue" class="font-bold text-inkWhite truncate"></div>
-                    </div>
-                    <div>
-                        <span class="text-[10px] text-inkMuted uppercase">ADDRESS / SECTOR:</span>
-                        <div id="modalAddress" class="text-inkMuted truncate"></div>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 class="text-[10px] text-nothingRed uppercase tracking-wider mb-1.5 font-bold">[DESCRIPTION & FIELD NOTES]</h4>
-                    <p id="modalDesc" class="text-xs text-neutral-300 font-sans leading-relaxed whitespace-pre-line"></p>
-                </div>
-
-                <div id="modalActionsContainer" class="pt-2 flex flex-wrap items-center gap-3">
-                    <a id="modalRegBtn" href="" target="_blank" class="hidden inline-flex items-center space-x-2 px-5 py-2.5 bg-nothingRed hover:bg-red-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-[0_0_16px_rgba(255,46,46,0.35)]">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        <span id="modalRegBtnText">ЗАПИСАТЬСЯ</span>
-                    </a>
-                    <a id="modalLocBtn" href="" target="_blank" class="hidden inline-flex items-center space-x-2 px-4 py-2.5 font-mono text-xs uppercase tracking-wider transition">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        <span id="modalLocBtnText">LAUNCH IN GOOGLE MAPS</span>
-                    </a>
-                </div>
-
-                <div class="pt-4 border-t border-line space-y-4">
-                    <!-- AI Community Summary Card -->
-                    <div id="modalSummaryContainer" class="bg-obsidian border border-lineBright p-4 relative font-mono">
-                        <div class="flex items-center justify-between pb-2 border-b border-line mb-3">
-                            <div class="flex items-center space-x-2">
-                                <span class="w-1.5 h-1.5 rounded-full bg-nothingRed animate-pulse"></span>
-                                <span class="text-[11px] font-bold text-inkWhite tracking-wider uppercase">COMMUNITY SYNTHESIS // ВЫЖИМКА ИЗ ЧАТОВ</span>
-                            </div>
-                            <span class="text-[9px] text-inkMuted tracking-widest uppercase">AI FIELD LOG</span>
-                        </div>
-                        <div id="modalSummaryContent" class="space-y-3 font-sans text-xs text-neutral-200">
-                            <!-- Populated dynamically -->
-                        </div>
-                    </div>
-
-                    <!-- Accordion Toggle for Raw Citations -->
-                    <div class="pt-1">
-                        <button id="toggleReviewsBtn" onclick="toggleReviewsAccordion()" class="w-full flex items-center justify-between px-3.5 py-2.5 bg-surface hover:bg-surfaceAlt border border-line hover:border-lineBright text-xs font-mono text-inkMuted hover:text-inkWhite transition group">
-                            <div class="flex items-center space-x-2">
-                                <span id="accordionArrow" class="text-nothingRed font-bold text-[10px] transition-transform duration-200">▶</span>
-                                <span class="uppercase tracking-wider font-medium text-[11px]">ИСТОЧНИКИ И ЦИТАТЫ ИЗ ЧАТОВ</span>
-                                <span id="modalReviewsCount" class="px-1.5 py-0.5 bg-obsidian text-[10px] text-inkMuted border border-line">0</span>
-                            </div>
-                            <span id="accordionToggleLabel" class="text-[10px] text-inkMuted uppercase tracking-wider group-hover:text-nothingRed transition">РАЗВЕРНУТЬ [+]</span>
-                        </button>
-                        <div id="modalReviewsList" class="hidden mt-3 space-y-2.5"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <!-- Map -->
+  <section id="view-map" class="view view-map">
+    <aside class="map-side">
+      <div class="map-side-head">
+        <div class="chips chips-compact" id="mapCatChips"></div>
+        <div class="map-side-meta"><span id="mapCount"></span><button class="btn btn-ghost btn-sm" id="mapNearBtn" type="button">📍 Рядом</button></div>
+      </div>
+      <div class="map-list" id="mapList"></div>
+    </aside>
+    <div class="map-wrap">
+      <div id="map"></div>
+      <div class="map-filters-mobile"><div class="chips chips-compact" id="mapCatChipsMobile"></div></div>
+      <div class="map-strip" id="mapStrip"></div>
     </div>
+  </section>
 
-    <!-- Scripts -->
-    <script>
-        let currentMainTab = 'catalog';
-        let currentCategory = 'all';
-        let currentNeighborhood = 'all';
-        let currentEventStatus = 'active';
-        let searchQuery = '';
+  <!-- Events -->
+  <section id="view-events" class="view">
+    <div class="page-head">
+      <h1>Афиша</h1>
+      <p class="lead">События из чатов: встречи, лекции, кино, йога, концерты.</p>
+      <div class="seg" id="eventSeg">
+        <button data-mode="upcoming" class="active" type="button">Предстоящие</button>
+        <button data-mode="past" type="button">Прошедшие</button>
+      </div>
+    </div>
+    <div id="eventsList" class="events"></div>
+  </section>
 
-        const nowObj = new Date();
-        const clientToday = nowObj.getFullYear() + '-' + 
-                            String(nowObj.getMonth() + 1).padStart(2, '0') + '-' + 
-                            String(nowObj.getDate()).padStart(2, '0');
+  <!-- Routes & collections -->
+  <section id="view-routes" class="view">
+    <div id="routesIndex">
+      <div class="page-head">
+        <h1>Маршруты и подборки</h1>
+        <p class="lead">Готовые планы на день и тематические списки — собраны из рекомендаций чата.</p>
+      </div>
+      <h2 class="h2" id="routesTitle">Маршруты</h2>
+      <div id="routesGrid" class="grid grid-routes"></div>
+      <h2 class="h2" id="collectionsTitle">Подборки</h2>
+      <div id="collectionsGrid" class="grid grid-routes"></div>
+    </div>
+    <div id="routeDetail" hidden></div>
+  </section>
 
-        function updateClock() {
-            const d = new Date();
-            document.getElementById('headerClock').innerText = d.toISOString().replace('T', ' ').slice(0, 19) + ' UTC';
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+  <!-- Wiki -->
+  <section id="view-wiki" class="view">
+    <div id="wikiIndex">
+      <div class="page-head">
+        <h1>Справочник</h1>
+        <p class="lead">Визы, жильё, байки, врачи, деньги — короткие практичные статьи для жизни в Чиангмае.</p>
+      </div>
+      <div id="wikiGrid" class="wiki-grid"></div>
+    </div>
+    <article id="wikiArticle" class="article" hidden></article>
+  </section>
+</main>
 
-        const catIcons = {
-            'cafe_restaurant': '☕ COFFEE & DINE',
-            'wellness': '💆‍♂️ WELLNESS & SPA',
-            'services': '🏥 CLINIC & SERVICES',
-            'stay': '🏨 STAY & CONDO',
-            'workspace': '💻 COWORKING',
-            'nature': '🌿 NATURE & WATERFALLS',
-            'hiking_trail': '🥾 HIKING TRAILS',
-            'event': '📅 EVENTS'
-        };
+<!-- Place detail -->
+<div id="detail" class="detail" hidden>
+  <div class="detail-backdrop" id="detailBackdrop"></div>
+  <div class="detail-panel" id="detailPanel" role="dialog" aria-modal="true"></div>
+</div>
 
-        const channelNumbers = {
-            'cafe_restaurant': 'CH-01',
-            'wellness': 'CH-02',
-            'services': 'CH-03',
-            'stay': 'CH-04',
-            'workspace': 'CH-05',
-            'nature': 'CH-06',
-            'hiking_trail': 'CH-07',
-            'event': 'CH-08'
-        };
+<nav class="tabbar" id="tabbar">
+  <a href="#/" data-view="places"><span class="tab-ico">☕</span>Места</a>
+  <a href="#/map" data-view="map"><span class="tab-ico">🗺</span>Карта</a>
+  <a href="#/events" data-view="events"><span class="tab-ico">📅</span>Афиша</a>
+  <a href="#/routes" data-view="routes"><span class="tab-ico">🧭</span>Маршруты</a>
+  <a href="#/wiki" data-view="wiki"><span class="tab-ico">📖</span>Справка</a>
+</nav>
 
-        async function loadStats() {
-            try {
-                let stats = null;
-                if (staticData && staticData.stats) {
-                    stats = staticData.stats;
-                } else {
-                    const res = await fetch(`/api/stats?current_date=${clientToday}`);
-                    stats = await res.json();
-                }
-                const totalPlaces = Object.values(stats.categories).reduce((a,b)=>a+b, 0);
-                
-                document.getElementById('cntActiveEv').innerText = stats.active_events;
-                document.getElementById('cntPastEv').innerText = stats.past_events;
-                document.getElementById('filterLiveDate').innerText = clientToday;
+<div id="toast" class="toast" hidden></div>
 
-                document.getElementById('statsBanner').innerHTML = `
-                    <div class="border border-line bg-surface p-3">
-                        <div class="text-[10px] text-inkMuted mb-0.5 uppercase tracking-wider">TOTAL CATALOG</div>
-                        <div class="text-xl font-bold text-inkWhite tracking-tight">${totalPlaces}</div>
-                    </div>
-                    <div class="border border-line bg-surface p-3">
-                        <div class="text-[10px] text-inkMuted mb-0.5 uppercase tracking-wider">☕ COFFEE & BISTRO</div>
-                        <div class="text-xl font-bold text-white tracking-tight">${stats.categories.cafe_restaurant || 0}</div>
-                    </div>
-                    <div class="border border-line bg-surface p-3">
-                        <div class="text-[10px] text-inkMuted mb-0.5 uppercase tracking-wider">💆‍♂️ SPA & CLINICS</div>
-                        <div class="text-xl font-bold text-white tracking-tight">${(stats.categories.wellness||0) + (stats.categories.services||0)}</div>
-                    </div>
-                    <div class="border border-line bg-surface p-3">
-                        <div class="text-[10px] text-inkMuted mb-0.5 uppercase tracking-wider">🌿 NATURE & TRAILS</div>
-                        <div class="text-xl font-bold text-white tracking-tight">${(stats.categories.nature||0) + (stats.categories.hiking_trail||0)}</div>
-                    </div>
-                    <div class="border border-line bg-surface p-3">
-                        <div class="text-[10px] text-nothingRed mb-0.5 uppercase tracking-wider">📅 ACTIVE EVENTS</div>
-                        <div class="text-xl font-bold text-nothingRed tracking-tight">${stats.active_events}</div>
-                    </div>
-                `;
-            } catch(e) {}
-        }
-
-        async function loadItems() {
-            const hasMaps = document.getElementById('mapsToggle').checked;
-            const popularOnly = document.getElementById('popularToggle').checked;
-            const sortBy = document.getElementById('sortSelect').value;
-
-            if (staticData && staticData.items) {
-                let filtered = staticData.items.filter(item => {
-                    if (currentMainTab === 'catalog' && item.category === 'event') return false;
-                    
-                    if (currentCategory !== 'all') {
-                        if (currentCategory === 'nature') {
-                            if (item.category !== 'nature' && item.category !== 'hiking_trail') return false;
-                        } else if (item.category !== currentCategory) {
-                            return false;
-                        }
-                    }
-                    
-                    if (currentNeighborhood !== 'all' && item.neighborhood !== currentNeighborhood) return false;
-                    
-                    if (item.category === 'event') {
-                        const isFutureOrToday = !item.event_iso_date || item.event_iso_date >= clientToday;
-                        if (currentEventStatus === 'active' && !isFutureOrToday) return false;
-                        if (currentEventStatus === 'past' && isFutureOrToday) return false;
-                    }
-                    
-                    if (hasMaps && (!item.location_url || item.location_url === '')) return false;
-                    if (popularOnly && (item.mention_count || 0) < 2) return false;
-                    if (typeof isVegFriendly !== 'undefined' && isVegFriendly) {
-                        if (currentCategory === 'cafe_restaurant' && !item.veg_friendly) return false;
-                        if (currentCategory === 'all' && currentMainTab === 'catalog' && item.category === 'cafe_restaurant' && !item.veg_friendly) return false;
-                    }
-                    
-                    if (searchQuery) {
-                        const q = searchQuery.toLowerCase();
-                        const tMatch = (item.title || '').toLowerCase().includes(q);
-                        const dMatch = (item.description || '').toLowerCase().includes(q);
-                        const nMatch = (item.neighborhood || '').toLowerCase().includes(q);
-                        const vMatch = (item.venue_name || '').toLowerCase().includes(q);
-                        if (!tMatch && !dMatch && !nMatch && !vMatch) return false;
-                    }
-                    return true;
-                });
-                
-                if (sortBy === 'newest') {
-                    filtered.sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '') || (b.mention_count || 0) - (a.mention_count || 0));
-                } else if (sortBy === 'alpha') {
-                    filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
-                } else if (currentCategory === 'event') {
-                    filtered.sort((a, b) => (a.event_iso_date || '9999').localeCompare(b.event_iso_date || '9999') || (b.mention_count || 0) - (a.mention_count || 0));
-                } else {
-                    filtered.sort((a, b) => (b.mention_count || 0) - (a.mention_count || 0) || b.id - a.id);
-                }
-                
-                document.getElementById('showingCount').innerText = filtered.length;
-                renderItems(filtered);
-                return;
-            }
-
-            let url = `/api/items?category=${currentCategory}&neighborhood=${currentNeighborhood}&sort_by=${sortBy}&current_date=${clientToday}`;
-            if (currentMainTab === 'catalog') {
-                url += '&exclude_events=true';
-            }
-            if (currentCategory === 'event') {
-                url += `&event_status=${currentEventStatus}`;
-            }
-            if (hasMaps) url += '&has_maps=true';
-            if (popularOnly) url += '&min_mentions=2';
-            if (typeof isVegFriendly !== 'undefined' && isVegFriendly) url += '&veg_friendly=true';
-            if (searchQuery) url += `&q=${encodeURIComponent(searchQuery)}`;
-
-            const res = await fetch(url);
-            const items = await res.json();
-            document.getElementById('showingCount').innerText = items.length;
-            renderItems(items);
-        }
-
-        function renderItems(items) {
-            const container = document.getElementById('itemsGrid');
-            if (items.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full py-20 text-center font-mono border border-dashed border-line">
-                        <div class="text-nothingRed text-2xl mb-2 font-bold">[!] NO ENTITIES FOUND</div>
-                        <p class="text-xs text-inkMuted">NO FIELD DATA MATCHES CURRENT TELEMETRY FILTERS</p>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = items.map((item, idx) => {
-                let photoUrl = (item.photos && item.photos.length > 0) 
-                    ? item.photos[0] 
-                    : `static/photos/places/${item.id}.jpg`;
-                if (photoUrl && photoUrl.startsWith('/')) photoUrl = photoUrl.slice(1);
-                    
-                const chNum = channelNumbers[item.category] || 'CH-00';
-                const photoBadgeText = item.is_real_photo 
-                    ? (item.category === 'event' ? '● AFISHA / EVENT POSTER' : '● VERIFIED AUTHENTIC PHOTO') 
-                    : '';
-
-                return `
-                <div class="border border-line bg-surface hover:border-neutral-500 transition duration-200 flex flex-col justify-between group corner-reticle relative">
-                    <!-- Photo Header -->
-                    <div class="relative w-full h-48 bg-obsidian overflow-hidden border-b border-line flex items-center justify-center cursor-pointer" onclick="openModal(${item.id})">
-                        <img src="${photoUrl}" alt="" loading="lazy" 
-                             onerror="this.onerror=null;this.src=getCategoryFallback(typeof item !== 'undefined' ? item.category : 'nature');"
-                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-black/30"></div>
-                        
-                        <!-- Top Badges over Photo -->
-                        <div class="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between font-mono text-[10px]">
-                            <span class="px-2 py-0.5 bg-black/80 border border-line text-inkWhite tracking-wider">
-                                ${chNum} // ${escapeHtml(item.neighborhood || 'SECTOR')}
-                            </span>
-                            
-                            <div class="flex items-center space-x-1.5">
-                                ${photoBadgeText ? `
-                                    <span class="px-2 py-0.5 bg-black/90 border border-nothingRed text-nothingRed font-bold tracking-wider text-[9px] shadow-[0_0_8px_rgba(255,46,46,0.4)]">
-                                        ${photoBadgeText}
-                                    </span>
-                                ` : ''}
-                                ${item.category === 'event' && item.is_active ? `
-                                    <span class="px-2 py-0.5 bg-nothingRed text-white font-bold tracking-wider shadow-[0_0_8px_#ff2e2e]">
-                                        LIVE
-                                    </span>
-                                ` : ''}
-                                ${item.category === 'event' && !item.is_active ? `
-                                    <span class="px-2 py-0.5 bg-black/80 text-inkMuted border border-line">
-                                        ARCHIVED
-                                    </span>
-                                ` : ''}
-                                ${item.category !== 'event' ? `
-                                    <span class="hanko-seal bg-black/80">
-                                        印 厳選
-                                    </span>
-                                ` : ''}
-                            </div>
-                        </div>
-
-                        <!-- Bottom Tag over Photo -->
-                        <div class="absolute bottom-2 left-2.5 font-mono text-[10px] text-inkMuted flex items-center space-x-2">
-                            <span>${escapeHtml(catIcons[item.category] || 'PLACE')}</span>
-                            ${item.veg_friendly ? '<i class="fa-solid fa-leaf text-green-500/80" title="Veg-Friendly"></i>' : ''}
-                        </div>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-sm font-bold text-inkWhite tracking-tight mb-1.5 group-hover:text-nothingRed transition line-clamp-2 cursor-pointer" onclick="openModal(${item.id})">
-                                ${escapeHtml(item.title)}
-                            </h3>
-
-                            ${item.category === 'event' && (item.venue_name || item.event_date) ? `
-                                <div class="font-mono text-[11px] text-nothingRed mb-2 flex flex-wrap items-center gap-2">
-                                    ${item.event_date ? `<span>[DATE: ${escapeHtml(item.event_date)}]</span>` : ''}
-                                    ${item.venue_name ? `<span>@ ${escapeHtml(item.venue_name)}</span>` : ''}
-                                </div>
-                            ` : ''}
-
-                            ${item.category !== 'event' && item.address ? `
-                                <div class="font-mono text-[10px] text-inkMuted line-clamp-1 mb-2">
-                                    LOC // ${escapeHtml(item.address)}
-                                </div>
-                            ` : ''}
-
-                            <p class="text-xs text-neutral-400 font-sans line-clamp-3 mb-4 leading-relaxed">
-                                ${getCardSnippet(item)}
-                            </p>
-                        </div>
-
-                        <!-- Card Footer -->
-                        <div class="pt-3 border-t border-line/60 flex items-center justify-between font-mono text-[11px] text-inkMuted">
-                            <span class="text-inkWhite">
-                                CITATIONS: <strong class="text-nothingRed">${item.mention_count}</strong>
-                            </span>
-                            
-                            <div class="flex items-center space-x-2.5">
-                                ${item.registration_url ? `
-                                    <a href="${item.registration_url}" target="_blank" class="text-nothingRed hover:text-white font-bold transition flex items-center space-x-1 border border-nothingRed/40 bg-nothingRed/10 hover:bg-nothingRed px-2 py-0.5 text-[10px]">
-                                        <i class="fa-solid fa-pen-to-square text-[9px]"></i>
-                                        <span>ЗАПИСЬ</span>
-                                    </a>
-                                ` : ''}
-                                ${item.location_url ? `
-                                    <a href="${item.location_url}" target="_blank" class="text-inkMuted hover:text-white transition">
-                                        [MAP ↗]
-                                    </a>
-                                ` : ''}
-                                <button onclick="openModal(${item.id})" class="text-white hover:text-nothingRed font-bold transition">
-                                    SPEC →
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                `;
-            }).join('');
-        }
-
-        function setCategory(cat) {
-            currentCategory = cat;
-            document.querySelectorAll('.cat-btn').forEach(btn => {
-                btn.className = 'cat-btn px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 text-inkMuted hover:text-inkWhite transition';
-            });
-            const activeBtn = document.getElementById(`btn-${cat}`);
-            if (activeBtn) {
-                activeBtn.className = 'cat-btn hw-btn-active px-3.5 py-2 text-xs font-mono uppercase tracking-wider border border-line bg-surface hover:border-lineBright flex items-center space-x-2 transition';
-            }
-
-            const evFilter = document.getElementById('eventSubFilter');
-            if (cat === 'event') {
-                document.getElementById('eventSubFilter').classList.remove('hidden');
-                document.getElementById('eventSubFilter').classList.add('flex');
-            } else {
-                document.getElementById('eventSubFilter').classList.add('hidden');
-                document.getElementById('eventSubFilter').classList.remove('flex');
-            }
-            if (cat === 'cafe_restaurant' || cat === 'all') {
-                const vsf = document.getElementById('vegSubFilter');
-                if(vsf) { vsf.classList.remove('hidden'); vsf.classList.add('flex'); }
-            } else {
-                const vsf = document.getElementById('vegSubFilter');
-                if(vsf) { vsf.classList.add('hidden'); vsf.classList.remove('flex'); }
-                if(typeof isVegFriendly !== 'undefined' && isVegFriendly) {
-                    toggleVegFilter();
-                }
-            }
-
-            loadItems();
-        }
-
-        function setEventStatus(status) {
-            currentEventStatus = status;
-            document.querySelectorAll('.ev-btn').forEach(btn => {
-                btn.className = 'ev-btn px-3 py-1.5 border border-line bg-surface text-inkMuted hover:text-inkWhite hover:border-lineBright tracking-wider uppercase text-[11px]';
-            });
-            const activeBtn = document.getElementById(`ev-${status}`);
-            if (activeBtn) {
-                activeBtn.className = 'ev-btn px-3 py-1.5 border border-nothingRed bg-nothingRed text-white font-bold tracking-wider uppercase text-[11px] flex items-center space-x-1.5 shadow-[0_0_12px_rgba(255,46,46,0.3)]';
-            }
-            loadItems();
-        }
-
-        function setNeighborhood(neigh) {
-            currentNeighborhood = neigh;
-            document.querySelectorAll('.neigh-btn').forEach(btn => {
-                btn.className = 'neigh-btn px-2.5 py-1 border border-line bg-surface text-inkMuted hover:text-inkWhite text-[11px]';
-            });
-            const activeBtn = document.getElementById(`neigh-${neigh}`);
-            if (activeBtn) {
-                activeBtn.className = 'neigh-btn px-2.5 py-1 border border-lineBright bg-line text-inkWhite font-medium text-[11px]';
-            }
-            loadItems();
-        }
-
-        function handleSearch() {
-            searchQuery = document.getElementById('searchInput').value;
-            loadItems();
-        }
-
-        async function openModal(id) {
-            let item = null;
-            if (staticData && staticData.items) {
-                item = staticData.items.find(i => i.id === id);
-            }
-            if (!item) {
-                const res = await fetch(`/api/item/${id}`);
-                item = await res.json();
-            }
-            
-            document.getElementById('modalTitle').innerText = item.title;
-            document.getElementById('modalCategoryBadge').innerText = catIcons[item.category] || 'PLACE';
-            document.getElementById('modalNeighborhood').innerText = item.neighborhood || 'GENERAL';
-            document.getElementById('modalDesc').innerText = item.description;
-            
-            let photoUrl = (item.photos && item.photos.length > 0) ? item.photos[0] : '';
-            if (photoUrl && photoUrl.startsWith('/')) photoUrl = photoUrl.slice(1);
-            if (photoUrl) {
-                document.getElementById('modalImg').src = photoUrl;
-                document.getElementById('modalPhotoContainer').classList.remove('hidden');
-                document.getElementById('modalPhotoTag').innerText = item.is_real_photo 
-                    ? 'SPEC_IMAGE // ORIGINAL TELEGRAM POSTER' 
-                    : 'SPEC_IMAGE // HIGH-RES VERIFIED ASSET';
-            } else {
-                document.getElementById('modalPhotoContainer').classList.add('hidden');
-            }
-
-            const v = item.venue_name || (item.latitude ? `${item.latitude}°N, ${item.longitude}°E` : 'CHIANG MAI SECTOR');
-            document.getElementById('modalVenue').innerText = v;
-            document.getElementById('modalAddress').innerText = item.address || item.neighborhood || 'SECTOR MUEANG';
-
-            const regBtn = document.getElementById('modalRegBtn');
-            const regBtnText = document.getElementById('modalRegBtnText');
-            const locBtn = document.getElementById('modalLocBtn');
-            const locBtnText = document.getElementById('modalLocBtnText');
-
-            if (item.registration_url) {
-                regBtn.href = item.registration_url;
-                regBtnText.innerText = item.registration_label ? item.registration_label.toUpperCase() : '✍️ ЗАПИСАТЬСЯ';
-                regBtn.className = 'inline-flex items-center space-x-2 px-5 py-2.5 bg-nothingRed hover:bg-red-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-[0_0_16px_rgba(255,46,46,0.4)]';
-                regBtn.classList.remove('hidden');
-
-                if (item.location_url) {
-                    locBtn.href = item.location_url;
-                    locBtnText.innerText = '📍 МЕСТО НА КАРТЕ';
-                    locBtn.className = 'inline-flex items-center space-x-2 px-4 py-2.5 bg-surface hover:bg-surfaceAlt border border-lineBright text-inkWhite font-mono text-xs font-medium uppercase tracking-wider transition';
-                    locBtn.classList.remove('hidden');
-                } else {
-                    locBtn.classList.add('hidden');
-                }
-            } else {
-                regBtn.classList.add('hidden');
-                if (item.location_url) {
-                    locBtn.href = item.location_url;
-                    locBtnText.innerText = 'LAUNCH IN GOOGLE MAPS';
-                    locBtn.className = 'inline-flex items-center space-x-2 px-5 py-2.5 bg-nothingRed hover:bg-red-600 text-white font-mono text-xs font-bold uppercase tracking-wider transition shadow-[0_0_16px_rgba(255,46,46,0.35)]';
-                    locBtn.classList.remove('hidden');
-                } else {
-                    locBtn.classList.add('hidden');
-                }
-            }
-            
-            // Community Synthesis Rendering
-            const summaryContent = document.getElementById('modalSummaryContent');
-            const summary = item.community_summary || {};
-            let summaryHtml = '';
-            
-            if (summary.highlights && summary.highlights.length > 0) {
-                summaryHtml += `
-                    <div class="space-y-1.5">
-                        <div class="text-[10px] font-mono uppercase tracking-wider text-nothingRed font-bold flex items-center space-x-1.5">
-                            <i class="fa-solid fa-star text-[9px]"></i>
-                            <span>ЧТО ВЫДЕЛЯЮТ В ЧАТАХ</span>
-                        </div>
-                        <ul class="space-y-1 pl-1">
-                            ${summary.highlights.map(h => `<li class="flex items-start space-x-2"><span class="text-nothingRed font-mono leading-none mt-0.5">•</span><span class="text-neutral-200 text-xs leading-snug">${escapeHtml(h)}</span></li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            if (summary.pricing && summary.pricing.length > 0) {
-                summaryHtml += `
-                    <div class="space-y-1.5 pt-2 border-t border-line/60">
-                        <div class="text-[10px] font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center space-x-1.5">
-                            <i class="fa-solid fa-coins text-[9px]"></i>
-                            <span>ЦЕНЫ И УСЛОВИЯ ВХОДА</span>
-                        </div>
-                        <ul class="space-y-1 pl-1">
-                            ${summary.pricing.map(p => `<li class="flex items-start space-x-2"><span class="text-amber-400 font-mono leading-none mt-0.5">•</span><span class="text-neutral-200 text-xs leading-snug">${escapeHtml(p)}</span></li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            if (summary.tips && summary.tips.length > 0) {
-                summaryHtml += `
-                    <div class="space-y-1.5 pt-2 border-t border-line/60">
-                        <div class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 font-bold flex items-center space-x-1.5">
-                            <i class="fa-solid fa-compass text-[9px]"></i>
-                            <span>СОВЕТЫ И ЛОГИСТИКА</span>
-                        </div>
-                        <ul class="space-y-1 pl-1">
-                            ${summary.tips.map(t => `<li class="flex items-start space-x-2"><span class="text-cyan-400 font-mono leading-none mt-0.5">•</span><span class="text-neutral-200 text-xs leading-snug">${escapeHtml(t)}</span></li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            if (!summaryHtml) {
-                summaryHtml = `
-                    <div class="text-xs text-neutral-400 font-sans italic">
-                        Локация зафиксирована в полевых отчётах сообщества. Дополнительные детали и контекст доступны в источниках ниже.
-                    </div>
-                `;
-            }
-            summaryContent.innerHTML = summaryHtml;
-            
-            // Accordion Reset
-            const reviewsList = document.getElementById('modalReviewsList');
-            reviewsList.classList.add('hidden');
-            document.getElementById('accordionArrow').style.transform = 'rotate(0deg)';
-            document.getElementById('accordionToggleLabel').innerText = 'РАЗВЕРНУТЬ [+]';
-            document.getElementById('modalReviewsCount').innerText = item.reviews ? item.reviews.length : 0;
-            
-            // Populate Raw Reviews
-            reviewsList.innerHTML = (item.reviews || []).map(r => `
-                <div class="bg-obsidian border border-line p-3 font-mono text-[11px] text-inkMuted">
-                    <div class="flex items-center justify-between text-inkWhite mb-1 border-b border-line/40 pb-1">
-                        <span class="font-bold text-nothingRed">&gt; ${escapeHtml(r.sender_name)}</span>
-                        <span class="text-[10px] text-inkMuted">${r.msg_date || 'ARCHIVE LOG'}</span>
-                    </div>
-                    <p class="leading-relaxed font-sans text-xs text-neutral-300 mb-2">${escapeHtml(r.review_text)}</p>
-                    ${r.source_link ? `<a href="${r.source_link}" target="_blank" class="text-nothingRed hover:underline text-[10px] flex items-center space-x-1.5"><i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i><span>TELEGRAM SOURCE TRANSCRIPT</span></a>` : ''}
-                </div>
-            `).join('');
-            
-            document.getElementById('detailModal').classList.remove('hidden');
-        }
-
-        function toggleReviewsAccordion() {
-            const list = document.getElementById('modalReviewsList');
-            const arrow = document.getElementById('accordionArrow');
-            const label = document.getElementById('accordionToggleLabel');
-            
-            if (list.classList.contains('hidden')) {
-                list.classList.remove('hidden');
-                arrow.style.transform = 'rotate(90deg)';
-                label.innerText = 'СВЕРНУТЬ [-]';
-            } else {
-                list.classList.add('hidden');
-                arrow.style.transform = 'rotate(0deg)';
-                label.innerText = 'РАЗВЕРНУТЬ [+]';
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('detailModal').classList.add('hidden');
-        }
-
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
-        // Close modal on backdrop click
-        document.getElementById('detailModal').addEventListener('click', (e) => {
-            if (e.target === e.currentTarget) closeModal();
-        });
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        }
-
-        function getCardSnippet(item) {
-            const cs = item.community_summary;
-            let parts = [];
-            // Use first highlight as tagline
-            if (cs && cs.highlights && cs.highlights.length > 0) {
-                parts.push('<span class="text-inkWhite/80">' + escapeHtml(cs.highlights[0]) + '</span>');
-            }
-            // Add truncated description as secondary context
-            if (item.description) {
-                const desc = item.description.replace(/\\n/g, ' ').substring(0, 120);
-                if (parts.length > 0) {
-                    parts.push('<span class="text-neutral-500"> · </span>' + escapeHtml(desc) + (item.description.length > 120 ? '…' : ''));
-                } else {
-                    parts.push(escapeHtml(desc) + (item.description.length > 120 ? '…' : ''));
-                }
-            }
-            return parts.join('') || 'Отмечено сообществом';
-        }
-
-
-        let isVegFriendly = false;
-        
-        function toggleVegFilter() {
-            isVegFriendly = !isVegFriendly;
-            const btn = document.getElementById('btn-veg-filter');
-            if(btn) {
-                if(isVegFriendly) {
-                    btn.className = 'px-3 py-1.5 border border-green-500 bg-green-500/10 text-white tracking-wider uppercase text-[11px] flex items-center space-x-2 transition shadow-[0_0_8px_rgba(34,197,94,0.2)]';
-                } else {
-                    btn.className = 'px-3 py-1.5 border border-line bg-surface text-inkMuted hover:text-inkWhite hover:border-lineBright tracking-wider uppercase text-[11px] flex items-center space-x-2 transition';
-                }
-            }
-            loadItems();
-        }
-
-        function switchMainTab(tab) {
-            currentMainTab = tab;
-            ['tabCatalog', 'tabRoutes', 'tabWiki', 'tabAfisha'].forEach(t => {
-                const el = document.getElementById(t);
-                if(el && t.toLowerCase().replace('afisha', 'events').includes(tab.replace('afisha', 'events'))) {
-                    el.classList.add('text-nothingRed', 'border-b-2', 'border-nothingRed');
-                    el.classList.remove('text-inkMuted');
-                } else if(el) {
-                    el.classList.remove('text-nothingRed', 'border-b-2', 'border-nothingRed');
-                    el.classList.add('text-inkMuted');
-                }
-            });
-
-            const ig = document.getElementById('itemsGrid');
-            if(ig) ig.classList.add('hidden');
-            const rv = document.getElementById('routesView');
-            if(rv) rv.classList.add('hidden');
-            const wv = document.getElementById('wikiView');
-            if(wv) wv.classList.add('hidden');
-            
-            const st = document.getElementById('statsBanner');
-            const cd = document.querySelector('.mb-5.border.border-line.bg-surface\\/50.p-2\\.5');
-            const ev = document.getElementById('eventSubFilter');
-            
-            if(tab === 'catalog') {
-                if(currentCategory === 'event') {
-                    setCategory('all');
-                }
-                if(ig) ig.classList.remove('hidden');
-                if(st) st.style.display = '';
-                if(cd) cd.style.display = '';
-                if(ev && currentCategory === 'event') ev.style.display = 'flex';
-            } else if(tab === 'afisha') {
-                setCategory('event');
-                if(ig) ig.classList.remove('hidden');
-                if(st) st.style.display = '';
-                if(cd) cd.style.display = 'none'; // Hide main category filters
-                if(ev) ev.style.display = 'flex'; // Show event filters
-                loadItems();
-            } else if(tab === 'routes') {
-                if(rv) rv.classList.remove('hidden');
-                if(st) st.style.display = 'none';
-                if(cd) cd.style.display = 'none';
-                if(ev) ev.style.display = 'none';
-                loadCollections();
-            } else if(tab === 'wiki') {
-                if(wv) wv.classList.remove('hidden');
-                if(st) st.style.display = 'none';
-                if(cd) cd.style.display = 'none';
-                if(ev) ev.style.display = 'none';
-                loadWiki();
-            }
-        }
-        
-        async function loadCollections() {
-            const grid = document.getElementById('collectionsGrid');
-            if(!grid) return;
-            grid.innerHTML = '<div class="col-span-full text-center text-inkMuted font-mono py-10 animate-pulse">LOADING ROUTES...</div>';
-            try {
-                let cols = null;
-                if (staticData && staticData.collections) {
-                    cols = staticData.collections;
-                } else {
-                    const res = await fetch('/api/collections');
-                    cols = await res.json();
-                }
-                document.getElementById('routeDetailsView').classList.add('hidden');
-                grid.classList.remove('hidden');
-                grid.innerHTML = cols.map(c => `
-                    <div class="border border-line/60 bg-surfaceAlt/80 group hover:border-nothingRed/50 cursor-pointer flex flex-col h-full transition duration-300 relative corner-reticle" onclick="openCollection(${c.id})">
-                        <div class="h-48 w-full bg-obsidian relative overflow-hidden flex items-center justify-center">
-                            ${c.cover_image ? `<img src="${c.cover_image}" class="w-full h-full object-cover opacity-60 group-hover:scale-105 group-hover:opacity-100 transition duration-700" loading="lazy">` : `<div class="absolute inset-0 opacity-[0.05]" style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 12px 12px;"></div><i class="fa-solid fa-map-location-dot text-4xl text-nothingRed/30 group-hover:text-nothingRed/80 transition duration-500"></i>`}
-                            <div class="absolute inset-0 bg-gradient-to-t from-surfaceAlt via-black/20 to-transparent"></div>
-                            <div class="absolute bottom-4 left-4 right-4">
-                                <h3 class="text-inkWhite font-bold text-lg leading-tight group-hover:text-nothingRed transition">${escapeHtml(c.title)}</h3>
-                            </div>
-                        </div>
-                        <div class="p-4 flex-1 font-sans text-sm text-neutral-400 leading-relaxed border-b border-line/60">
-                            ${escapeHtml(c.description)}
-                        </div>
-                        <div class="p-3 bg-surface/50 grid grid-cols-3 gap-2 text-center font-mono text-[9px] text-inkMuted tracking-wider uppercase">
-                            <div class="border-r border-line/60 flex flex-col items-center justify-center">
-                                <i class="fa-solid fa-clock text-nothingRed mb-1"></i>
-                                ${escapeHtml(c.duration || '--')}
-                            </div>
-                            <div class="border-r border-line/60 flex flex-col items-center justify-center">
-                                <i class="fa-solid fa-route text-nothingRed mb-1"></i>
-                                ${escapeHtml(c.transport || '--')}
-                            </div>
-                            <div class="flex flex-col items-center justify-center">
-                                <i class="fa-solid fa-coins text-nothingRed mb-1"></i>
-                                ${escapeHtml(c.budget || '--')}
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
-            } catch (e) {
-                grid.innerHTML = '<div class="col-span-full text-nothingRed font-mono py-10">ERROR LOADING ROUTES</div>';
-            }
-        }
-        
-        async function openCollection(id) {
-            switchMainTab('catalog');
-            const st = document.getElementById('statsBanner');
-            const cd = document.querySelector('.mb-5.border.border-line.bg-surface\\/50.p-2\\.5');
-            if(st) st.style.display = 'none';
-            if(cd) cd.style.display = 'none';
-            
-            document.getElementById('itemsGrid').innerHTML = '<div class="col-span-full text-center text-inkMuted font-mono py-10 animate-pulse">LOADING ROUTE POINTS...</div>';
-            try {
-                const res = await fetch(`/api/collections/${id}`);
-                const col = await res.json();
-                document.getElementById('itemsGrid').innerHTML = `
-                    <div class="col-span-full border-b border-line pb-4 mb-4">
-                        <h2 class="text-xl text-nothingRed font-bold flex items-center"><i class="fa-solid fa-map-location-dot mr-3"></i> ${escapeHtml(col.title)}</h2>
-                        <p class="text-inkMuted text-sm font-sans mt-2">${escapeHtml(col.description)}</p>
-                    </div>
-                ` + col.items.map((item, idx) => `
-                <div class="border border-line/60 bg-surfaceAlt/80 flex flex-col group hover:border-lineBright transition duration-300 relative">
-                    <div class="absolute top-0 right-0 p-1.5 z-20 pointer-events-none">
-                        <div class="text-nothingRed/80 font-serif text-[10px] writing-vertical-rl transform rotate-180 border border-nothingRed/30 p-0.5 bg-black/40">POINT ${idx+1}</div>
-                    </div>
-                    <div class="h-44 relative w-full bg-surface overflow-hidden">
-                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition duration-500 z-10"></div>
-                        <img src="${(item.photos && item.photos.length > 0) ? item.photos[0] : `static/photos/places/${item.id}.jpg`}" 
-                             onerror="this.onerror=null;this.src=getCategoryFallback(typeof item !== 'undefined' ? item.category : 'nature');"
-                             class="w-full h-full object-cover opacity-80 group-hover:scale-105 group-hover:opacity-100 transition duration-700 ease-out"
-                             loading="lazy">
-                        <div class="absolute bottom-2 left-2.5 font-mono text-[10px] text-inkMuted flex items-center space-x-2 z-20">
-                            <span>ROUTE POINT</span>
-                            ${item.veg_friendly ? '<i class="fa-solid fa-leaf text-green-500/80" title="Veg-Friendly"></i>' : ''}
-                        </div>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between">
-                        <div>
-                            <h3 class="text-sm font-bold text-inkWhite tracking-tight mb-1.5 group-hover:text-nothingRed transition line-clamp-2">${escapeHtml(item.title)}</h3>
-                            <p class="text-xs text-neutral-400 font-sans line-clamp-3 mb-4 leading-relaxed">${escapeHtml(item.note || item.description || '')}</p>
-                        </div>
-                        <div class="pt-3 border-t border-line/60 flex items-center justify-end font-mono text-[11px] text-inkMuted">
-                            <button onclick="openModal(${item.id})" class="text-inkWhite hover:text-nothingRed transition font-bold group-hover:bg-nothingRed group-hover:text-white px-2">SPEC <span class="font-sans text-[8px] align-middle">→</span></button>
-                        </div>
-                    </div>
-                </div>
-                `).join('');
-            } catch(e) {
-                console.error(e);
-            }
-        }
-        
-        let wikiData = [];
-        let currentWikiId = null;
-
-        async function loadWiki() {
-            const navContainer = document.getElementById('wikiNav');
-            const contentContainer = document.getElementById('wikiContent');
-            if(!navContainer || !contentContainer) return;
-            
-            contentContainer.innerHTML = '<div class="animate-pulse text-inkMuted font-mono">LOADING WIKI DATABANKS...</div>';
-            try {
-                const res = await fetch('static/wiki.json');
-                wikiData = await res.json();
-                
-                // Render Nav
-                navContainer.innerHTML = wikiData.map((section, idx) => {
-                    const num = (idx + 1).toString().padStart(2, '0');
-                    return `
-                        <button onclick="selectWiki('${section.id}')" id="wiki-nav-${section.id}" class="w-full text-left px-4 py-3 border-b border-line/30 hover:bg-surface transition group flex items-center space-x-3">
-                            <span class="text-nothingRed font-mono text-[10px] group-hover:text-inkWhite transition">[${num}]</span>
-                            <div class="w-6 text-center text-inkMuted group-hover:text-nothingRed transition"><i class="fa-solid ${section.icon} text-sm"></i></div>
-                            <span class="font-mono text-xs text-inkMuted group-hover:text-inkWhite uppercase tracking-wide transition flex-1 truncate">${escapeHtml(section.title)}</span>
-                        </button>
-                    `;
-                }).join('');
-                
-                // Select first by default
-                if(wikiData.length > 0) {
-                    selectWiki(wikiData[0].id);
-                }
-            } catch(e) {
-                contentContainer.innerHTML = '<div class="text-nothingRed">Error loading wiki data.</div>';
-            }
-        }
-
-        function selectWiki(id) {
-            currentWikiId = id;
-            const contentContainer = document.getElementById('wikiContent');
-            const section = wikiData.find(s => s.id === id);
-            
-            // Update Active State in Nav
-            wikiData.forEach(s => {
-                const btn = document.getElementById(`wiki-nav-${s.id}`);
-                if(btn) {
-                    if(s.id === id) {
-                        btn.classList.add('bg-surface', 'border-l-2', 'border-l-nothingRed');
-                        btn.querySelectorAll('span')[1].classList.replace('text-inkMuted', 'text-inkWhite');
-                    } else {
-                        btn.classList.remove('bg-surface', 'border-l-2', 'border-l-nothingRed');
-                        btn.querySelectorAll('span')[1].classList.replace('text-inkWhite', 'text-inkMuted');
-                    }
-                }
-            });
-
-            if(section) {
-                contentContainer.innerHTML = `
-                    <div class="mb-4 text-nothingRed font-mono text-sm tracking-widest"><i class="fa-solid ${section.icon} mr-2"></i> WIKI ENTRY</div>
-                    <div class="text-neutral-400 font-sans leading-relaxed prose prose-invert max-w-none">
-                        ${typeof marked !== 'undefined' ? marked.parse(section.content) : escapeHtml(section.content)}
-                    </div>
-                `;
-                
-                // Intercept internal #wiki: links
-                contentContainer.querySelectorAll('a[href^="#wiki:"]').forEach(link => {
-                    link.onclick = (e) => {
-                        e.preventDefault();
-                        const targetId = link.getAttribute('href').split(':')[1];
-                        selectWiki(targetId);
-                        
-                        // Scroll to top of wiki content on mobile if needed, or container
-                        document.getElementById('wikiView').scrollIntoView({behavior: 'smooth', block: 'start'});
-                    };
-                    // Add some styling to internal links to make them look distinct (cyberpunk style)
-                    link.className = "text-nothingRed font-bold hover:bg-nothingRed hover:text-white transition px-1 py-0.5 rounded-none border border-nothingRed/30 decoration-transparent";
-                });
-            }
-        }
-        
-
-        let staticData = null;
-        async function initApp() {
-            try {
-                const res = await fetch('static/data.json');
-                if (res.ok) {
-                    staticData = await res.json();
-                    console.log("[TE-OS] Loaded static dataset with", staticData.items.length, "items.");
-                }
-            } catch(e) {
-                console.log("[TE-OS] Running in API mode.");
-            }
-            loadStats();
-            loadItems();
-        }
-        initApp();
-    </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<script src="static/js/app.js?v=3"></script>
 </body>
 </html>

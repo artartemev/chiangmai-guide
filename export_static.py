@@ -92,6 +92,14 @@ def export():
         d["review_count"] = len(reviews_map[item_id])
         d["veg_friendly"] = bool(d.get("veg_friendly"))
         d.pop("photos_json", None)
+        oh = d.get("opening_hours")
+        if isinstance(oh, str) and oh.startswith("{"):
+            try:
+                d["opening_hours"] = json.loads(oh)
+            except Exception:
+                d["opening_hours"] = None
+        elif not oh:
+            d["opening_hours"] = None
         if d["category"] == "event":
             iso = d.get("event_iso_date")
             d["is_active"] = (not iso) or iso >= today

@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Query
 from fastapi.responses import HTMLResponse, JSONResponse
-from fastapi.templating import Jinja2Templates
 from fastapi import Request
 from fastapi.staticfiles import StaticFiles
 import sqlite3
@@ -457,11 +456,10 @@ def get_collection(collection_id: int):
     result["items"] = items
     return result
 
-templates = Jinja2Templates(directory="templates")
-
 @app.get("/", response_class=HTMLResponse)
-def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+def index():
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), encoding="utf-8") as f:
+        return f.read()
 
 if __name__ == "__main__":
     import uvicorn
