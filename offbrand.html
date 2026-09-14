@@ -16,6 +16,21 @@
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     
     <script>
+
+        function getCategoryFallback(cat) {
+            const fallbacks = {
+                'cafe_restaurant': 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80',
+                'event': 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80',
+                'wellness': 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+                'services': 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80',
+                'stay': 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+                'workspace': 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=800&q=80',
+                'nature': 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+                'hiking_trail': 'https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=800&q=80'
+            };
+            return fallbacks[cat] || 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=800&q=80';
+        }
+
         tailwind.config = {
             theme: {
                 extend: {
@@ -600,7 +615,7 @@
                         <!-- Header Media Box with grid-paper -->
                         <div class="relative w-full h-56 bg-parchment overflow-hidden border-b border-ash cursor-pointer" onclick="openModal(${item.id})">
                             <img src="${photoUrl}" alt="" loading="lazy"
-                                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80';"
+                                 onerror="this.onerror=null;this.src=getCategoryFallback(typeof item !== 'undefined' ? item.category : 'nature');"
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             
                             <!-- Badges -->
@@ -876,7 +891,7 @@
                     <div>
                         <div class="h-56 bg-parchment overflow-hidden border-b border-ash relative">
                             <img src="${cover}" 
-                                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80';"
+                                 onerror="this.onerror=null;this.src=getCategoryFallback(typeof item !== 'undefined' ? item.category : 'nature');"
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute bottom-4 left-4 right-4">
                                 <h3 class="text-xl font-bold uppercase tracking-tight text-ink bg-paper/95 px-3 py-1.5 inline-block border border-ash">
@@ -968,7 +983,7 @@
                                     </div>
                                     <div class="w-full md:w-56 h-36 bg-parchment border border-ash shrink-0 overflow-hidden cursor-pointer" onclick="openModal(${item.id})">
                                         <img src="${(item.photos && item.photos.length > 0) ? item.photos[0].replace(/^\//, '') : `static/photos/places/${item.id}.jpg`}"
-                                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80';"
+                                             onerror="this.onerror=null;this.src=getCategoryFallback(typeof item !== 'undefined' ? item.category : 'nature');"
                                              class="w-full h-full object-cover">
                                     </div>
                                 </div>
