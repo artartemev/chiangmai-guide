@@ -77,8 +77,8 @@
 
         /* Monumental display headlines */
         .font-display {
-            font-size: clamp(48px, 8vw, 96px);
-            line-height: 0.82;
+            font-size: clamp(28px, 4.2vw, 52px);
+            line-height: 0.92;
             letter-spacing: 0.015em;
             text-transform: uppercase;
             font-weight: 700;
@@ -186,22 +186,22 @@
     </nav>
 
     <!-- HERO SECTION WITH IRIDESCENT SPHERE -->
-    <section class="max-w-[1400px] mx-auto px-6 pt-16 pb-20 relative overflow-hidden">
+    <section id="heroSection" class="max-w-[1400px] mx-auto px-6 pt-10 pb-12 relative overflow-hidden border-b border-ash/40">
         <!-- Concentric rings -->
-        <div class="concentric-ring absolute -right-24 top-0 w-[650px] h-[650px] -z-10 opacity-30"></div>
-        <div class="concentric-ring absolute -right-12 top-10 w-[500px] h-[500px] -z-10 opacity-40"></div>
+        <div class="concentric-ring absolute -right-10 top-0 w-[420px] h-[420px] -z-10 opacity-20"></div>
+        <div class="concentric-ring absolute -right-4 top-4 w-[320px] h-[320px] -z-10 opacity-25"></div>
         
         <!-- Iridescent Sphere -->
-        <div class="iridescent-sphere absolute right-10 lg:right-28 top-4 w-[340px] sm:w-[420px] lg:w-[480px] h-[340px] sm:h-[420px] lg:h-[480px] -z-10"></div>
+        <div class="iridescent-sphere absolute right-6 lg:right-20 top-4 w-[200px] sm:w-[240px] lg:w-[270px] h-[200px] sm:h-[240px] lg:h-[270px] -z-10 opacity-85"></div>
 
-        <div class="max-w-3xl relative z-10">
-            <div class="section-label mb-6">CURATED COLLECTIVE INTELLIGENCE</div>
-            <h1 class="font-display text-ink mb-8">
+        <div class="max-w-2xl relative z-10">
+            <div class="section-label mb-3 text-neutral-500">CURATED COLLECTIVE INTELLIGENCE</div>
+            <h1 class="font-display text-ink mb-4">
                 CHIANG MAI<br>
                 ARCHITECTURE<br>
                 OF LIVING.
             </h1>
-            <p class="text-[17px] leading-relaxed text-ink/80 max-w-xl mb-8">
+            <p class="text-[15px] leading-relaxed text-ink/80 max-w-lg mb-6">
                 A tactile, human-curated directory of places, remote workspaces, mountain trails, and expat insights synthesized directly from Northern Thailand Telegram communities.
             </p>
 
@@ -289,6 +289,11 @@
             </div>
         </div>
 
+        <!-- EVENTS HEADER -->
+        <div id="eventsHeader" class="hidden mb-6">
+            <div class="section-label mb-1 text-neutral-500">TELEGRAM CHAT BROADCASTS</div>
+            <h2 class="text-3xl font-bold uppercase tracking-tight text-ink">UPCOMING EVENTS & GATHERINGS</h2>
+        </div>
         <!-- EVENTS TIMELINE SUB-FILTER (Only in Events View) -->
         <div id="eventSubFilter" class="hidden mb-10 pb-6 border-b border-ash flex items-center justify-between gap-4 text-[11px] tracking-[0.05em] uppercase font-bold">
             <div class="flex items-center gap-3">
@@ -308,6 +313,10 @@
 
         <!-- ROUTES VIEW -->
         <div id="routesView" class="hidden min-h-[50vh]">
+            <div id="routesHeader" class="mb-8">
+                <div class="section-label mb-1 text-neutral-500">CURATED EXPEDITIONS</div>
+                <h2 class="text-3xl font-bold uppercase tracking-tight text-ink">FIELD ROUTES & HIKING TRAILS</h2>
+            </div>
             <div id="collectionsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
             <div id="routeDetailsView" class="hidden border border-ash bg-paper p-8 lg:p-12 relative"></div>
         </div>
@@ -693,8 +702,18 @@
             ig.classList.add('hidden');
             cc.classList.add('hidden');
             ef.classList.add('hidden');
+            const eh = document.getElementById('eventsHeader'); if (eh) eh.classList.add('hidden');
             rv.classList.add('hidden');
             wv.classList.add('hidden');
+
+            const hs = document.getElementById('heroSection');
+            if (hs) {
+                if (tab === 'catalog') {
+                    hs.classList.remove('hidden');
+                } else {
+                    hs.classList.add('hidden');
+                }
+            }
 
             if (tab === 'catalog') {
                 ig.classList.remove('hidden');
@@ -704,6 +723,8 @@
             } else if (tab === 'afisha') {
                 ig.classList.remove('hidden');
                 ef.classList.remove('hidden');
+                const eh = document.getElementById('eventsHeader');
+                if (eh) eh.classList.remove('hidden');
                 if (sb) sb.classList.remove('hidden');
                 currentCategory = 'event';
                 loadItems();
@@ -833,6 +854,7 @@
             const grid = document.getElementById('collectionsGrid');
             const details = document.getElementById('routeDetailsView');
             grid.classList.remove('hidden');
+            const rh = document.getElementById('routesHeader'); if (rh) rh.classList.remove('hidden');
             details.classList.add('hidden');
 
             let cols = null;
@@ -843,13 +865,21 @@
                 cols = await res.json();
             }
 
-            grid.innerHTML = (cols || []).map(c => `
+            grid.innerHTML = (cols || []).map(c => {
+                const cover = (c.cover_image && c.cover_image.trim()) 
+                    ? c.cover_image.replace(/^\//, '') 
+                    : (c.items && c.items.length > 0 && c.items[0].photos && c.items[0].photos.length > 0 
+                        ? c.items[0].photos[0].replace(/^\//, '') 
+                        : `static/photos/places/${c.items && c.items.length > 0 ? c.items[0].id : 60}.jpg`);
+                return `
                 <div class="sharp-card group cursor-pointer flex flex-col justify-between" onclick="openCollection(${c.id})">
                     <div>
                         <div class="h-56 bg-parchment overflow-hidden border-b border-ash relative">
-                            ${c.cover_image ? `<img src="${c.cover_image.replace(/^\//, '')}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">` : ''}
+                            <img src="${cover}" 
+                                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=800&q=80';"
+                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
                             <div class="absolute bottom-4 left-4 right-4">
-                                <h3 class="text-2xl font-bold uppercase tracking-tight text-ink bg-paper/90 px-3 py-1.5 inline-block border border-ash">
+                                <h3 class="text-xl font-bold uppercase tracking-tight text-ink bg-paper/95 px-3 py-1.5 inline-block border border-ash">
                                     ${escapeHtml(c.title)}
                                 </h3>
                             </div>
@@ -864,13 +894,15 @@
                         <span class="ghost-link">OPEN ROUTE →</span>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         async function openCollection(id) {
             const grid = document.getElementById('collectionsGrid');
             const details = document.getElementById('routeDetailsView');
             grid.classList.add('hidden');
+            const rh = document.getElementById('routesHeader'); if (rh) rh.classList.add('hidden');
             details.classList.remove('hidden');
 
             let col = null;
