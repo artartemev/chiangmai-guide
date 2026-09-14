@@ -549,7 +549,10 @@
                     
                     if (hasMaps && (!item.location_url || item.location_url === '')) return false;
                     if (popularOnly && (item.mention_count || 0) < 2) return false;
-                    if (isVegFriendly && !item.veg_friendly) return false;
+                    if (isVegFriendly) {
+                        if (currentCategory === 'cafe_restaurant' && !item.veg_friendly) return false;
+                        if (currentCategory === 'all' && currentMainTab === 'catalog' && item.category === 'cafe_restaurant' && !item.veg_friendly) return false;
+                    }
                     
                     if (searchQuery) {
                         const q = searchQuery.toLowerCase();

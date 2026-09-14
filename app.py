@@ -75,7 +75,10 @@ def get_items(
         query += " AND location_url != ''"
         
     if veg_friendly:
-        query += " AND veg_friendly = 1"
+        if category == "cafe_restaurant":
+            query += " AND veg_friendly = 1"
+        elif category == "all" or not category:
+            query += " AND (category != 'cafe_restaurant' OR veg_friendly = 1)"
 
     if min_mentions > 0:
         query += " AND mention_count >= ?"
