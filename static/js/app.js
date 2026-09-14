@@ -22,7 +22,7 @@
   const CM_CENTER = [18.7883, 98.9853];
   const SYNONYMS = [
     ['кофе', 'coffee', 'кофейня', 'roaster', 'espresso'], ['веган', 'vegan', 'вегетариан', 'plant'],
-    ['стоматолог', 'dental', 'зуб', 'dentist'], ['массаж', 'massage', 'спа', 'spa'],
+    ['стоматолог', 'dental', 'зубн', 'dentist'], ['массаж', 'massage', 'спа', 'spa'],
     ['водопад', 'waterfall'], ['озеро', 'lake', 'reservoir', 'водохранилище'], ['храм', 'wat', 'temple'],
     ['коворкинг', 'coworking', 'cowork'], ['сауна', 'sauna', 'ice bath', 'баня'], ['йога', 'yoga'],
     ['бассейн', 'pool'], ['зал', 'gym', 'fitness', 'фитнес'], ['бургер', 'burger'], ['пицца', 'pizza'],
@@ -82,8 +82,12 @@
   function priceHint(item) {
     const p = item.community_summary && item.community_summary.pricing;
     if (!p || !p.length) return null;
-    const m = p.join(' ').match(/(\d[\d\s,.–-]*\d)\s*(THB|бат|฿|baht)/i);
-    return m ? `${m[1].replace(/\s+/g, '')} ฿` : null;
+    // first price-looking token that reads like a typical spend, not a procedure price (implants, courses)
+    for (const m of p.join(' ').matchAll(/(\d[\d\s,.–-]*\d|\d)\s*(THB|бат|฿|baht)/gi)) {
+      const first = parseInt(m[1].replace(/[\s,.]/g, '').split(/[–-]/)[0], 10);
+      if (first > 0 && first <= 5000) return `${m[1].replace(/\s+/g, '')} ฿`;
+    }
+    return null;
   }
   function highlight(item) {
     const cs = item.community_summary;
@@ -101,7 +105,10 @@
     const terms = expandQuery(normalize(q));
     const hay = normalize([item.title, item.description, item.neighborhood, item.venue_name, item.address, item.google_category,
       ...(item.community_summary ? [].concat(item.community_summary.highlights || [], item.community_summary.tips || [], item.community_summary.pricing || []) : [])].join(' '));
-    return terms.some((t) => t.length > 1 && hay.includes(t));
+    // synonyms must start a word ("wat" must not match "waterfall"); the raw query may match anywhere
+    const nq = normalize(q);
+    if (hay.includes(nq)) return true;
+    return terms.some((t) => t !== nq && t.length > 1 && new RegExp('(^|[^a-zа-я0-9])' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(hay));
   }
   function toast(msg) {
     const t = $('toast'); t.textContent = msg; t.hidden = false;
@@ -139,7 +146,10 @@
     const { path, params } = parseHash();
     const view = path[0] || 'places';
     // place detail can sit on top of any view: #/place/123
-    if (view === 'place') { openDetail(+path[1]); return; }
+    if (view === 'place') {
+      if (!document.querySelector('.view.active')) { showView('places'); syncControls(); renderPlaces(); } // cold load of a shared link
+      openDetail(+path[1]); return;
+    }
     closeDetail(false);
 
     if (view === 'places' || view === '') {
@@ -337,7 +347,7 @@
   // ---------- Detail ----------
   async function openDetail(id, push) {
     const item = S.byId.get(id); if (!item) return;
-    S.detailId = id;
+    S.detailId = id; S.detailPushed = !!push;
     if (push) history.pushState(null, '', `#/place/${id}`);
     const c = CATS[item.category] || {};
     const cs = item.community_summary || {};
@@ -408,7 +418,10 @@
     $('detail').hidden = true; document.body.style.overflow = '';
     if (S.detailMap) { S.detailMap.remove(); S.detailMap = null; }
     S.detailId = null;
-    if (pop && location.hash.startsWith('#/place/')) history.back();
+    if (pop && location.hash.startsWith('#/place/')) {
+      if (S.detailPushed) history.back();
+      else history.replaceState(null, '', '#/'); // opened from a shared link: nothing to go back to
+    }
   }
 
   // ---------- Events ----------
