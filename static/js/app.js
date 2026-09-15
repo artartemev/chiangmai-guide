@@ -3,16 +3,44 @@
   'use strict';
 
   // ---------- Constants ----------
-  const CATS = {
-    cafe_restaurant: { label: 'Еда и кофе', icon: '☕', color: '#d97706' },
-    wellness:        { label: 'Спа и здоровье', icon: '💆', color: '#db2777' },
-    services:        { label: 'Сервисы и клиники', icon: '🏥', color: '#2563eb' },
-    stay:            { label: 'Жильё', icon: '🏨', color: '#7c3aed' },
-    workspace:       { label: 'Коворкинги', icon: '💻', color: '#0891b2' },
-    nature:          { label: 'Природа', icon: '🌿', color: '#16a34a' },
-    hiking_trail:    { label: 'Тропы', icon: '🥾', color: '#65a30d' },
-    event:           { label: 'Событие', icon: '📅', color: '#dc2626' },
+  // Inline SVG icon set (24px grid, stroke-based). Kept tiny on purpose.
+  const PATHS = {
+    pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
+    map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/>',
+    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+    route: '<circle cx="12" cy="12" r="10"/><path d="m16.2 7.8-2.1 6.3-6.3 2.1 2.1-6.3z"/>',
+    book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
+    coffee: '<path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><path d="M6 2v2M10 2v2M14 2v2"/>',
+    leaf: '<path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19 2c1 2 2 4.2 2 8 0 5.5-4.8 10-10 10Z"/><path d="M2 21c0-3 1.9-5.4 5.1-6C9.5 14.5 12 13 13 12"/>',
+    spa: '<circle cx="12" cy="12" r="3"/><path d="M12 16.5A4.5 4.5 0 1 1 7.5 12 4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 1 1 4.5 4.5 4.5 4.5 0 1 1-4.5 4.5"/>',
+    cross: '<circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/>',
+    laptop: '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M2 20h20"/>',
+    bed: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
+    mountain: '<path d="m8 3 4 8 5-5 5 15H2L8 3z"/>',
+    locate: '<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/>',
+    star: '<path d="m12 2 3.1 6.3 6.9 1-5 4.9 1.2 6.8L12 17.8 5.8 21l1.2-6.8-5-4.9 6.9-1z"/>',
+    clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+    phone: '<path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/>',
+    globe: '<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+    share: '<path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>',
+    nav: '<path d="m3 11 19-9-9 19-2-8z"/>',
+    chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+    walk: '<circle cx="13" cy="4" r="1.5"/><path d="m9.5 22 2-8-3-1.5-1 4"/><path d="m14 22-2-6-2.5-2 1-5 3 2 2.5 1"/><path d="M8 9.5 10.5 8"/>',
+    money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/>',
   };
+  const ico = (name, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
+
+  const CATS = {
+    cafe_restaurant: { label: 'Еда и кофе', icon: 'coffee', color: '#d97706' },
+    wellness:        { label: 'Спа и здоровье', icon: 'spa', color: '#db2777' },
+    services:        { label: 'Сервисы и клиники', icon: 'cross', color: '#2563eb' },
+    stay:            { label: 'Жильё', icon: 'bed', color: '#7c3aed' },
+    workspace:       { label: 'Коворкинги', icon: 'laptop', color: '#0891b2' },
+    nature:          { label: 'Природа', icon: 'leaf', color: '#16a34a' },
+    hiking_trail:    { label: 'Тропы', icon: 'mountain', color: '#65a30d' },
+    event:           { label: 'Событие', icon: 'calendar', color: '#dc2626' },
+  };
+  const catIcon = (cat) => ico((CATS[cat] || {}).icon || 'pin');
   const CAT_ORDER = ['cafe_restaurant', 'nature', 'wellness', 'services', 'workspace', 'stay'];
   const CAT_GROUP = { nature: ['nature', 'hiking_trail'] };
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -39,7 +67,7 @@
   // ---------- State ----------
   const S = {
     data: null, items: [], byId: new Map(), reviews: null, wiki: [],
-    view: 'places', cat: 'all', area: '', q: '', veg: false, sort: 'popular',
+    view: 'places', cat: 'all', tag: '', area: '', q: '', veg: false, sort: 'popular',
     eventsMode: 'upcoming', page: 1,
     me: null, // {lat, lng}
     map: null, cluster: null, meMarker: null, markers: new Map(),
@@ -56,10 +84,10 @@
   }
   function imgOrPh(item, cls = '') {
     const p = photoOf(item);
-    const ico = (CATS[item.category] || {}).icon || '📍';
+    const ph = `<div class="ph ${cls}">${catIcon(item.category)}</div>`;
     return p
-      ? `<img src="${esc(p)}" alt="" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'ph',textContent:'${ico}'}))" class="${cls}">`
-      : `<div class="ph ${cls}">${ico}</div>`;
+      ? `<img src="${esc(p)}" alt="" loading="lazy" onerror="this.outerHTML=this.dataset.ph" data-ph="${esc(ph)}" class="${cls}">`
+      : ph;
   }
   function km(a, b) {
     if (!a || !b) return null;
@@ -139,8 +167,8 @@
     const base = view === 'places' ? '' : view;
     return `#/${base}${sub ? (base ? '/' : '') + sub : ''}${qs ? '?' + qs : ''}`;
   }
-  function placesHash() { return buildHash('places', { cat: S.cat !== 'all' ? S.cat : '', area: S.area, q: S.q, veg: S.veg ? '1' : '', sort: S.sort !== 'popular' ? S.sort : '' }); }
-  function syncUrl() { if (S.view === 'places' || S.view === 'map') history.replaceState(null, '', S.view === 'map' ? buildHash('map', { cat: S.cat !== 'all' ? S.cat : '', q: S.q }) : placesHash()); }
+  function placesHash() { return buildHash('places', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, area: S.area, q: S.q, veg: S.veg ? '1' : '', sort: S.sort !== 'popular' ? S.sort : '' }); }
+  function syncUrl() { if (S.view === 'places' || S.view === 'map') history.replaceState(null, '', S.view === 'map' ? buildHash('map', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, q: S.q, veg: S.veg ? '1' : '' }) : placesHash()); }
 
   function route() {
     const { path, params } = parseHash();
@@ -153,11 +181,11 @@
     closeDetail(false);
 
     if (view === 'places' || view === '') {
-      S.cat = params.get('cat') || 'all'; S.area = params.get('area') || ''; S.q = params.get('q') || '';
+      S.cat = params.get('cat') || 'all'; S.tag = params.get('tag') || ''; S.area = params.get('area') || ''; S.q = params.get('q') || '';
       S.veg = params.get('veg') === '1'; S.sort = params.get('sort') || 'popular'; S.page = 1;
       showView('places'); syncControls(); renderPlaces();
     } else if (view === 'map') {
-      S.cat = params.get('cat') || S.cat; S.q = params.get('q') || S.q;
+      S.cat = params.get('cat') || S.cat; S.tag = params.get('tag') || ''; S.q = params.get('q') || S.q; if (params.has('veg')) S.veg = params.get('veg') === '1';
       showView('map'); syncControls(); renderMap();
     } else if (view === 'events') {
       showView('events'); renderEvents();
@@ -177,8 +205,11 @@
   function syncControls() {
     $('searchInput').value = S.q; $('searchClear').hidden = !S.q;
     $('areaSelect').value = S.area; $('vegToggle').checked = S.veg; $('sortSelect').value = S.sort;
-    $('vegToggleWrap').hidden = !(S.cat === 'all' || S.cat === 'cafe_restaurant');
+    const vegOk = S.cat === 'all' || S.cat === 'cafe_restaurant';
+    if (!vegOk && S.veg) S.veg = false; // the flag only exists for food places
+    $('vegToggleWrap').hidden = !vegOk; $('mapVegWrap').hidden = !vegOk; $('mapVegToggle').checked = S.veg;
     renderChips('catChips'); renderChips('mapCatChips'); renderChips('mapCatChipsMobile');
+    renderTagChips('tagChips'); renderTagChips('mapTagChips'); renderTagChips('mapTagChipsMobile');
     $('nearBtn').classList.toggle('on', !!S.me); $('mapNearBtn').classList.toggle('on', !!S.me);
   }
 
@@ -188,7 +219,8 @@
     let list = placeItems().filter((i) => {
       if (S.cat !== 'all') { const g = CAT_GROUP[S.cat] || [S.cat]; if (!g.includes(i.category)) return false; }
       if (S.area && i.neighborhood !== S.area) return false;
-      if (S.veg && i.category === 'cafe_restaurant' && !i.veg_friendly) return false;
+      if (S.tag && !(i.tags || []).includes(S.tag)) return false;
+      if (S.veg && !i.veg_friendly) return false; // strict: only places known to be veg-friendly
       return matches(i, S.q);
     });
     const sort = S.sort === 'distance' && !S.me ? 'popular' : S.sort;
@@ -206,12 +238,24 @@
     const counts = {};
     for (const i of placeItems()) { counts[i.category] = (counts[i.category] || 0) + 1; }
     const total = placeItems().length;
-    const chip = (key, label, n) => `<button class="chip ${S.cat === key ? 'active' : ''}" data-cat="${key}">${label}<span class="n">${n}</span></button>`;
+    const chip = (key, label, n, icon) => `<button class="chip ${S.cat === key ? 'active' : ''}" data-cat="${key}">${icon ? ico(icon) : ''}${label}<span class="n">${n}</span></button>`;
     el.innerHTML = chip('all', 'Все', total) + CAT_ORDER.map((c) => {
       const g = CAT_GROUP[c] || [c];
-      return chip(c, `${CATS[c].icon} ${CATS[c].label}`, g.reduce((s, k) => s + (counts[k] || 0), 0));
+      return chip(c, CATS[c].label, g.reduce((s, k) => s + (counts[k] || 0), 0), CATS[c].icon);
     }).join('');
-    el.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { S.cat = b.dataset.cat; S.page = 1; syncControls(); syncUrl(); S.view === 'map' ? renderMap() : renderPlaces(); }));
+    el.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { S.cat = b.dataset.cat; S.tag = ''; S.page = 1; syncControls(); syncUrl(); S.view === 'map' ? renderMap() : renderPlaces(); }));
+  }
+  function renderTagChips(containerId) {
+    const el = $(containerId); if (!el) return;
+    if (S.cat === 'all') { el.hidden = true; el.innerHTML = ''; return; }
+    const g = CAT_GROUP[S.cat] || [S.cat];
+    const counts = {};
+    for (const i of placeItems()) if (g.includes(i.category)) for (const t of i.tags || []) counts[t] = (counts[t] || 0) + 1;
+    const tags = Object.entries(counts).sort((a, b) => b[1] - a[1]).filter(([, n]) => n >= 3);
+    if (tags.length < 2) { el.hidden = true; el.innerHTML = ''; return; }
+    el.hidden = false;
+    el.innerHTML = `<button class="chip ${S.tag ? '' : 'active'}" data-tag="">Все</button>` + tags.map(([t, n]) => `<button class="chip ${S.tag === t ? 'active' : ''}" data-tag="${esc(t)}">${esc(t)}<span class="n">${n}</span></button>`).join('');
+    el.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { S.tag = b.dataset.tag; S.page = 1; syncControls(); syncUrl(); S.view === 'map' ? renderMap() : renderPlaces(); }));
   }
 
   // ---------- Cards ----------
@@ -222,7 +266,7 @@
     const ht = hoursToday(item);
     return `<article class="card" data-id="${item.id}">
       <div class="card-img">${imgOrPh(item)}
-        <div class="card-badges"><span class="badge">${c.icon || ''} ${esc(c.label || '')}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
+        <div class="card-badges"><span class="badge">${catIcon(item.category)}${esc(c.label || '')}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
       </div>
       <div class="card-body">
         <div class="card-title">${esc(item.title)}</div>
@@ -231,8 +275,8 @@
         <div class="card-foot">
           ${item.rating ? `<span class="pill rating">★ ${item.rating}</span>` : ''}
           ${price ? `<span class="pill">${esc(price)}</span>` : ''}
-          ${item.veg_friendly ? '<span class="pill veg">🌱 veg</span>' : ''}
-          <span style="margin-left:auto">💬 ${item.mention_count || 1}</span>
+          ${item.veg_friendly ? `<span class="pill veg">${ico('leaf')} veg</span>` : ''}
+          <span style="margin-left:auto;display:inline-flex;align-items:center;gap:4px">${ico('chat')}${item.review_count || 1}</span>
         </div>
       </div>
     </article>`;
@@ -253,7 +297,7 @@
     const wh = $('wikiHits');
     if (S.q && S.wiki.length) {
       const hits = S.wiki.filter((a) => matches({ title: a.title, description: a.content }, S.q)).slice(0, 4);
-      wh.innerHTML = hits.map((a) => `<a href="#/wiki/${a.id}">📖 <span>${esc(a.title)}</span></a>`).join('');
+      wh.innerHTML = hits.map((a) => `<a href="#/wiki/${a.id}">${ico('book')} <span>${esc(a.title)}</span></a>`).join('');
       wh.hidden = !hits.length;
     } else wh.hidden = true;
   }
@@ -279,7 +323,7 @@
   }
   function pinIcon(item) {
     const c = CATS[item.category] || {};
-    return L.divIcon({ className: '', html: `<div class="pin" style="background:${c.color || '#888'}"><span>${c.icon || '📍'}</span></div>`, iconSize: [28, 28], iconAnchor: [14, 28], popupAnchor: [0, -26] });
+    return L.divIcon({ className: '', html: `<div class="pin" style="background:${c.color || '#888'}"><span>${catIcon(item.category)}</span></div>`, iconSize: [28, 28], iconAnchor: [14, 28], popupAnchor: [0, -26] });
   }
   function ensureMap() {
     if (S.map) return;
@@ -318,7 +362,7 @@
   }
   function popupHtml(item) {
     const p = photoOf(item); const c = CATS[item.category] || {};
-    return `<div class="pop">${p ? `<img src="${esc(p)}" alt="">` : ''}<div><b>${esc(item.title)}</b><span>${c.icon || ''} ${esc(c.label || '')}${item.rating ? ` · ★ ${item.rating}` : ''}${distOf(item) != null ? ` · ${fmtKm(distOf(item))}` : ''}</span></div></div>`;
+    return `<div class="pop">${p ? `<img src="${esc(p)}" alt="">` : ''}<div><b>${esc(item.title)}</b><span>${esc(c.label || '')}${item.rating ? ` · ★ ${item.rating}` : ''}${distOf(item) != null ? ` · ${fmtKm(distOf(item))}` : ''}</span></div></div>`;
   }
   function updateMapList() {
     if (S.view !== 'map' || !S.map) return;
@@ -363,22 +407,22 @@
       <button class="d-close" id="dClose" aria-label="Закрыть">✕</button>
       <div class="d-hero">${imgOrPh(item)}</div>
       <div class="d-body">
-        <div class="d-cat"><span class="cat">${c.icon || ''} ${esc(c.label || '')}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
+        <div class="d-cat"><span class="cat">${catIcon(item.category)}${esc(c.label || '')}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
         <h2 class="d-title">${esc(item.title)}</h2>
         <div class="d-facts">
           ${item.rating ? `<span><b>★ ${item.rating}</b> · ${(item.rating_count || 0).toLocaleString('ru')} отзывов</span>` : ''}
-          ${d != null ? `<span>📍 <b>${fmtKm(d)}</b> от вас</span>` : ''}
-          ${ht ? `<span>🕐 <b>${esc(ht.text)}</b> сегодня</span>` : ''}
-          ${isEvent && item.event_date ? `<span>📅 <b>${esc(item.event_date)}</b></span>` : ''}
-          ${isEvent && item.venue_name ? `<span>📍 ${esc(item.venue_name)}</span>` : ''}
-          <span>💬 ${item.mention_count || 1} ${plural(item.mention_count || 1, 'упоминание', 'упоминания', 'упоминаний')} в чате</span>
+          ${d != null ? `<span>${ico('locate')} <b>${fmtKm(d)}</b> от вас</span>` : ''}
+          ${ht ? `<span>${ico('clock')} <b>${esc(ht.text)}</b> сегодня</span>` : ''}
+          ${isEvent && item.event_date ? `<span>${ico('calendar')} <b>${esc(item.event_date)}</b></span>` : ''}
+          ${isEvent && item.venue_name ? `<span>${ico('pin')} ${esc(item.venue_name)}</span>` : ''}
+          <span>${ico('chat')} ${item.review_count || 1} ${plural(item.review_count || 1, 'сообщение', 'сообщения', 'сообщений')} в чате</span>
         </div>
         <div class="d-actions">
           ${isEvent && item.registration_url ? `<a class="btn btn-primary" href="${esc(item.registration_url)}" target="_blank" rel="noopener">${esc(item.registration_label || 'Записаться')}</a>` : ''}
-          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">🧭 Маршрут в Google Maps</a>` : ''}
-          ${item.phone_contact ? `<a class="btn" href="tel:${esc(item.phone_contact.replace(/\s/g, ''))}">📞 ${esc(item.phone_contact)}</a>` : ''}
-          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">🌐 Сайт</a>` : ''}
-          <button class="btn" id="dShare" type="button">↗ Поделиться</button>
+          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} Маршрут в Google Maps</a>` : ''}
+          ${item.phone_contact ? `<a class="btn" href="tel:${esc(item.phone_contact.replace(/\s/g, ''))}">${ico('phone')} ${esc(item.phone_contact)}</a>` : ''}
+          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico('globe')} Сайт</a>` : ''}
+          <button class="btn" id="dShare" type="button">${ico('share')} Поделиться</button>
         </div>
         ${cs.highlights && cs.highlights.length ? `<div class="d-section"><h3>Что говорят в чате</h3>${list(cs.highlights)}</div>` : ''}
         ${cs.pricing && cs.pricing.length ? `<div class="d-section"><h3>Цены</h3>${list(cs.pricing)}</div>` : ''}
@@ -387,7 +431,7 @@
         ${hasGeo(item) ? `<div class="d-map" id="dMap"></div>` : ''}
         ${item.address ? `<div class="d-section"><h3>Адрес</h3><p>${esc(item.address)}</p></div>` : ''}
         ${item.opening_hours && typeof item.opening_hours === 'object' ? `<div class="d-section"><details class="d-details"><summary>Часы работы</summary><div class="hours">${Object.entries(item.opening_hours).map(([k, v]) => `<span class="${ht && ht.day === k ? 'today' : ''}">${DAYS_RU[k] || k}</span><span class="${ht && ht.day === k ? 'today' : ''}">${esc(v)}</span>`).join('')}</div></details></div>` : ''}
-        ${related.length ? `<div class="d-section"><h3>В справочнике</h3><div class="wiki-hits">${related.map((a) => `<a href="#/wiki/${a.id}">📖 <span>${esc(a.title)}</span></a>`).join('')}</div></div>` : ''}
+        ${related.length ? `<div class="d-section"><h3>В справочнике</h3><div class="wiki-hits">${related.map((a) => `<a href="#/wiki/${a.id}">${ico('book')} <span>${esc(a.title)}</span></a>`).join('')}</div></div>` : ''}
         ${nearby.length ? `<div class="d-section"><h3>Рядом</h3><div class="nearby">${nearby.map(({ i, d }) => `<a href="#/place/${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc((CATS[i.category] || {}).label || '')}</span></div><span>${fmtKm(d)}</span></a>`).join('')}</div></div>` : ''}
         <div class="d-section"><details class="d-details" id="dReviews"><summary>Сообщения из чата (${item.review_count || 0})</summary><div id="dReviewsBody"><div class="empty">Загрузка…</div></div></details></div>
       </div>`;
@@ -408,7 +452,7 @@
   }
   async function renderReviews(item) {
     if (!S.reviews) {
-      try { S.reviews = await (await fetch('static/reviews.json')).json(); } catch { S.reviews = {}; }
+      try { S.reviews = await (await fetch('static/reviews.json', { cache: 'no-cache' })).json(); } catch { S.reviews = {}; }
     }
     const rs = S.reviews[item.id] || [];
     $('dReviewsBody').innerHTML = rs.length ? rs.map((r) => `<div class="review"><div class="review-head"><b>${esc(r.sender_name || 'Аноним')}</b><span>${esc((r.msg_date || '').slice(0, 10))}</span></div><p>${esc(r.review_text)}</p>${r.source_link ? `<a href="${esc(r.source_link)}" target="_blank" rel="noopener">Открыть в Telegram ↗</a>` : ''}</div>`).join('') : '<div class="empty">Пока нет сообщений</div>';
@@ -455,10 +499,11 @@
   function routeCardHtml(c) {
     const items = collectionItems(c);
     const cover = c.cover_image || (items.map(photoOf).find(Boolean));
+    const isRoute = (c.kind || 'route') === 'route';
     return `<article class="card route-card" data-route="${c.id}">
-      <div class="card-img">${cover ? `<img src="${esc(cover.replace(/^\//, ''))}" alt="" loading="lazy">` : '<div class="ph">🧭</div>'}<h3>${esc(c.title)}</h3></div>
-      <div class="card-body"><div class="card-text">${esc(c.description || '')}</div>
-      <div class="card-foot route-stats">${c.duration ? `<span>⏱ ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>🛵 ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>💸 ${esc(c.budget)}</span>` : ''}<span>${items.length} ${plural(items.length, 'место', 'места', 'мест')}</span></div></div>
+      <div class="card-img">${cover ? `<img src="${esc(cover.replace(/^\//, ''))}" alt="" loading="lazy">` : `<div class="ph">${ico('route')}</div>`}</div>
+      <div class="card-body"><div class="route-kind">${isRoute ? 'Маршрут' : 'Подборка'} · ${items.length} ${plural(items.length, 'место', 'места', 'мест')}</div><h3>${esc(c.title)}</h3><div class="card-text">${esc(c.description || '')}</div>
+      <div class="card-foot route-stats">${c.duration ? `<span>${ico('clock')} ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>${ico('walk')} ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>${ico('money')} ${esc(c.budget)}</span>` : ''}</div></div>
     </article>`;
   }
   function renderRoutesIndex() {
@@ -481,8 +526,8 @@
       <a class="back" href="#/routes">← Все маршруты</a>
       <div class="route-head">
         <div><h1>${esc(c.title)}</h1><p class="lead">${esc(c.description || '')}</p>
-          <div class="route-stats">${c.duration ? `<span>⏱ ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>🛵 ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>💸 ${esc(c.budget)}</span>` : ''}<span>${items.length} ${plural(items.length, 'место', 'места', 'мест')}</span></div>
-          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="rShare" type="button">↗ Поделиться</button>${isRoute && items.filter(hasGeo).length > 1 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${items.filter(hasGeo).map((i) => `${i.latitude},${i.longitude}`).join('/')}">🧭 Открыть маршрут в Google Maps</a>` : ''}</div>
+          <div class="route-stats">${c.duration ? `<span>${ico('clock')} ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>${ico('walk')} ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>${ico('money')} ${esc(c.budget)}</span>` : ''}<span>${items.length} ${plural(items.length, 'место', 'места', 'мест')}</span></div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="rShare" type="button">${ico('share')} Поделиться</button>${isRoute && items.filter(hasGeo).length > 1 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${items.filter(hasGeo).map((i) => `${i.latitude},${i.longitude}`).join('/')}">${ico('nav')} Открыть маршрут в Google Maps</a>` : ''}</div>
         </div>
         ${items.some(hasGeo) ? '<div class="route-map" id="routeMap"></div>' : ''}
       </div>
@@ -510,7 +555,7 @@
   function renderWikiIndex() {
     $('wikiIndex').hidden = false; $('wikiArticle').hidden = true;
     const list = S.wiki.filter((a) => matches({ title: a.title, description: a.content }, S.q));
-    $('wikiGrid').innerHTML = list.map((a) => `<div class="wiki-card" data-wiki="${esc(a.id)}"><div class="wiki-ico">${a.emoji || '📄'}</div><div><h3>${esc(a.title)}</h3><p>${esc(wikiSummary(a))}</p></div></div>`).join('') || '<div class="empty">Ничего не найдено</div>';
+    $('wikiGrid').innerHTML = list.map((a) => `<div class="wiki-card" data-wiki="${esc(a.id)}"><div class="wiki-ico">${a.emoji || ico('book')}</div><div><h3>${esc(a.title)}</h3><p>${esc(wikiSummary(a))}</p></div></div>`).join('') || '<div class="empty">Ничего не найдено</div>';
     document.querySelectorAll('[data-wiki]').forEach((el) => el.addEventListener('click', () => (location.hash = `#/wiki/${el.dataset.wiki}`)));
   }
   function renderWikiArticle(id) {
@@ -525,7 +570,7 @@
     const prev = S.wiki[idx - 1], next = S.wiki[idx + 1];
     root.innerHTML = `<a class="back" href="#/wiki">← Справочник</a>
       <div class="prose">${html}</div>
-      <div style="margin-top:20px"><button class="btn" id="wShare" type="button">↗ Поделиться</button></div>
+      <div style="margin-top:20px"><button class="btn" id="wShare" type="button">${ico('share')} Поделиться</button></div>
       ${related.length ? `<div class="related"><h2>Места по теме</h2><div class="list-simple">${related.map(cardHtml).join('')}</div></div>` : ''}
       <div class="article-nav"><span>${prev ? `<a href="#/wiki/${prev.id}">← ${esc(prev.title)}</a>` : ''}</span><span>${next ? `<a href="#/wiki/${next.id}">${esc(next.title)} →</a>` : ''}</span></div>`;
     root.querySelectorAll('a[href^="#wiki:"]').forEach((l) => (l.href = '#/wiki/' + l.getAttribute('href').split(':')[1]));
@@ -548,7 +593,9 @@
     si.addEventListener('keydown', (e) => { if (e.key === 'Escape') { si.value = ''; si.dispatchEvent(new Event('input')); si.blur(); } });
     $('searchClear').addEventListener('click', () => { si.value = ''; si.dispatchEvent(new Event('input')); si.focus(); });
     $('areaSelect').addEventListener('change', (e) => { S.area = e.target.value; S.page = 1; syncUrl(); renderPlaces(); });
-    $('vegToggle').addEventListener('change', (e) => { S.veg = e.target.checked; S.page = 1; syncUrl(); renderPlaces(); });
+    $('vegToggle').addEventListener('change', (e) => { S.veg = e.target.checked; S.page = 1; syncControls(); syncUrl(); renderPlaces(); });
+    $('mapVegToggle').addEventListener('change', (e) => { S.veg = e.target.checked; syncControls(); syncUrl(); renderMap(); });
+    document.querySelectorAll('[data-icon]').forEach((el) => (el.innerHTML = ico(el.dataset.icon)));
     $('sortSelect').addEventListener('change', (e) => { S.sort = e.target.value; if (S.sort === 'distance' && !S.me) return locate(renderPlaces); syncUrl(); renderPlaces(); });
     $('nearBtn').addEventListener('click', () => S.me ? (S.me = null, S.sort = 'popular', syncControls(), syncUrl(), renderPlaces()) : locate(renderPlaces));
     $('mapNearBtn').addEventListener('click', () => locate(() => { renderMap(); S.map.setView([S.me.lat, S.me.lng], 14); }));
@@ -562,7 +609,7 @@
   async function init() {
     bindUI();
     try {
-      const [data, wiki] = await Promise.all([fetch('static/data.json').then((r) => r.json()), fetch('static/wiki.json').then((r) => r.json()).catch(() => [])]);
+      const [data, wiki] = await Promise.all([fetch('static/data.json', { cache: 'no-cache' }).then((r) => r.json()), fetch('static/wiki.json', { cache: 'no-cache' }).then((r) => r.json()).catch(() => [])]);
       S.data = data; S.items = data.items; S.wiki = wiki;
       for (const i of S.items) {
         S.byId.set(i.id, i);

@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="static/css/app.css?v=4">
+<link rel="stylesheet" href="static/css/app.css?v=5">
 </head>
 <body>
 
@@ -23,11 +23,11 @@
     <span class="brand-text">Чиангмай<small>гид сообщества</small></span>
   </a>
   <nav class="nav" id="mainNav">
-    <a href="#/" data-view="places">Места</a>
-    <a href="#/map" data-view="map">Карта</a>
-    <a href="#/events" data-view="events">Афиша</a>
-    <a href="#/routes" data-view="routes">Маршруты</a>
-    <a href="#/wiki" data-view="wiki">Справочник</a>
+    <a href="#/" data-view="places"><i data-icon="pin"></i>Места</a>
+    <a href="#/map" data-view="map"><i data-icon="map"></i>Карта</a>
+    <a href="#/events" data-view="events"><i data-icon="calendar"></i>Афиша</a>
+    <a href="#/routes" data-view="routes"><i data-icon="route"></i>Маршруты</a>
+    <a href="#/wiki" data-view="wiki"><i data-icon="book"></i>Справочник</a>
   </nav>
   <div class="search">
     <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -41,13 +41,14 @@
   <section id="view-places" class="view">
     <div class="filters">
       <div class="chips" id="catChips"></div>
+      <div class="chips chips-tags" id="tagChips" hidden></div>
       <div class="filters-row">
         <select id="areaSelect" class="select" aria-label="Район"><option value="">Все районы</option></select>
         <button id="nearBtn" class="btn btn-ghost" type="button" title="Показать ближайшие места">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
           <span>Рядом со мной</span>
         </button>
-        <label class="toggle" id="vegToggleWrap"><input type="checkbox" id="vegToggle"><span>🌱 Veg-friendly</span></label>
+        <label class="toggle" id="vegToggleWrap"><input type="checkbox" id="vegToggle"><span><i data-icon="leaf" class="ico-sm"></i>Только veg-friendly</span></label>
         <select id="sortSelect" class="select" aria-label="Сортировка">
           <option value="popular">Популярные в чате</option>
           <option value="rating">Рейтинг Google</option>
@@ -68,13 +69,14 @@
     <aside class="map-side">
       <div class="map-side-head">
         <div class="chips chips-compact" id="mapCatChips"></div>
-        <div class="map-side-meta"><span id="mapCount"></span><button class="btn btn-ghost btn-sm" id="mapNearBtn" type="button">📍 Рядом</button></div>
+        <div class="chips chips-compact chips-tags" id="mapTagChips" hidden></div>
+        <div class="map-side-meta"><span id="mapCount"></span><span style="display:flex;gap:10px;align-items:center"><label class="toggle" id="mapVegWrap"><input type="checkbox" id="mapVegToggle"><span>Veg</span></label><button class="btn btn-ghost btn-sm" id="mapNearBtn" type="button"><i data-icon="locate" class="ico-sm"></i>Рядом</button></span></div>
       </div>
       <div class="map-list" id="mapList"></div>
     </aside>
     <div class="map-wrap">
       <div id="map"></div>
-      <div class="map-filters-mobile"><div class="chips chips-compact" id="mapCatChipsMobile"></div></div>
+      <div class="map-filters-mobile"><div class="chips chips-compact" id="mapCatChipsMobile"></div><div class="chips chips-compact chips-tags" id="mapTagChipsMobile" hidden></div></div>
       <div class="map-strip" id="mapStrip"></div>
     </div>
   </section>
@@ -127,11 +129,11 @@
 </div>
 
 <nav class="tabbar" id="tabbar">
-  <a href="#/" data-view="places"><span class="tab-ico">☕</span>Места</a>
-  <a href="#/map" data-view="map"><span class="tab-ico">🗺</span>Карта</a>
-  <a href="#/events" data-view="events"><span class="tab-ico">📅</span>Афиша</a>
-  <a href="#/routes" data-view="routes"><span class="tab-ico">🧭</span>Маршруты</a>
-  <a href="#/wiki" data-view="wiki"><span class="tab-ico">📖</span>Справка</a>
+  <a href="#/" data-view="places"><i class="tab-ico" data-icon="pin"></i>Места</a>
+  <a href="#/map" data-view="map"><i class="tab-ico" data-icon="map"></i>Карта</a>
+  <a href="#/events" data-view="events"><i class="tab-ico" data-icon="calendar"></i>Афиша</a>
+  <a href="#/routes" data-view="routes"><i class="tab-ico" data-icon="route"></i>Маршруты</a>
+  <a href="#/wiki" data-view="wiki"><i class="tab-ico" data-icon="book"></i>Справка</a>
 </nav>
 
 <div id="toast" class="toast" hidden></div>
@@ -139,6 +141,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-<script src="static/js/app.js?v=4"></script>
+<script src="static/js/app.js?v=5"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ def export():
     cursor = conn.cursor()
     
     # 1. Fetch all items
-    cursor.execute("SELECT * FROM items ORDER BY id ASC")
+    cursor.execute("SELECT * FROM items WHERE COALESCE(status, 'active') = 'active' ORDER BY id ASC")
     raw_items = [dict(r) for r in cursor.fetchall()]
     
     items = []
@@ -92,6 +92,11 @@ def export():
         d["review_count"] = len(reviews_map[item_id])
         d["veg_friendly"] = bool(d.get("veg_friendly"))
         d.pop("photos_json", None)
+        d.pop("status", None)
+        try:
+            d["tags"] = json.loads(d.get("tags") or "[]")
+        except Exception:
+            d["tags"] = []
         oh = d.get("opening_hours")
         if isinstance(oh, str) and oh.startswith("{"):
             try:
@@ -123,7 +128,7 @@ def export():
         col["items"] = [{"id": r["id"], "note": r["note"]} for r in cursor.fetchall()]
         
     # 3. Compute stats
-    cursor.execute("SELECT category, count(*) FROM items GROUP BY category")
+    cursor.execute("SELECT category, count(*) FROM items WHERE COALESCE(status,'active')='active' GROUP BY category")
     cats = dict(cursor.fetchall())
     cursor.execute("SELECT neighborhood, count(*) FROM items WHERE neighborhood != 'Other' GROUP BY neighborhood")
     neighs = dict(cursor.fetchall())
