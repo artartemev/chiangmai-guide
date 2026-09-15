@@ -81,7 +81,7 @@
       open: 'Открыто', openUntil: 'до', closed: 'Закрыто', opensAt: 'откроется в', open24: 'Круглосуточно',
       todayIn: 'Сегодня в Чиангмае', openNowN: 'мест открыто сейчас', eventsSoon: 'Ближайшие события', quick: 'Быстрый выбор', qBreakfast: 'Завтрак', qCoffee: 'Кофе', qVegan: 'Веган', qNature: 'На природу', qSauna: 'Сауна', qBars: 'Вечером',
       savedTitle: 'Сохранённые места', savedLead: 'Список живёт в этом браузере. Чтобы не потерять — поделитесь ссылкой (например, отправьте себе в Telegram): она откроется на любом устройстве.', savedEmpty: 'Пока пусто — нажмите ♡ на любом месте', shareList: 'Поделиться списком', sharedList: 'Список из ссылки', saveAll: 'Сохранить себе', clear: 'Очистить', copied: 'Ссылка скопирована', listMaps: 'Открыть в Google Maps',
-      aboutTitle: 'О проекте', footerMade: 'Сделано в', footerFeedback: 'Предложить место или правку', locating: 'Определяю местоположение…', noGeo: 'Геолокация недоступна', geoFail: 'Не удалось получить местоположение', farAway: 'Похоже, вы не в Чиангмае — покажу расстояния до города',
+      aboutTitle: 'О проекте', footerMade: 'Сделано в', footerNavito: 'Барахолка NaviTo', footerFeedback: 'Предложить место или правку', locating: 'Определяю местоположение…', noGeo: 'Геолокация недоступна', geoFail: 'Не удалось получить местоположение', farAway: 'Похоже, вы не в Чиангмае — покажу расстояния до города',
       lang: 'EN',
     },
     en: {
@@ -98,7 +98,7 @@
       open: 'Open', openUntil: 'until', closed: 'Closed', opensAt: 'opens at', open24: 'Open 24 hours',
       todayIn: 'Today in Chiang Mai', openNowN: 'places open now', eventsSoon: 'Upcoming events', quick: 'Quick picks', qBreakfast: 'Breakfast', qCoffee: 'Coffee', qVegan: 'Vegan', qNature: 'Nature', qSauna: 'Sauna', qBars: 'Tonight',
       savedTitle: 'Saved places', savedLead: 'The list lives in this browser. To keep it, share the link (e.g. send it to yourself in Telegram) — it opens on any device.', savedEmpty: 'Nothing yet — tap ♡ on any place', shareList: 'Share list', sharedList: 'Shared list', saveAll: 'Save to mine', clear: 'Clear', copied: 'Link copied', listMaps: 'Open in Google Maps',
-      aboutTitle: 'About', footerMade: 'Made at', footerFeedback: 'Suggest a place or a fix', locating: 'Locating…', noGeo: 'Geolocation unavailable', geoFail: 'Could not get your location', farAway: 'Looks like you are not in Chiang Mai — showing distance to the city',
+      aboutTitle: 'About', footerMade: 'Made at', footerNavito: 'NaviTo classifieds', footerFeedback: 'Suggest a place or a fix', locating: 'Locating…', noGeo: 'Geolocation unavailable', geoFail: 'Could not get your location', farAway: 'Looks like you are not in Chiang Mai — showing distance to the city',
       lang: 'RU',
     },
   };
