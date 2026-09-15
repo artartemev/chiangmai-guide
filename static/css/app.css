@@ -108,6 +108,59 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
   background: transparent; color: var(--ink-3); font-size: 12px;
 }
 .search-clear:hover { background: var(--bg-3); color: var(--ink); }
+.hdr-btn { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 9px; border: 1px solid var(--line-2); background: var(--bg-2); color: var(--ink-2); flex-shrink: 0; }
+.hdr-btn:hover, .hdr-btn.active { color: var(--accent); border-color: var(--accent); }
+.hdr-btn svg { width: 17px; height: 17px; }
+.hdr-btn.lang { font-size: 12px; font-weight: 700; letter-spacing: .04em; }
+.saved-count { position: absolute; top: -6px; right: -6px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 9px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: grid; place-items: center; }
+
+/* open / closed */
+.open { color: var(--ok); font-weight: 500; }
+.closed { color: var(--ink-3); }
+
+/* hearts */
+.heart { border: 0; background: transparent; color: var(--ink-3); padding: 4px; border-radius: 8px; line-height: 0; }
+.heart svg { width: 18px; height: 18px; }
+.heart:hover { color: var(--accent); background: var(--accent-2); }
+.heart.on { color: var(--accent); }
+.heart.on svg { fill: var(--accent); }
+.heart-card { float: right; margin: -4px -6px 0 6px; }
+.heart-btn.on { color: var(--accent); border-color: var(--accent); }
+.heart-btn.on svg { fill: var(--accent); }
+
+/* today panel */
+.today { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 18px; display: flex; flex-direction: column; gap: 10px; }
+.today-head { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--ink-2); }
+.today-head svg { width: 18px; height: 18px; color: var(--accent); }
+.today-head b { color: var(--ink); }
+.today-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.today-open { border: 1px solid var(--line-2); background: var(--bg); border-radius: 999px; height: 34px; padding: 0 14px; font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+.today-open b { color: var(--ok); font-size: 15px; }
+.today-open:hover { border-color: var(--ok); }
+.today-quick { display: flex; gap: 6px; flex-wrap: wrap; }
+.today-quick .chip { height: 30px; padding: 0 11px; font-size: 13px; }
+.today-events { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 13.5px; }
+.today-lbl { color: var(--ink-3); }
+.today-events a { display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
+.today-events a svg { width: 14px; height: 14px; color: var(--accent); }
+.today-events a small { color: var(--ink-3); }
+.today-events a:hover span { text-decoration: underline; }
+
+/* gallery */
+.d-gallery { display: flex; gap: 6px; padding: 8px 12px 0; overflow-x: auto; scrollbar-width: none; }
+.d-gallery::-webkit-scrollbar { display: none; }
+.d-gallery img { width: 72px; height: 54px; object-fit: cover; border-radius: 8px; cursor: pointer; opacity: .7; border: 2px solid transparent; flex-shrink: 0; }
+.d-gallery img.on, .d-gallery img:hover { opacity: 1; border-color: var(--accent); }
+
+/* footer */
+.footer { border-top: 1px solid var(--line); margin-top: 30px; padding: 22px 20px calc(var(--tabbar-h) + 20px); color: var(--ink-3); font-size: 13.5px; }
+.footer-in { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: center; }
+.footer-brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink-2); }
+.footer-brand .brand-mark { width: 26px; height: 26px; font-size: 10px; border-radius: 7px; }
+.footer-brand b { color: var(--ink); }
+.footer a:hover { color: var(--accent); }
+.about { max-width: 720px; }
+.view-map.active ~ .footer, body:has(#view-map.active) .footer { display: none; }
 
 /* ---------- Layout ---------- */
 #app { max-width: 1200px; margin: 0 auto; padding: 20px 20px calc(var(--tabbar-h) + 24px); }
@@ -406,6 +459,8 @@ details.d-details > div { margin-top: 10px; }
 @media (max-width: 640px) {
   .topbar { padding: 0 14px; gap: 12px; }
   .brand-text { display: none; }
+  .hdr-btn { width: 34px; height: 34px; }
+  .today-row { flex-direction: column; align-items: flex-start; }
   #app { padding: 14px 14px calc(var(--tabbar-h) + 20px); }
   .grid { grid-template-columns: 1fr; gap: 14px; }
   .card { flex-direction: row; }

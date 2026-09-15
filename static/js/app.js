@@ -27,6 +27,9 @@
     chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     walk: '<circle cx="13" cy="4" r="1.5"/><path d="m9.5 22 2-8-3-1.5-1 4"/><path d="m14 22-2-6-2.5-2 1-5 3 2 2.5 1"/><path d="M8 9.5 10.5 8"/>',
     money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/>',
+    heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+    info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
   };
   const ico = (name, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
 
@@ -62,12 +65,110 @@
     ['горячие источники', 'hot spring', 'источник'], ['музыка', 'jazz', 'джаз', 'live', 'концерт'],
   ];
 
+  // ---------- i18n ----------
+  const I18N = {
+    ru: {
+      places: 'Места', map: 'Карта', events: 'Афиша', routes: 'Маршруты', wiki: 'Справочник', wikiShort: 'Справка', saved: 'Сохранённые', about: 'О проекте',
+      searchPh: 'Кофе, стоматолог, водопад, Нимман…', searchWiki: 'Поиск по справочнику…', searchEvents: 'Поиск по афише…',
+      all: 'Все', allAreas: 'Все районы', near: 'Рядом со мной', nearShort: 'Рядом', veg: 'Только veg-friendly', vegShort: 'Veg', openNow: 'Открыто сейчас',
+      sortPopular: 'Популярные в чате', sortRating: 'Рейтинг Google', sortNew: 'Новые', sortAlpha: 'По алфавиту', sortDist: 'По расстоянию',
+      more: 'Показать ещё', nothing: 'Ничего не нашлось', nothingHint: 'Попробуйте другой запрос или снимите фильтры', onMap: 'на карте', noneHere: 'В этой области нет мест',
+      eventsTitle: 'Афиша', eventsLead: 'События из чатов: встречи, лекции, кино, йога, концерты.', upcoming: 'Предстоящие', past: 'Прошедшие', noEvents: 'Пока нет анонсов', noPast: 'Архив пуст', eventsHint: 'Новые события появляются по мере обсуждения в чатах', noDate: 'Без даты',
+      routesTitle: 'Маршруты и подборки', routesLead: 'Готовые планы на день и тематические списки — собраны из рекомендаций чата.', routesH: 'Маршруты', collectionsH: 'Подборки', route: 'Маршрут', collection: 'Подборка', allRoutes: '← Все маршруты', openInMaps: 'Открыть маршрут в Google Maps',
+      wikiTitle: 'Справочник', wikiLead: 'Визы, жильё, байки, врачи, деньги — короткие практичные статьи для жизни в Чиангмае.', wikiBack: '← Справочник', related: 'Места по теме',
+      chatSays: 'Что говорят в чате', prices: 'Цены', tips: 'Советы', desc: 'Описание', address: 'Адрес', hours: 'Часы работы', inWiki: 'В справочнике', nearby: 'Рядом', chatMsgs: 'Сообщения из чата', loading: 'Загрузка…', noMsgs: 'Пока нет сообщений', openTg: 'Открыть в Telegram ↗',
+      dirs: 'Маршрут в Google Maps', site: 'Сайт', share: 'Поделиться', save: 'Сохранить', savedOk: 'Сохранено', fromYou: 'от вас', today: 'сегодня', reviews: 'отзывов', register: 'Записаться',
+      open: 'Открыто', openUntil: 'до', closed: 'Закрыто', opensAt: 'откроется в', open24: 'Круглосуточно',
+      todayIn: 'Сегодня в Чиангмае', openNowN: 'мест открыто сейчас', eventsSoon: 'Ближайшие события', quick: 'Быстрый выбор', qBreakfast: 'Завтрак', qCoffee: 'Кофе', qVegan: 'Веган', qNature: 'На природу', qSauna: 'Сауна', qBars: 'Вечером',
+      savedTitle: 'Сохранённые места', savedLead: 'Список живёт в этом браузере. Чтобы не потерять — поделитесь ссылкой (например, отправьте себе в Telegram): она откроется на любом устройстве.', savedEmpty: 'Пока пусто — нажмите ♡ на любом месте', shareList: 'Поделиться списком', sharedList: 'Список из ссылки', saveAll: 'Сохранить себе', clear: 'Очистить', copied: 'Ссылка скопирована', listMaps: 'Открыть в Google Maps',
+      aboutTitle: 'О проекте', footerMade: 'Сделано в', footerFeedback: 'Предложить место или правку', locating: 'Определяю местоположение…', noGeo: 'Геолокация недоступна', geoFail: 'Не удалось получить местоположение', farAway: 'Похоже, вы не в Чиангмае — покажу расстояния до города',
+      lang: 'EN',
+    },
+    en: {
+      places: 'Places', map: 'Map', events: 'Events', routes: 'Routes', wiki: 'Guide', wikiShort: 'Guide', saved: 'Saved', about: 'About',
+      searchPh: 'Coffee, dentist, waterfall, Nimman…', searchWiki: 'Search the guide…', searchEvents: 'Search events…',
+      all: 'All', allAreas: 'All areas', near: 'Near me', nearShort: 'Near me', veg: 'Veg-friendly only', vegShort: 'Veg', openNow: 'Open now',
+      sortPopular: 'Popular in chat', sortRating: 'Google rating', sortNew: 'Newest', sortAlpha: 'A–Z', sortDist: 'By distance',
+      more: 'Show more', nothing: 'Nothing found', nothingHint: 'Try another query or clear the filters', onMap: 'on the map', noneHere: 'No places in this area',
+      eventsTitle: 'Events', eventsLead: 'Meetups, talks, movies, yoga and concerts from the community chats.', upcoming: 'Upcoming', past: 'Past', noEvents: 'No upcoming events yet', noPast: 'Archive is empty', eventsHint: 'New events appear as they are discussed in the chats', noDate: 'No date',
+      routesTitle: 'Routes & collections', routesLead: 'Ready-made day plans and themed lists, built from chat recommendations.', routesH: 'Routes', collectionsH: 'Collections', route: 'Route', collection: 'Collection', allRoutes: '← All routes', openInMaps: 'Open route in Google Maps',
+      wikiTitle: 'Guide', wikiLead: 'Visas, housing, bikes, doctors, money — short practical articles (in Russian).', wikiBack: '← Guide', related: 'Related places',
+      chatSays: 'What the chat says', prices: 'Prices', tips: 'Tips', desc: 'About', address: 'Address', hours: 'Opening hours', inWiki: 'In the guide', nearby: 'Nearby', chatMsgs: 'Chat messages', loading: 'Loading…', noMsgs: 'No messages yet', openTg: 'Open in Telegram ↗',
+      dirs: 'Directions in Google Maps', site: 'Website', share: 'Share', save: 'Save', savedOk: 'Saved', fromYou: 'from you', today: 'today', reviews: 'reviews', register: 'Register',
+      open: 'Open', openUntil: 'until', closed: 'Closed', opensAt: 'opens at', open24: 'Open 24 hours',
+      todayIn: 'Today in Chiang Mai', openNowN: 'places open now', eventsSoon: 'Upcoming events', quick: 'Quick picks', qBreakfast: 'Breakfast', qCoffee: 'Coffee', qVegan: 'Vegan', qNature: 'Nature', qSauna: 'Sauna', qBars: 'Tonight',
+      savedTitle: 'Saved places', savedLead: 'The list lives in this browser. To keep it, share the link (e.g. send it to yourself in Telegram) — it opens on any device.', savedEmpty: 'Nothing yet — tap ♡ on any place', shareList: 'Share list', sharedList: 'Shared list', saveAll: 'Save to mine', clear: 'Clear', copied: 'Link copied', listMaps: 'Open in Google Maps',
+      aboutTitle: 'About', footerMade: 'Made at', footerFeedback: 'Suggest a place or a fix', locating: 'Locating…', noGeo: 'Geolocation unavailable', geoFail: 'Could not get your location', farAway: 'Looks like you are not in Chiang Mai — showing distance to the city',
+      lang: 'RU',
+    },
+  };
+  const CAT_EN = { cafe_restaurant: 'Food & coffee', wellness: 'Spa & wellness', services: 'Services & clinics', stay: 'Stay', workspace: 'Coworking', nature: 'Nature', hiking_trail: 'Trails', event: 'Event' };
+  const TAG_EN = { 'кофе': 'coffee', 'завтраки': 'breakfast', 'тайская': 'thai', 'азия': 'asian', 'европа': 'european', 'бары': 'bars', 'с видом': 'with a view', 'веган': 'vegan',
+    'массаж и спа': 'massage & spa', 'сауна и ice bath': 'sauna & ice bath', 'йога': 'yoga', 'фитнес и бассейн': 'gym & pool', 'красота': 'beauty',
+    'стоматологи': 'dentists', 'ветеринары': 'vets', 'врачи и госпитали': 'doctors & hospitals', 'прокат': 'rentals', 'визы и документы': 'visas & papers', 'воркшопы': 'workshops', 'магазины': 'shops',
+    'водопады': 'waterfalls', 'озёра': 'lakes', 'смотровые и горы': 'viewpoints', 'парки и сады': 'parks & gardens', 'храмы': 'temples', 'пещеры и источники': 'caves & hot springs', 'тропы': 'trails',
+    'отели': 'hotels', 'кондо и квартиры': 'condos', 'глэмпинги и кемпинг': 'glamping & camping', 'резорты и виллы': 'resorts & villas', 'коворкинги': 'coworking' };
+  let LANG = 'ru';
+  try { LANG = localStorage.getItem('cm_lang') || 'ru'; } catch {} // Russian-speaking community: RU unless switched explicitly
+  const t = (k) => (I18N[LANG] && I18N[LANG][k]) || I18N.ru[k] || k;
+  const catLabel = (c) => LANG === 'en' ? (CAT_EN[c] || '') : ((CATS[c] || {}).label || '');
+  const tagLabel = (x) => LANG === 'en' ? (TAG_EN[x] || x) : x;
+  function applyStaticI18n() {
+    document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.dataset.i18n); });
+    document.querySelectorAll('[data-i18n-ph]').forEach((el) => { el.placeholder = t(el.dataset.i18nPh); });
+    $('langBtn').textContent = t('lang');
+    document.documentElement.lang = LANG;
+  }
+
+  // ---------- opening hours (Bangkok time) ----------
+  function bangkokNow() { return new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Bangkok' })); }
+  function parseRange(str) {
+    const parts = str.replace(/\u202f/g, ' ').split(/–|—|-/);
+    if (parts.length !== 2) return null;
+    const mer = (x) => /AM/i.test(x) ? 'AM' : /PM/i.test(x) ? 'PM' : null;
+    let [a, b] = parts.map((x) => x.trim());
+    let ma = mer(a), mb = mer(b); if (!ma) ma = mb;
+    const toMin = (x, m) => { const mm = x.match(/(\d{1,2})(?::(\d{2}))?/); if (!mm) return null; let h = +mm[1]; const mi = +(mm[2] || 0); if (m === 'PM' && h !== 12) h += 12; if (m === 'AM' && h === 12) h = 0; return h * 60 + mi; };
+    const st = toMin(a, ma), en = toMin(b, mb);
+    if (st == null || en == null) return null;
+    return [st, en <= st ? en + 1440 : en];
+  }
+  const fmtMin = (m) => `${String(Math.floor((m % 1440) / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`;
+  function openState(item) {
+    const h = item.opening_hours; if (!h || typeof h !== 'object') return null;
+    const now = bangkokNow(); const d = now.getDay(); const mins = now.getHours() * 60 + now.getMinutes();
+    const todayV = h[DAYS[d]], prevV = h[DAYS[(d + 6) % 7]];
+    const ranges = (v) => (v && !/24 hours|closed/i.test(v)) ? v.split(',').map(parseRange).filter(Boolean) : [];
+    if (prevV) for (const r of ranges(prevV)) if (r[1] > 1440 && mins + 1440 < r[1]) return { open: true, until: r[1] % 1440 };
+    if (!todayV) return null;
+    if (/24 hours/i.test(todayV)) return { open: true, until: null };
+    if (/closed/i.test(todayV)) return { open: false };
+    const rs = ranges(todayV);
+    for (const r of rs) if (mins >= r[0] && mins < r[1]) return { open: true, until: r[1] % 1440 };
+    const next = rs.find((r) => r[0] > mins);
+    return next ? { open: false, opensAt: next[0] } : { open: false };
+  }
+  function openLabel(item) {
+    const st = openState(item); if (!st) return '';
+    if (st.open) return `<span class="open">${st.until == null ? t('open24') : `${t('open')} ${t('openUntil')} ${fmtMin(st.until)}`}</span>`;
+    return `<span class="closed">${t('closed')}${st.opensAt != null ? `, ${t('opensAt')} ${fmtMin(st.opensAt)}` : ''}</span>`;
+  }
+
+  // ---------- saved places (localStorage) ----------
+  let SAVED = new Set();
+  try { SAVED = new Set(JSON.parse(localStorage.getItem('cm_saved') || '[]')); } catch {}
+  function persistSaved() { try { localStorage.setItem('cm_saved', JSON.stringify([...SAVED])); } catch {} updateSavedBadge(); }
+  function toggleSaved(id) { SAVED.has(id) ? SAVED.delete(id) : SAVED.add(id); persistSaved(); document.querySelectorAll(`.heart[data-save="${id}"]`).forEach((b) => b.classList.toggle('on', SAVED.has(id))); }
+  const heartBtn = (id, cls = '') => `<button class="heart ${cls} ${SAVED.has(id) ? 'on' : ''}" data-save="${id}" type="button" aria-label="${t('save')}">${ico('heart')}</button>`;
+  function bindHearts(root) { root.querySelectorAll('[data-save]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); toggleSaved(+b.dataset.save); })); }
+  function updateSavedBadge() { const n = SAVED.size; document.querySelectorAll('.saved-count').forEach((el) => { el.textContent = n; el.hidden = !n; }); }
+
   const AREA_ALIASES = { 'Night Bazaar / Chang Khlan': 'Night Bazaar', 'San Kamphaeng / Doi Saket': 'Doi Saket / San Kamphaeng', 'Mae Taeng / Chiang Dao': 'Chiang Dao / Mae Taeng' };
 
   // ---------- State ----------
   const S = {
     data: null, items: [], byId: new Map(), reviews: null, wiki: [],
-    view: 'places', cat: 'all', tag: '', area: '', q: '', veg: false, sort: 'popular',
+    view: 'places', cat: 'all', tag: '', area: '', q: '', veg: false, open: false, sort: 'popular',
     eventsMode: 'upcoming', page: 1,
     me: null, // {lat, lng}
     map: null, cluster: null, meMarker: null, markers: new Map(),
@@ -144,7 +245,7 @@
   }
   function share(title, url) {
     if (navigator.share) navigator.share({ title, url }).catch(() => {});
-    else navigator.clipboard.writeText(url).then(() => toast('Ссылка скопирована'));
+    else navigator.clipboard.writeText(url).then(() => toast(t('copied')));
   }
   function mapsUrl(item) {
     if (item.location_url) return item.location_url;
@@ -167,8 +268,8 @@
     const base = view === 'places' ? '' : view;
     return `#/${base}${sub ? (base ? '/' : '') + sub : ''}${qs ? '?' + qs : ''}`;
   }
-  function placesHash() { return buildHash('places', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, area: S.area, q: S.q, veg: S.veg ? '1' : '', sort: S.sort !== 'popular' ? S.sort : '' }); }
-  function syncUrl() { if (S.view === 'places' || S.view === 'map') history.replaceState(null, '', S.view === 'map' ? buildHash('map', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, q: S.q, veg: S.veg ? '1' : '' }) : placesHash()); }
+  function placesHash() { return buildHash('places', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, area: S.area, q: S.q, veg: S.veg ? '1' : '', open: S.open ? '1' : '', sort: S.sort !== 'popular' ? S.sort : '' }); }
+  function syncUrl() { if (S.view === 'places' || S.view === 'map') history.replaceState(null, '', S.view === 'map' ? buildHash('map', { cat: S.cat !== 'all' ? S.cat : '', tag: S.tag, q: S.q, veg: S.veg ? '1' : '', open: S.open ? '1' : '' }) : placesHash()); }
 
   function route() {
     const { path, params } = parseHash();
@@ -182,10 +283,10 @@
 
     if (view === 'places' || view === '') {
       S.cat = params.get('cat') || 'all'; S.tag = params.get('tag') || ''; S.area = params.get('area') || ''; S.q = params.get('q') || '';
-      S.veg = params.get('veg') === '1'; S.sort = params.get('sort') || 'popular'; S.page = 1;
+      S.veg = params.get('veg') === '1'; S.open = params.get('open') === '1'; S.sort = params.get('sort') || 'popular'; S.page = 1;
       showView('places'); syncControls(); renderPlaces();
     } else if (view === 'map') {
-      S.cat = params.get('cat') || S.cat; S.tag = params.get('tag') || ''; S.q = params.get('q') || S.q; if (params.has('veg')) S.veg = params.get('veg') === '1';
+      S.cat = params.get('cat') || S.cat; S.tag = params.get('tag') || ''; S.q = params.get('q') || S.q; if (params.has('veg')) S.veg = params.get('veg') === '1'; if (params.has('open')) S.open = params.get('open') === '1';
       showView('map'); syncControls(); renderMap();
     } else if (view === 'events') {
       showView('events'); renderEvents();
@@ -193,6 +294,10 @@
       showView('routes'); path[1] ? renderRoute(+path[1]) : renderRoutesIndex();
     } else if (view === 'wiki') {
       showView('wiki'); path[1] ? renderWikiArticle(path[1]) : renderWikiIndex();
+    } else if (view === 'saved') {
+      showView('saved'); renderSaved((params.get('ids') || '').split(',').map(Number).filter(Boolean));
+    } else if (view === 'about') {
+      showView('about');
     } else { location.hash = '#/'; }
   }
   function showView(v) {
@@ -200,7 +305,7 @@
     document.querySelectorAll('.view').forEach((el) => el.classList.toggle('active', el.id === 'view-' + v));
     document.querySelectorAll('[data-view]').forEach((a) => a.classList.toggle('active', a.dataset.view === v));
     if (v !== 'map') window.scrollTo({ top: 0 });
-    $('searchInput').placeholder = v === 'wiki' ? 'Поиск по справочнику…' : v === 'events' ? 'Поиск по афише…' : 'Кофе, стоматолог, водопад, Нимман…';
+    $('searchInput').placeholder = v === 'wiki' ? t('searchWiki') : v === 'events' ? t('searchEvents') : t('searchPh');
   }
   function syncControls() {
     $('searchInput').value = S.q; $('searchClear').hidden = !S.q;
@@ -208,6 +313,7 @@
     const vegOk = S.cat === 'all' || S.cat === 'cafe_restaurant';
     if (!vegOk && S.veg) S.veg = false; // the flag only exists for food places
     $('vegToggleWrap').hidden = !vegOk; $('mapVegWrap').hidden = !vegOk; $('mapVegToggle').checked = S.veg;
+    $('openToggle').checked = S.open; $('mapOpenToggle').checked = S.open;
     renderChips('catChips'); renderChips('mapCatChips'); renderChips('mapCatChipsMobile');
     renderTagChips('tagChips'); renderTagChips('mapTagChips'); renderTagChips('mapTagChipsMobile');
     $('nearBtn').classList.toggle('on', !!S.me); $('mapNearBtn').classList.toggle('on', !!S.me);
@@ -221,6 +327,7 @@
       if (S.area && i.neighborhood !== S.area) return false;
       if (S.tag && !(i.tags || []).includes(S.tag)) return false;
       if (S.veg && !i.veg_friendly) return false; // strict: only places known to be veg-friendly
+      if (S.open && !(openState(i) || {}).open) return false;
       return matches(i, S.q);
     });
     const sort = S.sort === 'distance' && !S.me ? 'popular' : S.sort;
@@ -239,9 +346,9 @@
     for (const i of placeItems()) { counts[i.category] = (counts[i.category] || 0) + 1; }
     const total = placeItems().length;
     const chip = (key, label, n, icon) => `<button class="chip ${S.cat === key ? 'active' : ''}" data-cat="${key}">${icon ? ico(icon) : ''}${label}<span class="n">${n}</span></button>`;
-    el.innerHTML = chip('all', 'Все', total) + CAT_ORDER.map((c) => {
+    el.innerHTML = chip('all', t('all'), total) + CAT_ORDER.map((c) => {
       const g = CAT_GROUP[c] || [c];
-      return chip(c, CATS[c].label, g.reduce((s, k) => s + (counts[k] || 0), 0), CATS[c].icon);
+      return chip(c, catLabel(c), g.reduce((s, k) => s + (counts[k] || 0), 0), CATS[c].icon);
     }).join('');
     el.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { S.cat = b.dataset.cat; S.tag = ''; S.page = 1; syncControls(); syncUrl(); S.view === 'map' ? renderMap() : renderPlaces(); }));
   }
@@ -254,7 +361,7 @@
     const tags = Object.entries(counts).sort((a, b) => b[1] - a[1]).filter(([, n]) => n >= 3);
     if (tags.length < 2) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<button class="chip ${S.tag ? '' : 'active'}" data-tag="">Все</button>` + tags.map(([t, n]) => `<button class="chip ${S.tag === t ? 'active' : ''}" data-tag="${esc(t)}">${esc(t)}<span class="n">${n}</span></button>`).join('');
+    el.innerHTML = `<button class="chip ${S.tag ? '' : 'active'}" data-tag="">${t('all')}</button>` + tags.map(([tg, n]) => `<button class="chip ${S.tag === tg ? 'active' : ''}" data-tag="${esc(tg)}">${esc(tagLabel(tg))}<span class="n">${n}</span></button>`).join('');
     el.querySelectorAll('.chip').forEach((b) => b.addEventListener('click', () => { S.tag = b.dataset.tag; S.page = 1; syncControls(); syncUrl(); S.view === 'map' ? renderMap() : renderPlaces(); }));
   }
 
@@ -263,14 +370,14 @@
     const c = CATS[item.category] || {};
     const d = distOf(item);
     const price = priceHint(item);
-    const ht = hoursToday(item);
+    const ol = openLabel(item);
     return `<article class="card" data-id="${item.id}">
       <div class="card-img">${imgOrPh(item)}
-        <div class="card-badges"><span class="badge">${catIcon(item.category)}${esc(c.label || '')}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
+        <div class="card-badges"><span class="badge">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
       </div>
       <div class="card-body">
-        <div class="card-title">${esc(item.title)}</div>
-        <div class="card-meta">${item.neighborhood && item.neighborhood !== 'Other' ? `<span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${ht ? `<span class="dot"></span><span>${esc(ht.text)}</span>` : ''}</div>
+        <div class="card-title">${esc(item.title)}${heartBtn(item.id, 'heart-card')}</div>
+        <div class="card-meta">${item.neighborhood && item.neighborhood !== 'Other' ? `<span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${ol ? `<span class="dot"></span>${ol}` : ''}</div>
         <div class="card-text">${esc(highlight(item))}</div>
         <div class="card-foot">
           ${item.rating ? `<span class="pill rating">★ ${item.rating}</span>` : ''}
@@ -282,15 +389,17 @@
     </article>`;
   }
   function bindCards(root) {
-    root.querySelectorAll('[data-id]').forEach((el) => el.addEventListener('click', (e) => { if (e.target.closest('a')) return; openDetail(+el.dataset.id, true); }));
+    root.querySelectorAll('[data-id]').forEach((el) => el.addEventListener('click', (e) => { if (e.target.closest('a,button')) return; openDetail(+el.dataset.id, true); }));
+    bindHearts(root);
   }
 
   function renderPlaces() {
     const list = filtered();
     const grid = $('placesGrid');
-    $('placesCount').textContent = list.length ? `${list.length} ${plural(list.length, 'место', 'места', 'мест')}` : '';
+    $('placesCount').textContent = list.length ? `${list.length} ${nPlaces(list.length)}` : '';
     const slice = list.slice(0, PAGE * S.page);
-    grid.innerHTML = slice.length ? slice.map(cardHtml).join('') : `<div class="empty"><b>Ничего не нашлось</b>Попробуйте другой запрос или снимите фильтры</div>`;
+    grid.innerHTML = slice.length ? slice.map(cardHtml).join('') : `<div class="empty"><b>${t('nothing')}</b>${t('nothingHint')}</div>`;
+    renderToday();
     bindCards(grid);
     $('placesMore').hidden = list.length <= slice.length;
     // wiki hits for search
@@ -302,17 +411,62 @@
     } else wh.hidden = true;
   }
   function plural(n, a, b, c) { const m = n % 10, h = n % 100; return (m === 1 && h !== 11) ? a : (m >= 2 && m <= 4 && (h < 10 || h >= 20)) ? b : c; }
+  const nPlaces = (n) => LANG === 'en' ? (n === 1 ? 'place' : 'places') : plural(n, 'место', 'места', 'мест');
+
+  // "Today" panel on the untouched catalogue: what is open, what is on, quick picks
+  function renderToday() {
+    const el = $('todayBox');
+    const pristine = S.cat === 'all' && !S.tag && !S.area && !S.q && !S.veg && !S.open;
+    if (!pristine) { el.hidden = true; return; }
+    const now = bangkokNow();
+    const openN = placeItems().filter((i) => (openState(i) || {}).open).length;
+    const today = todayISO();
+    const soon = S.items.filter((i) => i.category === 'event' && i.event_iso_date && i.event_iso_date >= today).sort((a, b) => a.event_iso_date.localeCompare(b.event_iso_date)).slice(0, 3);
+    const dateStr = now.toLocaleDateString(LANG === 'en' ? 'en-GB' : 'ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
+    const quick = [['qBreakfast', { cat: 'cafe_restaurant', tag: 'завтраки' }], ['qCoffee', { cat: 'cafe_restaurant', tag: 'кофе' }], ['qVegan', { cat: 'cafe_restaurant', veg: true }], ['qNature', { cat: 'nature' }], ['qSauna', { cat: 'wellness', tag: 'сауна и ice bath' }], ['qBars', { cat: 'cafe_restaurant', tag: 'бары' }]];
+    el.hidden = false;
+    el.innerHTML = `<div class="today-head">${ico('sun')}<b>${t('todayIn')}</b><span>${esc(dateStr)}, ${fmtMin(now.getHours() * 60 + now.getMinutes())}</span></div>
+      <div class="today-row">
+        <button class="today-open" type="button" id="todayOpenBtn"><b>${openN}</b> ${t('openNowN')}</button>
+        <div class="today-quick">${quick.map(([k, q]) => `<button class="chip" type="button" data-quick='${JSON.stringify(q)}'>${t(k)}</button>`).join('')}</div>
+      </div>
+      ${soon.length ? `<div class="today-events"><span class="today-lbl">${t('eventsSoon')}:</span>${soon.map((e) => `<a href="#/place/${e.id}">${ico('calendar')}<span>${esc(e.title)}</span><small>${e.event_iso_date.slice(8, 10)}.${e.event_iso_date.slice(5, 7)}</small></a>`).join('')}</div>` : ''}`;
+    $('todayOpenBtn').onclick = () => { S.open = true; S.page = 1; syncControls(); syncUrl(); renderPlaces(); };
+    el.querySelectorAll('[data-quick]').forEach((b) => b.addEventListener('click', () => { const q = JSON.parse(b.dataset.quick); S.cat = q.cat || 'all'; S.tag = q.tag || ''; S.veg = !!q.veg; S.page = 1; syncControls(); syncUrl(); renderPlaces(); }));
+  }
+
+  // ---------- Saved list ----------
+  function renderSaved(sharedIds) {
+    const root = $('savedView');
+    const shared = sharedIds.length && (sharedIds.length !== SAVED.size || sharedIds.some((i) => !SAVED.has(i)));
+    const ids = shared ? sharedIds : [...SAVED];
+    const items = ids.map((i) => S.byId.get(i)).filter(Boolean);
+    const geo = items.filter(hasGeo);
+    root.innerHTML = `<div class="page-head"><h1>${shared ? t('sharedList') : t('savedTitle')}</h1><p class="lead">${t('savedLead')}</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${items.length ? `<button class="btn" id="svShare" type="button">${ico('share')} ${t('shareList')}</button>` : ''}
+        ${shared ? `<button class="btn btn-primary" id="svSaveAll" type="button">${ico('heart')} ${t('saveAll')}</button>` : ''}
+        ${geo.length > 1 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${geo.map((i) => `${i.latitude},${i.longitude}`).join('/')}">${ico('nav')} ${t('listMaps')}</a>` : ''}
+        ${!shared && items.length ? `<button class="btn btn-ghost" id="svClear" type="button">${t('clear')}</button>` : ''}
+      </div></div>
+      <div class="grid">${items.length ? items.map(cardHtml).join('') : `<div class="empty">${t('savedEmpty')}</div>`}</div>`;
+    bindCards(root);
+    const link = () => location.origin + location.pathname + '#/saved?ids=' + ids.join(',');
+    if ($('svShare')) $('svShare').onclick = () => share(t('savedTitle'), link());
+    if ($('svSaveAll')) $('svSaveAll').onclick = () => { ids.forEach((i) => SAVED.add(i)); persistSaved(); location.hash = '#/saved'; };
+    if ($('svClear')) $('svClear').onclick = () => { SAVED.clear(); persistSaved(); renderSaved([]); };
+  }
 
   // ---------- Geolocation ----------
   function locate(cb) {
-    if (!navigator.geolocation) return toast('Геолокация недоступна');
-    toast('Определяю местоположение…');
+    if (!navigator.geolocation) return toast(t('noGeo'));
+    toast(t('locating'));
     navigator.geolocation.getCurrentPosition((p) => {
       S.me = { lat: p.coords.latitude, lng: p.coords.longitude };
-      if (km(S.me, { lat: CM_CENTER[0], lng: CM_CENTER[1] }) > 300) toast('Похоже, вы не в Чиангмае — покажу расстояния до города');
+      if (km(S.me, { lat: CM_CENTER[0], lng: CM_CENTER[1] }) > 300) toast(t('farAway'));
       S.sort = 'distance'; syncControls(); syncUrl();
       cb && cb();
-    }, () => toast('Не удалось получить местоположение'), { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+    }, () => toast(t('geoFail')), { enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
   }
 
   // ---------- Map ----------
@@ -347,7 +501,7 @@
       if (S.meMarker) S.meMarker.remove();
       S.meMarker = L.marker([S.me.lat, S.me.lng], { icon: L.divIcon({ className: '', html: '<div class="me-dot"></div>', iconSize: [16, 16], iconAnchor: [8, 8] }), interactive: false }).addTo(S.map);
     }
-    $('mapCount').textContent = `${list.length} на карте`;
+    $('mapCount').textContent = `${list.length} ${t('onMap')}`;
     // the container was display:none a moment ago — let Leaflet measure it before fitting
     setTimeout(() => { S.map.invalidateSize(); fitOnce(list); updateMapList(); }, 60);
   }
@@ -362,21 +516,21 @@
   }
   function popupHtml(item) {
     const p = photoOf(item); const c = CATS[item.category] || {};
-    return `<div class="pop">${p ? `<img src="${esc(p)}" alt="">` : ''}<div><b>${esc(item.title)}</b><span>${esc(c.label || '')}${item.rating ? ` · ★ ${item.rating}` : ''}${distOf(item) != null ? ` · ${fmtKm(distOf(item))}` : ''}</span></div></div>`;
+    return `<div class="pop">${p ? `<img src="${esc(p)}" alt="">` : ''}<div><b>${esc(item.title)}</b><span>${esc(catLabel(item.category))}${item.rating ? ` · ★ ${item.rating}` : ''}${distOf(item) != null ? ` · ${fmtKm(distOf(item))}` : ''}</span></div></div>`;
   }
   function updateMapList() {
     if (S.view !== 'map' || !S.map) return;
     const b = S.map.getBounds();
     const visible = filtered().filter((i) => hasGeo(i) && b.contains([i.latitude, i.longitude])).slice(0, 80);
-    const row = (i) => `<div class="map-row" data-id="${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc((CATS[i.category] || {}).label || '')}${i.neighborhood && i.neighborhood !== 'Other' ? ' · ' + esc(areaLabel(i.neighborhood)) : ''}${distOf(i) != null ? ' · ' + fmtKm(distOf(i)) : ''}</span></div></div>`;
+    const row = (i) => `<div class="map-row" data-id="${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc(catLabel(i.category))}${i.neighborhood && i.neighborhood !== 'Other' ? ' · ' + esc(areaLabel(i.neighborhood)) : ''}${distOf(i) != null ? ' · ' + fmtKm(distOf(i)) : ''}</span></div></div>`;
     const ml = $('mapList');
-    ml.innerHTML = visible.length ? visible.map(row).join('') : '<div class="empty">В этой области нет мест</div>';
+    ml.innerHTML = visible.length ? visible.map(row).join('') : `<div class="empty">${t('noneHere')}</div>`;
     ml.querySelectorAll('.map-row').forEach((r) => {
       r.addEventListener('mouseenter', () => { const m = S.markers.get(+r.dataset.id); m && m.setZIndexOffset(1000); });
       r.addEventListener('click', () => focusMarker(+r.dataset.id));
     });
     const strip = $('mapStrip');
-    strip.innerHTML = visible.slice(0, 30).map((i) => `<div class="strip-card" data-id="${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc((CATS[i.category] || {}).label || '')}${distOf(i) != null ? ' · ' + fmtKm(distOf(i)) : ''}</span></div></div>`).join('');
+    strip.innerHTML = visible.slice(0, 30).map((i) => `<div class="strip-card" data-id="${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc(catLabel(i.category))}${distOf(i) != null ? ' · ' + fmtKm(distOf(i)) : ''}</span></div></div>`).join('');
     strip.querySelectorAll('.strip-card').forEach((r) => r.addEventListener('click', () => openDetail(+r.dataset.id, true)));
   }
   function focusMarker(id) {
@@ -403,42 +557,47 @@
     const nearby = !isEvent && hasGeo(item) ? placeItems().filter((i) => i.id !== item.id && hasGeo(i)).map((i) => ({ i, d: km(geoOf(item), geoOf(i)) })).filter((x) => x.d < 3).sort((a, b) => a.d - b.d).slice(0, 5) : [];
     const related = S.wiki.filter((a) => (a.related || []).includes(item.id));
 
+    const photos = (item.photos || []).map((x) => x.replace(/^\//, ''));
     $('detailPanel').innerHTML = `
-      <button class="d-close" id="dClose" aria-label="Закрыть">✕</button>
-      <div class="d-hero">${imgOrPh(item)}</div>
+      <button class="d-close" id="dClose" aria-label="Close">✕</button>
+      <div class="d-hero" id="dHero">${imgOrPh(item)}</div>
+      ${photos.length > 1 ? `<div class="d-gallery" id="dGallery">${photos.map((ph, n) => `<img src="${esc(ph)}" alt="" loading="lazy" data-n="${n}" class="${n === 0 ? 'on' : ''}">`).join('')}</div>` : ''}
       <div class="d-body">
-        <div class="d-cat"><span class="cat">${catIcon(item.category)}${esc(c.label || '')}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
+        <div class="d-cat"><span class="cat">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
         <h2 class="d-title">${esc(item.title)}</h2>
         <div class="d-facts">
-          ${item.rating ? `<span><b>★ ${item.rating}</b> · ${(item.rating_count || 0).toLocaleString('ru')} отзывов</span>` : ''}
-          ${d != null ? `<span>${ico('locate')} <b>${fmtKm(d)}</b> от вас</span>` : ''}
-          ${ht ? `<span>${ico('clock')} <b>${esc(ht.text)}</b> сегодня</span>` : ''}
+          ${item.rating ? `<span><b>★ ${item.rating}</b> · ${(item.rating_count || 0).toLocaleString('ru')} ${t('reviews')}</span>` : ''}
+          ${d != null ? `<span>${ico('locate')} <b>${fmtKm(d)}</b> ${t('fromYou')}</span>` : ''}
+          ${ht ? `<span>${ico('clock')} ${openLabel(item) || `<b>${esc(ht.text)}</b> ${t('today')}`}</span>` : ''}
           ${isEvent && item.event_date ? `<span>${ico('calendar')} <b>${esc(item.event_date)}</b></span>` : ''}
           ${isEvent && item.venue_name ? `<span>${ico('pin')} ${esc(item.venue_name)}</span>` : ''}
-          <span>${ico('chat')} ${item.review_count || 1} ${plural(item.review_count || 1, 'сообщение', 'сообщения', 'сообщений')} в чате</span>
+          <span>${ico('chat')} ${item.review_count || 1} ${LANG === 'en' ? 'chat messages' : plural(item.review_count || 1, 'сообщение', 'сообщения', 'сообщений') + ' в чате'}</span>
         </div>
         <div class="d-actions">
-          ${isEvent && item.registration_url ? `<a class="btn btn-primary" href="${esc(item.registration_url)}" target="_blank" rel="noopener">${esc(item.registration_label || 'Записаться')}</a>` : ''}
-          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} Маршрут в Google Maps</a>` : ''}
+          ${isEvent && item.registration_url ? `<a class="btn btn-primary" href="${esc(item.registration_url)}" target="_blank" rel="noopener">${esc(item.registration_label || t('register'))}</a>` : ''}
+          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} ${t('dirs')}</a>` : ''}
           ${item.phone_contact ? `<a class="btn" href="tel:${esc(item.phone_contact.replace(/\s/g, ''))}">${ico('phone')} ${esc(item.phone_contact)}</a>` : ''}
-          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico('globe')} Сайт</a>` : ''}
-          <button class="btn" id="dShare" type="button">${ico('share')} Поделиться</button>
+          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico('globe')} ${t('site')}</a>` : ''}
+          <button class="btn heart-btn ${SAVED.has(id) ? 'on' : ''}" id="dSave" type="button">${ico('heart')} <span>${SAVED.has(id) ? t('savedOk') : t('save')}</span></button>
+          <button class="btn" id="dShare" type="button">${ico('share')} ${t('share')}</button>
         </div>
-        ${cs.highlights && cs.highlights.length ? `<div class="d-section"><h3>Что говорят в чате</h3>${list(cs.highlights)}</div>` : ''}
-        ${cs.pricing && cs.pricing.length ? `<div class="d-section"><h3>Цены</h3>${list(cs.pricing)}</div>` : ''}
-        ${cs.tips && cs.tips.length ? `<div class="d-section"><h3>Советы</h3>${list(cs.tips)}</div>` : ''}
-        ${item.description ? `<div class="d-section"><h3>Описание</h3><p>${esc(item.description)}</p></div>` : ''}
+        ${cs.highlights && cs.highlights.length ? `<div class="d-section"><h3>${t('chatSays')}</h3>${list(cs.highlights)}</div>` : ''}
+        ${cs.pricing && cs.pricing.length ? `<div class="d-section"><h3>${t('prices')}</h3>${list(cs.pricing)}</div>` : ''}
+        ${cs.tips && cs.tips.length ? `<div class="d-section"><h3>${t('tips')}</h3>${list(cs.tips)}</div>` : ''}
+        ${item.description ? `<div class="d-section"><h3>${t('desc')}</h3><p>${esc(item.description)}</p></div>` : ''}
         ${hasGeo(item) ? `<div class="d-map" id="dMap"></div>` : ''}
-        ${item.address ? `<div class="d-section"><h3>Адрес</h3><p>${esc(item.address)}</p></div>` : ''}
-        ${item.opening_hours && typeof item.opening_hours === 'object' ? `<div class="d-section"><details class="d-details"><summary>Часы работы</summary><div class="hours">${Object.entries(item.opening_hours).map(([k, v]) => `<span class="${ht && ht.day === k ? 'today' : ''}">${DAYS_RU[k] || k}</span><span class="${ht && ht.day === k ? 'today' : ''}">${esc(v)}</span>`).join('')}</div></details></div>` : ''}
-        ${related.length ? `<div class="d-section"><h3>В справочнике</h3><div class="wiki-hits">${related.map((a) => `<a href="#/wiki/${a.id}">${ico('book')} <span>${esc(a.title)}</span></a>`).join('')}</div></div>` : ''}
-        ${nearby.length ? `<div class="d-section"><h3>Рядом</h3><div class="nearby">${nearby.map(({ i, d }) => `<a href="#/place/${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc((CATS[i.category] || {}).label || '')}</span></div><span>${fmtKm(d)}</span></a>`).join('')}</div></div>` : ''}
-        <div class="d-section"><details class="d-details" id="dReviews"><summary>Сообщения из чата (${item.review_count || 0})</summary><div id="dReviewsBody"><div class="empty">Загрузка…</div></div></details></div>
+        ${item.address ? `<div class="d-section"><h3>${t('address')}</h3><p>${esc(item.address)}</p></div>` : ''}
+        ${item.opening_hours && typeof item.opening_hours === 'object' ? `<div class="d-section"><details class="d-details"><summary>${t('hours')}</summary><div class="hours">${Object.entries(item.opening_hours).map(([k, v]) => `<span class="${ht && ht.day === k ? 'today' : ''}">${DAYS_RU[k] || k}</span><span class="${ht && ht.day === k ? 'today' : ''}">${esc(v)}</span>`).join('')}</div></details></div>` : ''}
+        ${related.length ? `<div class="d-section"><h3>${t('inWiki')}</h3><div class="wiki-hits">${related.map((a) => `<a href="#/wiki/${a.id}">${ico('book')} <span>${esc(a.title)}</span></a>`).join('')}</div></div>` : ''}
+        ${nearby.length ? `<div class="d-section"><h3>${t('nearby')}</h3><div class="nearby">${nearby.map(({ i, d }) => `<a href="#/place/${i.id}">${imgOrPh(i)}<div><b>${esc(i.title)}</b><span>${esc(catLabel(i.category))}</span></div><span>${fmtKm(d)}</span></a>`).join('')}</div></div>` : ''}
+        <div class="d-section"><details class="d-details" id="dReviews"><summary>${t('chatMsgs')} (${item.review_count || 0})</summary><div id="dReviewsBody"><div class="empty">${t('loading')}</div></div></details></div>
       </div>`;
     $('detail').hidden = false;
     document.body.style.overflow = 'hidden';
     $('dClose').onclick = () => closeDetail(true);
     $('dShare').onclick = () => share(item.title, location.origin + location.pathname + `#/place/${id}`);
+    $('dSave').onclick = () => { toggleSaved(id); $('dSave').classList.toggle('on', SAVED.has(id)); $('dSave').querySelector('span').textContent = SAVED.has(id) ? t('savedOk') : t('save'); };
+    if ($('dGallery')) $('dGallery').querySelectorAll('img').forEach((im) => im.addEventListener('click', () => { $('dHero').innerHTML = `<img src="${esc(im.src)}" alt="">`; $('dGallery').querySelectorAll('img').forEach((x) => x.classList.toggle('on', x === im)); }));
     $('detailPanel').scrollTop = 0;
 
     if (hasGeo(item)) {
@@ -455,7 +614,7 @@
       try { S.reviews = await (await fetch('static/reviews.json', { cache: 'no-cache' })).json(); } catch { S.reviews = {}; }
     }
     const rs = S.reviews[item.id] || [];
-    $('dReviewsBody').innerHTML = rs.length ? rs.map((r) => `<div class="review"><div class="review-head"><b>${esc(r.sender_name || 'Аноним')}</b><span>${esc((r.msg_date || '').slice(0, 10))}</span></div><p>${esc(r.review_text)}</p>${r.source_link ? `<a href="${esc(r.source_link)}" target="_blank" rel="noopener">Открыть в Telegram ↗</a>` : ''}</div>`).join('') : '<div class="empty">Пока нет сообщений</div>';
+    $('dReviewsBody').innerHTML = rs.length ? rs.map((r) => `<div class="review"><div class="review-head"><b>${esc(r.sender_name || 'Аноним')}</b><span>${esc((r.msg_date || '').slice(0, 10))}</span></div><p>${esc(r.review_text)}</p>${r.source_link ? `<a href="${esc(r.source_link)}" target="_blank" rel="noopener">${t('openTg')}</a>` : ''}</div>`).join('') : `<div class="empty">${t('noMsgs')}</div>`;
   }
   function closeDetail(pop) {
     if ($('detail').hidden) return;
@@ -475,13 +634,13 @@
     const upcoming = all.filter((i) => !i.event_iso_date || i.event_iso_date >= today).sort((a, b) => (a.event_iso_date || '9999').localeCompare(b.event_iso_date || '9999'));
     const past = all.filter((i) => i.event_iso_date && i.event_iso_date < today).sort((a, b) => b.event_iso_date.localeCompare(a.event_iso_date));
     const list = S.eventsMode === 'upcoming' ? upcoming : past;
-    $('eventSeg').querySelectorAll('button').forEach((b) => { b.classList.toggle('active', b.dataset.mode === S.eventsMode); b.textContent = b.dataset.mode === 'upcoming' ? `Предстоящие (${upcoming.length})` : `Прошедшие (${past.length})`; });
+    $('eventSeg').querySelectorAll('button').forEach((b) => { b.classList.toggle('active', b.dataset.mode === S.eventsMode); b.textContent = b.dataset.mode === 'upcoming' ? `${t('upcoming')} (${upcoming.length})` : `${t('past')} (${past.length})`; });
     const el = $('eventsList');
-    if (!list.length) { el.innerHTML = `<div class="empty"><b>${S.eventsMode === 'upcoming' ? 'Пока нет анонсов' : 'Архив пуст'}</b>Новые события появляются по мере обсуждения в чатах</div>`; return; }
+    if (!list.length) { el.innerHTML = `<div class="empty"><b>${S.eventsMode === 'upcoming' ? t('noEvents') : t('noPast')}</b>${t('eventsHint')}</div>`; return; }
     let lastMonth = '';
     el.innerHTML = list.map((i) => {
       const dt = i.event_iso_date ? new Date(i.event_iso_date + 'T00:00:00') : null;
-      const monthKey = dt ? `${MONTHS_RU[dt.getMonth()]} ${dt.getFullYear()}` : 'Без даты';
+      const monthKey = dt ? `${MONTHS_RU[dt.getMonth()]} ${dt.getFullYear()}` : t('noDate');
       const head = monthKey !== lastMonth ? `<div class="event-day">${monthKey}</div>` : '';
       lastMonth = monthKey;
       const p = photoOf(i);
@@ -502,7 +661,7 @@
     const isRoute = (c.kind || 'route') === 'route';
     return `<article class="card route-card" data-route="${c.id}">
       <div class="card-img">${cover ? `<img src="${esc(cover.replace(/^\//, ''))}" alt="" loading="lazy">` : `<div class="ph">${ico('route')}</div>`}</div>
-      <div class="card-body"><div class="route-kind">${isRoute ? 'Маршрут' : 'Подборка'} · ${items.length} ${plural(items.length, 'место', 'места', 'мест')}</div><h3>${esc(c.title)}</h3><div class="card-text">${esc(c.description || '')}</div>
+      <div class="card-body"><div class="route-kind">${isRoute ? t('route') : t('collection')} · ${items.length} ${nPlaces(items.length)}</div><h3>${esc(c.title)}</h3><div class="card-text">${esc(c.description || '')}</div>
       <div class="card-foot route-stats">${c.duration ? `<span>${ico('clock')} ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>${ico('walk')} ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>${ico('money')} ${esc(c.budget)}</span>` : ''}</div></div>
     </article>`;
   }
@@ -523,16 +682,16 @@
     const items = collectionItems(c);
     const isRoute = (c.kind || 'route') === 'route';
     root.innerHTML = `
-      <a class="back" href="#/routes">← Все маршруты</a>
+      <a class="back" href="#/routes">${t('allRoutes')}</a>
       <div class="route-head">
         <div><h1>${esc(c.title)}</h1><p class="lead">${esc(c.description || '')}</p>
-          <div class="route-stats">${c.duration ? `<span>${ico('clock')} ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>${ico('walk')} ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>${ico('money')} ${esc(c.budget)}</span>` : ''}<span>${items.length} ${plural(items.length, 'место', 'места', 'мест')}</span></div>
-          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="rShare" type="button">${ico('share')} Поделиться</button>${isRoute && items.filter(hasGeo).length > 1 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${items.filter(hasGeo).map((i) => `${i.latitude},${i.longitude}`).join('/')}">${ico('nav')} Открыть маршрут в Google Maps</a>` : ''}</div>
+          <div class="route-stats">${c.duration ? `<span>${ico('clock')} ${esc(c.duration)}</span>` : ''}${c.transport ? `<span>${ico('walk')} ${esc(c.transport)}</span>` : ''}${c.budget ? `<span>${ico('money')} ${esc(c.budget)}</span>` : ''}<span>${items.length} ${nPlaces(items.length)}</span></div>
+          <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="rShare" type="button">${ico('share')} ${t('share')}</button>${isRoute && items.filter(hasGeo).length > 1 ? `<a class="btn" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/${items.filter(hasGeo).map((i) => `${i.latitude},${i.longitude}`).join('/')}">${ico('nav')} ${t('openInMaps')}</a>` : ''}</div>
         </div>
         ${items.some(hasGeo) ? '<div class="route-map" id="routeMap"></div>' : ''}
       </div>
       ${isRoute
-        ? `<div class="steps">${items.map((i, n) => `<div class="step"><div class="step-n">${n + 1}</div><div class="step-body" data-id="${i.id}"><div><b>${esc(i.title)}</b><div class="card-meta">${esc((CATS[i.category] || {}).label || '')}${i.neighborhood !== 'Other' ? ' · ' + esc(areaLabel(i.neighborhood)) : ''}${hoursToday(i) ? ' · ' + esc(hoursToday(i).text) : ''}</div><div class="step-note">${esc(i.note || highlight(i))}</div></div>${photoOf(i) ? `<img src="${esc(photoOf(i))}" alt="" loading="lazy">` : ''}</div></div>`).join('')}</div>`
+        ? `<div class="steps">${items.map((i, n) => `<div class="step"><div class="step-n">${n + 1}</div><div class="step-body" data-id="${i.id}"><div><b>${esc(i.title)}</b><div class="card-meta">${esc(catLabel(i.category))}${i.neighborhood !== 'Other' ? ' · ' + esc(areaLabel(i.neighborhood)) : ''}${openLabel(i) ? ' · ' + openLabel(i) : ''}</div><div class="step-note">${esc(i.note || highlight(i))}</div></div>${photoOf(i) ? `<img src="${esc(photoOf(i))}" alt="" loading="lazy">` : ''}</div></div>`).join('')}</div>`
         : `<div class="grid">${items.map((i) => cardHtml(i).replace('<div class="card-text">', i.note ? `<div class="card-text">${esc(i.note)} </div><div class="card-text" hidden>` : '<div class="card-text">')).join('')}</div>`}`;
     bindCards(root);
     $('rShare').onclick = () => share(c.title, location.origin + location.pathname + `#/routes/${id}`);
@@ -555,7 +714,7 @@
   function renderWikiIndex() {
     $('wikiIndex').hidden = false; $('wikiArticle').hidden = true;
     const list = S.wiki.filter((a) => matches({ title: a.title, description: a.content }, S.q));
-    $('wikiGrid').innerHTML = list.map((a) => `<div class="wiki-card" data-wiki="${esc(a.id)}"><div class="wiki-ico">${a.emoji || ico('book')}</div><div><h3>${esc(a.title)}</h3><p>${esc(wikiSummary(a))}</p></div></div>`).join('') || '<div class="empty">Ничего не найдено</div>';
+    $('wikiGrid').innerHTML = list.map((a) => `<div class="wiki-card" data-wiki="${esc(a.id)}"><div class="wiki-ico">${a.emoji || ico('book')}</div><div><h3>${esc(a.title)}</h3><p>${esc(wikiSummary(a))}</p></div></div>`).join('') || `<div class="empty">${t('nothing')}</div>`;
     document.querySelectorAll('[data-wiki]').forEach((el) => el.addEventListener('click', () => (location.hash = `#/wiki/${el.dataset.wiki}`)));
   }
   function renderWikiArticle(id) {
@@ -568,10 +727,10 @@
     const html = marked.parse(md, { breaks: false });
     const related = (a.related || []).map((i) => S.byId.get(i)).filter(Boolean);
     const prev = S.wiki[idx - 1], next = S.wiki[idx + 1];
-    root.innerHTML = `<a class="back" href="#/wiki">← Справочник</a>
+    root.innerHTML = `<a class="back" href="#/wiki">${t('wikiBack')}</a>
       <div class="prose">${html}</div>
-      <div style="margin-top:20px"><button class="btn" id="wShare" type="button">${ico('share')} Поделиться</button></div>
-      ${related.length ? `<div class="related"><h2>Места по теме</h2><div class="list-simple">${related.map(cardHtml).join('')}</div></div>` : ''}
+      <div style="margin-top:20px"><button class="btn" id="wShare" type="button">${ico('share')} ${t('share')}</button></div>
+      ${related.length ? `<div class="related"><h2>${t('related')}</h2><div class="list-simple">${related.map(cardHtml).join('')}</div></div>` : ''}
       <div class="article-nav"><span>${prev ? `<a href="#/wiki/${prev.id}">← ${esc(prev.title)}</a>` : ''}</span><span>${next ? `<a href="#/wiki/${next.id}">${esc(next.title)} →</a>` : ''}</span></div>`;
     root.querySelectorAll('a[href^="#wiki:"]').forEach((l) => (l.href = '#/wiki/' + l.getAttribute('href').split(':')[1]));
     root.querySelectorAll('.prose a[href^="http"]').forEach((l) => { l.target = '_blank'; l.rel = 'noopener'; });
@@ -595,6 +754,10 @@
     $('areaSelect').addEventListener('change', (e) => { S.area = e.target.value; S.page = 1; syncUrl(); renderPlaces(); });
     $('vegToggle').addEventListener('change', (e) => { S.veg = e.target.checked; S.page = 1; syncControls(); syncUrl(); renderPlaces(); });
     $('mapVegToggle').addEventListener('change', (e) => { S.veg = e.target.checked; syncControls(); syncUrl(); renderMap(); });
+    $('openToggle').addEventListener('change', (e) => { S.open = e.target.checked; S.page = 1; syncControls(); syncUrl(); renderPlaces(); });
+    $('mapOpenToggle').addEventListener('change', (e) => { S.open = e.target.checked; syncControls(); syncUrl(); renderMap(); });
+    $('langBtn').addEventListener('click', () => { LANG = LANG === 'ru' ? 'en' : 'ru'; try { localStorage.setItem('cm_lang', LANG); } catch {} applyStaticI18n(); renderMap._fitted = renderMap._fitted; route(); });
+    applyStaticI18n(); updateSavedBadge();
     document.querySelectorAll('[data-icon]').forEach((el) => (el.innerHTML = ico(el.dataset.icon)));
     $('sortSelect').addEventListener('change', (e) => { S.sort = e.target.value; if (S.sort === 'distance' && !S.me) return locate(renderPlaces); syncUrl(); renderPlaces(); });
     $('nearBtn').addEventListener('click', () => S.me ? (S.me = null, S.sort = 'popular', syncControls(), syncUrl(), renderPlaces()) : locate(renderPlaces));
@@ -619,7 +782,7 @@
       // areas by count
       const ac = {};
       for (const i of placeItems()) if (i.neighborhood && i.neighborhood !== 'Other') ac[i.neighborhood] = (ac[i.neighborhood] || 0) + 1;
-      $('areaSelect').innerHTML = '<option value="">Все районы</option>' + Object.entries(ac).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<option value="${esc(k)}">${esc(areaLabel(k))} (${n})</option>`).join('');
+      $('areaSelect').innerHTML = '<option value="" data-i18n="allAreas">Все районы</option>' + Object.entries(ac).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<option value="${esc(k)}">${esc(areaLabel(k))} (${n})</option>`).join('');
     } catch (e) {
       $('placesGrid').innerHTML = '<div class="empty"><b>Не удалось загрузить данные</b>Обновите страницу</div>';
       console.error(e); return;

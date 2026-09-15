@@ -31,7 +31,7 @@ ROUTES = [
             (262, "Смотровая на Дой Луанг Чиангдао — главный вид региона, особенно на закате и рассвете."),
             (338, "Заповедник у подножия горы: лёгкая прогулка, птицы, бабочки."),
             (293, "Понг Анг — природные горячие ванны, можно приехать вечером и отмокать под звёздами."),
-            (546, "Ночёвка: Cocoa Camp Chiang Dao из списка глэмпингов чата, палатки с видом на гору."),
+            ("https://maps.app.goo.gl/ZehQgSH1mR67RyCh9", "Ночёвка: Cocoa Camp Chiang Dao из списка глэмпингов чата, палатки с видом на гору."),
         ],
     },
     {
@@ -42,7 +42,7 @@ ROUTES = [
             (303, "Хуай Тынг Тао: озеро с хижинами над водой, завтрак с видом. Вход 50 ฿."),
             (120, "Кофейная плантация Doi Chaang — кофе, парк и прогулка среди деревьев."),
             (300, "Смотровая Панг Хва и апельсиновые сады Мон Чама — фото-точка номер один."),
-            (529, "Ночёвка в глэмпинге The Doi Moncham (из списка чата) — палатки с видом на долину."),
+            ("https://maps.app.goo.gl/dQGPa85RVHvuCty97", "Ночёвка в глэмпинге The Doi Moncham (из списка чата) — палатки с видом на долину."),
             (256, "На обратном пути: японский онсен на Мон Чаме, идеальное завершение дня."),
         ],
     },
@@ -181,33 +181,33 @@ COLLECTIONS = [
     {
         "title": "Глэмпинги и ночёвки в горах",
         "description": "Список из чата: палатки с видом, хоумстеи и кемпинги в 1–2 часах от города — Мон Чам, Самоенг, Мэ Ванг, Чиангдао. Бронируйте заранее на выходные в прохладный сезон (ноябрь–февраль).",
-        "cover": 529,
+        "cover": "https://maps.app.goo.gl/dQGPa85RVHvuCty97",
         "items": [
-            (529, "The Doi Moncham — глэмпинг на Мон Чаме."),
-            (525, "North Star Valley — палатки в долине."),
-            (526, "Phu Mork Dao — «гора в тумане»."),
-            (528, "Phu Doi Homestay."),
-            (530, "Mon Ing Dao."),
-            (524, "Chom Khao — кемпинг в Самоенге."),
-            (523, "Klin Ai Mok — хоумстей в Самоенге."),
-            (527, "Campiness — кемпинг и ферма в Мэ Ванге."),
-            (532, "3pok Resort — Мэ Ванг."),
-            (533, "Wildbeat."),
-            (534, "Misty Forest."),
-            (535, "Rhakkao Homestay."),
-            (536, "Mt.Cloud — над облаками."),
-            (537, "Fine Day."),
-            (538, "Morning Cloud."),
-            (539, "4sky."),
-            (540, "Cozy Wild."),
-            (541, "Lagöm Village Resort."),
-            (542, "Tree House Hideaway — дом на дереве."),
-            (543, "White Bear Camping — Чиангдао."),
-            (544, "The Campian — Чиангдао."),
-            (545, "Cocoa Camp."),
-            (546, "Cocoa Camp Chiang Dao."),
-            (547, "Din Daeng Doi."),
-            (548, "Nelamit — Дой Сакет."),
+            ("https://maps.app.goo.gl/dQGPa85RVHvuCty97", "The Doi Moncham — глэмпинг на Мон Чаме."),
+            ("https://maps.app.goo.gl/prGc3i2dS29mcSnv8", "North Star Valley — палатки в долине."),
+            ("https://maps.app.goo.gl/YPhFAfM18Rxu1iw4A", "Phu Mork Dao — «гора в тумане»."),
+            ("https://maps.app.goo.gl/rBYhV5TsH4Ty1J8f6", "Phu Doi Homestay."),
+            ("https://maps.app.goo.gl/eD2jvzfsGrv37bJZ6", "Mon Ing Dao."),
+            ("https://maps.app.goo.gl/NBGBx97MyXRbRCpE6", "Chom Khao — кемпинг в Самоенге."),
+            ("https://maps.app.goo.gl/yicCyGpFdLFXrg317", "Klin Ai Mok — хоумстей в Самоенге."),
+            ("https://maps.app.goo.gl/aLUvJop79toWsi8t5", "Campiness — кемпинг и ферма в Мэ Ванге."),
+            ("https://maps.app.goo.gl/FvgYT2XxCXotExbJ6", "3pok Resort — Мэ Ванг."),
+            ("https://maps.app.goo.gl/gJKp34Pq3odWk9bJ6", "Wildbeat."),
+            ("https://maps.app.goo.gl/3KsYPGabcFPiSeJR8", "Misty Forest."),
+            ("https://maps.app.goo.gl/LrmqptYXHbaKHz7v7", "Rhakkao Homestay."),
+            ("https://maps.app.goo.gl/tCpFbMpyNGuKrrFo7", "Mt.Cloud — над облаками."),
+            ("https://maps.app.goo.gl/HBsaWc7cFZKiDd7F7", "Fine Day."),
+            ("https://maps.app.goo.gl/5prB5wMeA1gRTNPV8", "Morning Cloud."),
+            ("https://maps.app.goo.gl/KTYUpz5u9g2LjKuG9", "4sky."),
+            ("https://maps.app.goo.gl/Kcw3bbiRqebLrgoc7", "Cozy Wild."),
+            ("https://maps.app.goo.gl/kUngA1HPb73k415w5", "Lagöm Village Resort."),
+            ("https://maps.app.goo.gl/oDbib9YnecS86bgQ9", "Tree House Hideaway — дом на дереве."),
+            ("https://maps.app.goo.gl/FBgdW9RiVRKTYki98", "White Bear Camping — Чиангдао."),
+            ("https://maps.app.goo.gl/DLwyV1h6UnaQdv128", "The Campian — Чиангдао."),
+            ("https://maps.app.goo.gl/eH4djqY374s2jdyt7", "Cocoa Camp."),
+            ("https://maps.app.goo.gl/ZehQgSH1mR67RyCh9", "Cocoa Camp Chiang Dao."),
+            ("https://maps.app.goo.gl/tDJyLJ4JuSD2Kr5n7", "Din Daeng Doi."),
+            ("https://maps.app.goo.gl/RehZWQn2pZEBNgrN6", "Nelamit — Дой Сакет."),
             (178, "Rakkhao — хоумстей и кемпинг на Интаноне."),
             (211, "Baan Ozone — Мон Чам, живая музыка по вечерам."),
             (130, "Amazing Mountain 6 — Мэ Рим."),
@@ -217,24 +217,24 @@ COLLECTIONS = [
     {
         "title": "Где взять байк или авто",
         "description": "Сводный список прокатов из чата (25+ точек) плюс аренда авто. Никогда не оставляйте паспорт в залог; проверяйте страховку и фотографируйте байк при получении.",
-        "cover": 556,
+        "cover": "https://maps.app.goo.gl/yt8zYEzdhuxsgHbE6",
         "items": [
-            (556, "Cat Motors — самый высокий рейтинг среди прокатов Старого города."),
-            (549, "TBR Toon's — байки и туры."),
-            (550, "Mr Pop — большой выбор."),
-            (551, "Mr. Mechanic №1 — сеть, Ратчапакхинай."), (552, "Mr. Mechanic №2."), (553, "Mr. Mechanic №3."),
-            (554, "C&P Big Bikes — большие мотоциклы, Riverside."),
-            (555, "«Японец» — прокат у Южных ворот, как его называют в чате."),
-            (557, "Joe's Bike Team — Мэ Рим."),
-            (558, "Red Ride — Ханг Донг."),
-            (559, "M25 — Старый город."),
-            (560, "Bikky — у Кад Суан Кэу."),
-            (561, "Zippy — Сантитам."),
-            (562, "Bamboo Bikes — скутеры и мотоциклы."),
-            (563, "Buddy's — Ниман."),
-            (564, "D2 Bike Nimman."), (497, "D2 Bike Changklan — прокат и ремонт."),
-            (565, "Vanessa's — Чанг Пхыак."),
-            (566, "Jeff Bike Rental 200."),
+            ("https://maps.app.goo.gl/yt8zYEzdhuxsgHbE6", "Cat Motors — самый высокий рейтинг среди прокатов Старого города."),
+            ("https://maps.app.goo.gl/9S9NjLw2WVQTpsP58", "TBR Toon's — байки и туры."),
+            ("https://maps.app.goo.gl/fn5ChTt5dwCB4bmt6", "Mr Pop — большой выбор."),
+            ("https://maps.app.goo.gl/kCQ1pAtb5vYPK2uXA", "Mr. Mechanic №1 — сеть, Ратчапакхинай."), ("https://maps.app.goo.gl/6axA2rGkjrDoapcJA", "Mr. Mechanic №2."), ("https://maps.app.goo.gl/XUJf19QjPjuQBUPC6", "Mr. Mechanic №3."),
+            ("https://maps.app.goo.gl/Ynaq3anzEtz3rm1F9", "C&P Big Bikes — большие мотоциклы, Riverside."),
+            ("https://maps.app.goo.gl/w5TECByk8SqbLh518", "«Японец» — прокат у Южных ворот, как его называют в чате."),
+            ("https://maps.app.goo.gl/KoNLBnqkVv423EAn7", "Joe's Bike Team — Мэ Рим."),
+            ("https://maps.app.goo.gl/M6dMyecSKKzTEpub9", "Red Ride — Ханг Донг."),
+            ("https://www.google.com/maps/place/M25+Motorbike+rental+CM/@18.7814173,98.989991,3a,75y,90t/data=!3m8!1e2!3m6!1sAF1QipOJYDUU3856uLk1ornOT3PoHbEEtG_UrI6BCU5M!2e10!3e12!6shttps:%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipOJYDUU3856uLk1ornOT3PoHbEEtG_UrI6BCU5M%3Dw114-h86-k-no!7i2658!8i2000!4m7!3m6!1s0x30da3aa1ea5293db:0x50372924c1938735!8m2!3d18.7815066!4d98.9899939!10e5!16s%2Fg%2F11gcll1nx1", "M25 — Старый город."),
+            ("https://maps.app.goo.gl/YC91R95hbAthJLcm9", "Bikky — у Кад Суан Кэу."),
+            ("https://maps.app.goo.gl/mvCtZT45zS9sSysb9", "Zippy — Сантитам."),
+            ("https://maps.app.goo.gl/Lzzknt5XA5TLz8BC6", "Bamboo Bikes — скутеры и мотоциклы."),
+            ("https://maps.app.goo.gl/6aA54SuTGzFTtXKX6", "Buddy's — Ниман."),
+            ("https://maps.app.goo.gl/2m9W8WMDuKYpcABm9", "D2 Bike Nimman."), (497, "D2 Bike Changklan — прокат и ремонт."),
+            ("https://maps.app.goo.gl/AixzAoVguo81r63S6", "Vanessa's — Чанг Пхыак."),
+            ("https://maps.app.goo.gl/ppDMJ9oPe2Nn1tPQ8", "Jeff Bike Rental 200."),
             (375, "Funky Bike."), (378, "Mango Scooter."), (487, "NK Bike — скутеры и велосипеды."),
             (507, "POP Big Bike — туринг и адвенчур."), (433, "Dang Service — биг-байки и туреры."),
             (494, "Chiang Mai Wheels — аренда авто, аэропорт."), (367, "BudgetCatcher — аренда авто."), (502, "POP Service — аренда авто."),
@@ -243,14 +243,14 @@ COLLECTIONS = [
     {
         "title": "Воркшопы и мастер-классы",
         "description": "Подборка из чата: рисование, керамика, вышивка, украшения из серебра, торты. У каждого места много аналогов — список как карта того, что вообще бывает.",
-        "cover": 569,
+        "cover": "https://maps.app.goo.gl/wvJWVQR2Cg5Jk5Us5",
         "items": [
-            (567, "Кафе, где рисуют на мольберте."),
-            (569, "The Warehouse Paint Club — рисование, лепка, роспись шоперов."),
-            (568, "Gimmick — украсить торт самим."),
-            (570, "Aladdin Studio — вышивка ковров и арт-центр."),
-            (571, "Mitt Studio — керамика."),
-            (572, "Nova Collection — мастер-класс по серебряным украшениям."),
+            ("https://maps.app.goo.gl/abKnoHPEBnpfP6QLA", "Кафе, где рисуют на мольберте."),
+            ("https://maps.app.goo.gl/wvJWVQR2Cg5Jk5Us5", "The Warehouse Paint Club — рисование, лепка, роспись шоперов."),
+            ("https://maps.app.goo.gl/rfLVqEpi2etccns66", "Gimmick — украсить торт самим."),
+            ("https://maps.app.goo.gl/NdkxgZD1K1pz8eD76", "Aladdin Studio — вышивка ковров и арт-центр."),
+            ("https://maps.app.goo.gl/6CbbbTy1eLrXw7mv5", "Mitt Studio — керамика."),
+            ("https://maps.app.goo.gl/TkaY68bX2s653j7z6", "Nova Collection — мастер-класс по серебряным украшениям."),
             (94, "Dalha Dalee — крафт и флористика."),
         ],
     },
@@ -297,6 +297,14 @@ COLLECTIONS = [
 ]
 
 
+def resolve_ref(conn, ref):
+    """Item reference: integer id, or a Google Maps link (stable across DB copies for ingested places)."""
+    if isinstance(ref, int):
+        return ref
+    row = conn.execute("SELECT id FROM items WHERE location_url = ? OR location_url LIKE ? || '?%'", (ref, ref)).fetchone()
+    return row[0] if row else None
+
+
 def upsert(conn, col, kind):
     row = conn.execute("SELECT id FROM collections WHERE title = ?", (col["title"],)).fetchone()
     if row:
@@ -309,9 +317,10 @@ def upsert(conn, col, kind):
                            (col["title"], col["description"], cover_path(conn, col.get("cover")), col.get("duration"), col.get("transport"), col.get("budget"), kind))
         cid = cur.lastrowid
     n = 0
-    for order, (item_id, note) in enumerate(col["items"], 1):
-        if not conn.execute("SELECT 1 FROM items WHERE id = ?", (item_id,)).fetchone():
-            print(f"  ! {col['title']}: item {item_id} not found, skipped")
+    for order, (ref, note) in enumerate(col["items"], 1):
+        item_id = resolve_ref(conn, ref)
+        if not item_id or not conn.execute("SELECT 1 FROM items WHERE id = ?", (item_id,)).fetchone():
+            print(f"  ! {col['title']}: item {ref} not found, skipped")
             continue
         conn.execute("INSERT INTO collection_items (collection_id, item_id, sort_order, note) VALUES (?,?,?,?)", (cid, item_id, order, note))
         n += 1
@@ -320,6 +329,7 @@ def upsert(conn, col, kind):
 
 def cover_path(conn, item_id):
     """Use the cover item's first photo, if it has one."""
+    item_id = resolve_ref(conn, item_id) if item_id else None
     if not item_id:
         return None
     row = conn.execute("SELECT photos_json FROM items WHERE id = ?", (item_id,)).fetchone()

@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="static/css/app.css?v=5">
+<link rel="stylesheet" href="static/css/app.css?v=6">
 </head>
 <body>
 
@@ -23,17 +23,19 @@
     <span class="brand-text">Чиангмай<small>гид сообщества</small></span>
   </a>
   <nav class="nav" id="mainNav">
-    <a href="#/" data-view="places"><i data-icon="pin"></i>Места</a>
-    <a href="#/map" data-view="map"><i data-icon="map"></i>Карта</a>
-    <a href="#/events" data-view="events"><i data-icon="calendar"></i>Афиша</a>
-    <a href="#/routes" data-view="routes"><i data-icon="route"></i>Маршруты</a>
-    <a href="#/wiki" data-view="wiki"><i data-icon="book"></i>Справочник</a>
+    <a href="#/" data-view="places"><i data-icon="pin"></i><span data-i18n="places">Места</span></a>
+    <a href="#/map" data-view="map"><i data-icon="map"></i><span data-i18n="map">Карта</span></a>
+    <a href="#/events" data-view="events"><i data-icon="calendar"></i><span data-i18n="events">Афиша</span></a>
+    <a href="#/routes" data-view="routes"><i data-icon="route"></i><span data-i18n="routes">Маршруты</span></a>
+    <a href="#/wiki" data-view="wiki"><i data-icon="book"></i><span data-i18n="wiki">Справочник</span></a>
   </nav>
   <div class="search">
     <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
     <input id="searchInput" type="search" placeholder="Кофе, стоматолог, водопад, Нимман…" autocomplete="off" aria-label="Поиск">
     <button id="searchClear" class="search-clear" aria-label="Очистить" hidden>✕</button>
   </div>
+  <a class="hdr-btn" href="#/saved" data-view="saved" title="Сохранённые"><i data-icon="heart"></i><b class="saved-count" hidden>0</b></a>
+  <button class="hdr-btn lang" id="langBtn" type="button">EN</button>
 </header>
 
 <main id="app">
@@ -46,22 +48,24 @@
         <select id="areaSelect" class="select" aria-label="Район"><option value="">Все районы</option></select>
         <button id="nearBtn" class="btn btn-ghost" type="button" title="Показать ближайшие места">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="8"/></svg>
-          <span>Рядом со мной</span>
+          <span data-i18n="near">Рядом со мной</span>
         </button>
-        <label class="toggle" id="vegToggleWrap"><input type="checkbox" id="vegToggle"><span><i data-icon="leaf" class="ico-sm"></i>Только veg-friendly</span></label>
+        <label class="toggle"><input type="checkbox" id="openToggle"><span><i data-icon="clock" class="ico-sm"></i><span data-i18n="openNow">Открыто сейчас</span></span></label>
+        <label class="toggle" id="vegToggleWrap"><input type="checkbox" id="vegToggle"><span><i data-icon="leaf" class="ico-sm"></i><span data-i18n="veg">Только veg-friendly</span></span></label>
         <select id="sortSelect" class="select" aria-label="Сортировка">
-          <option value="popular">Популярные в чате</option>
-          <option value="rating">Рейтинг Google</option>
-          <option value="newest">Новые</option>
-          <option value="alpha">По алфавиту</option>
-          <option value="distance">По расстоянию</option>
+          <option value="popular" data-i18n="sortPopular">Популярные в чате</option>
+          <option value="rating" data-i18n="sortRating">Рейтинг Google</option>
+          <option value="newest" data-i18n="sortNew">Новые</option>
+          <option value="alpha" data-i18n="sortAlpha">По алфавиту</option>
+          <option value="distance" data-i18n="sortDist">По расстоянию</option>
         </select>
         <span class="count" id="placesCount"></span>
       </div>
     </div>
+    <div id="todayBox" class="today" hidden></div>
     <div id="wikiHits" class="wiki-hits" hidden></div>
     <div id="placesGrid" class="grid"></div>
-    <div id="placesMore" class="more-wrap" hidden><button class="btn" id="moreBtn" type="button">Показать ещё</button></div>
+    <div id="placesMore" class="more-wrap" hidden><button class="btn" id="moreBtn" type="button" data-i18n="more">Показать ещё</button></div>
   </section>
 
   <!-- Map -->
@@ -70,7 +74,7 @@
       <div class="map-side-head">
         <div class="chips chips-compact" id="mapCatChips"></div>
         <div class="chips chips-compact chips-tags" id="mapTagChips" hidden></div>
-        <div class="map-side-meta"><span id="mapCount"></span><span style="display:flex;gap:10px;align-items:center"><label class="toggle" id="mapVegWrap"><input type="checkbox" id="mapVegToggle"><span>Veg</span></label><button class="btn btn-ghost btn-sm" id="mapNearBtn" type="button"><i data-icon="locate" class="ico-sm"></i>Рядом</button></span></div>
+        <div class="map-side-meta"><span id="mapCount"></span><span style="display:flex;gap:10px;align-items:center"><label class="toggle"><input type="checkbox" id="mapOpenToggle"><span data-i18n="openNow">Открыто сейчас</span></label><label class="toggle" id="mapVegWrap"><input type="checkbox" id="mapVegToggle"><span data-i18n="vegShort">Veg</span></label><button class="btn btn-ghost btn-sm" id="mapNearBtn" type="button"><i data-icon="locate" class="ico-sm"></i><span data-i18n="nearShort">Рядом</span></button></span></div>
       </div>
       <div class="map-list" id="mapList"></div>
     </aside>
@@ -84,8 +88,8 @@
   <!-- Events -->
   <section id="view-events" class="view">
     <div class="page-head">
-      <h1>Афиша</h1>
-      <p class="lead">События из чатов: встречи, лекции, кино, йога, концерты.</p>
+      <h1 data-i18n="eventsTitle">Афиша</h1>
+      <p class="lead" data-i18n="eventsLead">События из чатов: встречи, лекции, кино, йога, концерты.</p>
       <div class="seg" id="eventSeg">
         <button data-mode="upcoming" class="active" type="button">Предстоящие</button>
         <button data-mode="past" type="button">Прошедшие</button>
@@ -98,12 +102,12 @@
   <section id="view-routes" class="view">
     <div id="routesIndex">
       <div class="page-head">
-        <h1>Маршруты и подборки</h1>
-        <p class="lead">Готовые планы на день и тематические списки — собраны из рекомендаций чата.</p>
+        <h1 data-i18n="routesTitle">Маршруты и подборки</h1>
+        <p class="lead" data-i18n="routesLead">Готовые планы на день и тематические списки — собраны из рекомендаций чата.</p>
       </div>
-      <h2 class="h2" id="routesTitle">Маршруты</h2>
+      <h2 class="h2" id="routesTitle" data-i18n="routesH">Маршруты</h2>
       <div id="routesGrid" class="grid grid-routes"></div>
-      <h2 class="h2" id="collectionsTitle">Подборки</h2>
+      <h2 class="h2" id="collectionsTitle" data-i18n="collectionsH">Подборки</h2>
       <div id="collectionsGrid" class="grid grid-routes"></div>
     </div>
     <div id="routeDetail" hidden></div>
@@ -113,14 +117,41 @@
   <section id="view-wiki" class="view">
     <div id="wikiIndex">
       <div class="page-head">
-        <h1>Справочник</h1>
-        <p class="lead">Визы, жильё, байки, врачи, деньги — короткие практичные статьи для жизни в Чиангмае.</p>
+        <h1 data-i18n="wikiTitle">Справочник</h1>
+        <p class="lead" data-i18n="wikiLead">Визы, жильё, байки, врачи, деньги — короткие практичные статьи для жизни в Чиангмае.</p>
       </div>
       <div id="wikiGrid" class="wiki-grid"></div>
     </div>
     <article id="wikiArticle" class="article" hidden></article>
   </section>
+
+  <!-- Saved -->
+  <section id="view-saved" class="view"><div id="savedView"></div></section>
+
+  <!-- About -->
+  <section id="view-about" class="view">
+    <article class="article prose about">
+      <h1>О проекте</h1>
+      <p>Этот гид собран из русскоязычных Telegram-чатов Чиангмая — каждое место, событие и совет здесь когда-то кто-то написал в чате. Мы вытащили это из тысяч сообщений, проверили по Google Maps и разложили по полочкам: места, карта, афиша, маршруты и справочник.</p>
+      <h2>OmHome Space</h2>
+      <p>Гид рождается в <a href="#/place/573">OmHome Space</a> — комьюнити-пространстве в районе Chang Khlan. Чайные церемонии, киртаны, киновечера, квизы, настолки, йога-нидра — почти каждый вечер что-то происходит, расписание в <a href="#/events">Афише</a>. Днём — тихое место поработать за чашкой чая.</p>
+      <p>Больше о пространстве и его проектах — <a href="https://navito.omhome.space" target="_blank" rel="noopener">navito.omhome.space</a>.</p>
+      <h2>Обратная связь</h2>
+      <p>Нашли ошибку, знаете место, которого здесь нет, или хотите добавить событие — напишите <a href="https://t.me/artartemev" target="_blank" rel="noopener">@artartemev</a> в Telegram. Правки принимаются с благодарностью.</p>
+      <h2>Данные</h2>
+      <p>Рейтинги, часы работы и телефоны берутся из Google Maps и обновляются автоматически; описания и советы — из сообщений сообщества, ссылка на источник есть в каждой карточке. Список сохранённых мест хранится только в вашем браузере.</p>
+    </article>
+  </section>
 </main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <a class="footer-brand" href="#/place/573"><span class="brand-mark">CM</span><span><span data-i18n="footerMade">Сделано в</span> <b>OmHome Space</b></span></a>
+    <a href="https://navito.omhome.space" target="_blank" rel="noopener">navito.omhome.space</a>
+    <a href="https://t.me/artartemev" target="_blank" rel="noopener"><span data-i18n="footerFeedback">Предложить место или правку</span> · @artartemev</a>
+    <a href="#/about" data-i18n="about">О проекте</a>
+  </div>
+</footer>
 
 <!-- Place detail -->
 <div id="detail" class="detail" hidden>
@@ -129,11 +160,11 @@
 </div>
 
 <nav class="tabbar" id="tabbar">
-  <a href="#/" data-view="places"><i class="tab-ico" data-icon="pin"></i>Места</a>
-  <a href="#/map" data-view="map"><i class="tab-ico" data-icon="map"></i>Карта</a>
-  <a href="#/events" data-view="events"><i class="tab-ico" data-icon="calendar"></i>Афиша</a>
-  <a href="#/routes" data-view="routes"><i class="tab-ico" data-icon="route"></i>Маршруты</a>
-  <a href="#/wiki" data-view="wiki"><i class="tab-ico" data-icon="book"></i>Справка</a>
+  <a href="#/" data-view="places"><i class="tab-ico" data-icon="pin"></i><span data-i18n="places">Места</span></a>
+  <a href="#/map" data-view="map"><i class="tab-ico" data-icon="map"></i><span data-i18n="map">Карта</span></a>
+  <a href="#/events" data-view="events"><i class="tab-ico" data-icon="calendar"></i><span data-i18n="events">Афиша</span></a>
+  <a href="#/routes" data-view="routes"><i class="tab-ico" data-icon="route"></i><span data-i18n="routes">Маршруты</span></a>
+  <a href="#/wiki" data-view="wiki"><i class="tab-ico" data-icon="book"></i><span data-i18n="wikiShort">Справка</span></a>
 </nav>
 
 <div id="toast" class="toast" hidden></div>
@@ -141,6 +172,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-<script src="static/js/app.js?v=5"></script>
+<script src="static/js/app.js?v=6"></script>
 </body>
 </html>
