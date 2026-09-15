@@ -577,7 +577,7 @@
           ${isEvent && item.registration_url ? `<a class="btn btn-primary" href="${esc(item.registration_url)}" target="_blank" rel="noopener">${esc(item.registration_label || t('register'))}</a>` : ''}
           ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} ${t('dirs')}</a>` : ''}
           ${item.phone_contact ? `<a class="btn" href="tel:${esc(item.phone_contact.replace(/\s/g, ''))}">${ico('phone')} ${esc(item.phone_contact)}</a>` : ''}
-          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico('globe')} ${t('site')}</a>` : ''}
+          ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico(/t\.me\//.test(item.website) ? 'chat' : 'globe')} ${/t\.me\//.test(item.website) ? 'Telegram' : t('site')}</a>` : ''}
           <button class="btn heart-btn ${SAVED.has(id) ? 'on' : ''}" id="dSave" type="button">${ico('heart')} <span>${SAVED.has(id) ? t('savedOk') : t('save')}</span></button>
           <button class="btn" id="dShare" type="button">${ico('share')} ${t('share')}</button>
         </div>
