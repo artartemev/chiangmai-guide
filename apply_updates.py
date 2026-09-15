@@ -127,8 +127,9 @@ def archive_low_signal(conn):
       FROM items i WHERE i.category != 'event' AND i.status = 'active')
     UPDATE items SET status = 'archived'
     WHERE id IN (SELECT id FROM x WHERE rc <= 1 AND incol = 0 AND from_list = 0)
+      AND id NOT IN (KEEP)
       AND (rating IS NULL OR rating < 4.3 OR (rating < 4.6 AND COALESCE(rating_count, 0) < 40))
-    """
+    """.replace("KEEP", ",".join(str(i) for i in KEEP_ACTIVE_IDS))
     before = conn.execute("SELECT count(*) FROM items WHERE status='archived'").fetchone()[0]
     conn.execute(sql)
     conn.commit()
