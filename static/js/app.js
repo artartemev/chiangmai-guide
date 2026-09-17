@@ -30,6 +30,7 @@
     heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+    ticket: '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/>',
   };
   const ico = (name, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
 
@@ -77,7 +78,7 @@
       routesTitle: 'Маршруты и подборки', routesLead: 'Готовые планы на день и тематические списки — собраны из рекомендаций чата.', routesH: 'Маршруты', collectionsH: 'Подборки', route: 'Маршрут', collection: 'Подборка', allRoutes: '← Все маршруты', openInMaps: 'Открыть маршрут в Google Maps',
       wikiTitle: 'Справочник', wikiLead: 'Визы, жильё, байки, врачи, деньги — короткие практичные статьи для жизни в Чиангмае.', wikiBack: '← Справочник', related: 'Места по теме',
       chatSays: 'Что говорят в чате', prices: 'Цены', tips: 'Советы', desc: 'Описание', address: 'Адрес', hours: 'Часы работы', inWiki: 'В справочнике', nearby: 'Рядом', chatMsgs: 'Сообщения из чата', loading: 'Загрузка…', noMsgs: 'Пока нет сообщений', openTg: 'Открыть в Telegram ↗',
-      dirs: 'Маршрут в Google Maps', site: 'Сайт', share: 'Поделиться', save: 'Сохранить', savedOk: 'Сохранено', fromYou: 'от вас', today: 'сегодня', reviews: 'отзывов', register: 'Записаться',
+      dirs: 'Маршрут в Google Maps', openOnMap: 'Открыть на карте', venue: 'Место проведения', site: 'Сайт', share: 'Поделиться', save: 'Сохранить', savedOk: 'Сохранено', fromYou: 'от вас', today: 'сегодня', reviews: 'отзывов', register: 'Записаться',
       open: 'Открыто', openUntil: 'до', closed: 'Закрыто', opensAt: 'откроется в', open24: 'Круглосуточно',
       todayIn: 'Сегодня в Чиангмае', openNowN: 'мест открыто сейчас', eventsSoon: 'Ближайшие события', quick: 'Быстрый выбор', qBreakfast: 'Завтрак', qCoffee: 'Кофе', qVegan: 'Веган', qNature: 'На природу', qSauna: 'Сауна', qBars: 'Вечером',
       savedTitle: 'Сохранённые места', savedLead: 'Список живёт в этом браузере. Чтобы не потерять — поделитесь ссылкой (например, отправьте себе в Telegram): она откроется на любом устройстве.', savedEmpty: 'Пока пусто — нажмите ♡ на любом месте', shareList: 'Поделиться списком', sharedList: 'Список из ссылки', saveAll: 'Сохранить себе', clear: 'Очистить', copied: 'Ссылка скопирована', listMaps: 'Открыть в Google Maps',
@@ -94,7 +95,7 @@
       routesTitle: 'Routes & collections', routesLead: 'Ready-made day plans and themed lists, built from chat recommendations.', routesH: 'Routes', collectionsH: 'Collections', route: 'Route', collection: 'Collection', allRoutes: '← All routes', openInMaps: 'Open route in Google Maps',
       wikiTitle: 'Guide', wikiLead: 'Visas, housing, bikes, doctors, money — short practical articles (in Russian).', wikiBack: '← Guide', related: 'Related places',
       chatSays: 'What the chat says', prices: 'Prices', tips: 'Tips', desc: 'About', address: 'Address', hours: 'Opening hours', inWiki: 'In the guide', nearby: 'Nearby', chatMsgs: 'Chat messages', loading: 'Loading…', noMsgs: 'No messages yet', openTg: 'Open in Telegram ↗',
-      dirs: 'Directions in Google Maps', site: 'Website', share: 'Share', save: 'Save', savedOk: 'Saved', fromYou: 'from you', today: 'today', reviews: 'reviews', register: 'Register',
+      dirs: 'Directions in Google Maps', openOnMap: 'Open on Map', venue: 'Venue', site: 'Website', share: 'Share', save: 'Save', savedOk: 'Saved', fromYou: 'from you', today: 'today', reviews: 'reviews', register: 'Register',
       open: 'Open', openUntil: 'until', closed: 'Closed', opensAt: 'opens at', open24: 'Open 24 hours',
       todayIn: 'Today in Chiang Mai', openNowN: 'places open now', eventsSoon: 'Upcoming events', quick: 'Quick picks', qBreakfast: 'Breakfast', qCoffee: 'Coffee', qVegan: 'Vegan', qNature: 'Nature', qSauna: 'Sauna', qBars: 'Tonight',
       savedTitle: 'Saved places', savedLead: 'The list lives in this browser. To keep it, share the link (e.g. send it to yourself in Telegram) — it opens on any device.', savedEmpty: 'Nothing yet — tap ♡ on any place', shareList: 'Share list', sharedList: 'Shared list', saveAll: 'Save to mine', clear: 'Clear', copied: 'Link copied', listMaps: 'Open in Google Maps',
@@ -250,6 +251,11 @@
   function mapsUrl(item) {
     if (item.location_url) return item.location_url;
     if (hasGeo(item)) return `https://www.google.com/maps/search/?api=1&query=${item.latitude},${item.longitude}`;
+    const q = item.venue_name || item.address || item.title;
+    if (q) {
+      const query = q.toLowerCase().includes('chiang mai') || q.toLowerCase().includes('чиангмай') ? q : `${q}, Chiang Mai`;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    }
     return null;
   }
 
@@ -575,12 +581,22 @@
         </div>
         <div class="d-actions">
           ${isEvent && item.registration_url ? `<a class="btn btn-primary" href="${esc(item.registration_url)}" target="_blank" rel="noopener">${esc(item.registration_label || t('register'))}</a>` : ''}
-          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} ${t('dirs')}</a>` : ''}
+          ${maps ? `<a class="btn ${isEvent && item.registration_url ? '' : 'btn-primary'}" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} ${isEvent ? t('openOnMap') : t('dirs')}</a>` : ''}
           ${item.phone_contact ? `<a class="btn" href="tel:${esc(item.phone_contact.replace(/\s/g, ''))}">${ico('phone')} ${esc(item.phone_contact)}</a>` : ''}
           ${item.website ? `<a class="btn" href="${esc(item.website)}" target="_blank" rel="noopener">${ico(/t\.me\//.test(item.website) ? 'chat' : 'globe')} ${/t\.me\//.test(item.website) ? 'Telegram' : t('site')}</a>` : ''}
           <button class="btn heart-btn ${SAVED.has(id) ? 'on' : ''}" id="dSave" type="button">${ico('heart')} <span>${SAVED.has(id) ? t('savedOk') : t('save')}</span></button>
           <button class="btn" id="dShare" type="button">${ico('share')} ${t('share')}</button>
         </div>
+        ${isEvent && (item.venue_name || item.address) ? `
+          <div class="d-section">
+            <h3>${t('venue')}</h3>
+            <div class="d-venue-card">
+              <div class="d-venue-name">${ico('pin')} <b>${esc(item.venue_name || item.address)}</b></div>
+              ${item.address && item.address !== item.venue_name ? `<div class="d-venue-addr">${esc(item.address)}</div>` : ''}
+              ${item.neighborhood && item.neighborhood !== 'Other' ? `<div class="d-venue-area">${esc(areaLabel(item.neighborhood))}</div>` : ''}
+              ${maps ? `<div style="margin-top:10px;"><a class="btn btn-sm btn-map" href="${esc(maps)}" target="_blank" rel="noopener">${ico('nav')} ${t('openOnMap')}</a></div>` : ''}
+            </div>
+          </div>` : ''}
         ${cs.highlights && cs.highlights.length ? `<div class="d-section"><h3>${t('chatSays')}</h3>${list(cs.highlights)}</div>` : ''}
         ${cs.pricing && cs.pricing.length ? `<div class="d-section"><h3>${t('prices')}</h3>${list(cs.pricing)}</div>` : ''}
         ${cs.tips && cs.tips.length ? `<div class="d-section"><h3>${t('tips')}</h3>${list(cs.tips)}</div>` : ''}
@@ -644,9 +660,27 @@
       const head = monthKey !== lastMonth ? `<div class="event-day">${monthKey}</div>` : '';
       lastMonth = monthKey;
       const p = photoOf(i);
+      const mUrl = mapsUrl(i);
+      const venueStr = i.venue_name || (i.neighborhood && i.neighborhood !== 'Other' ? areaLabel(i.neighborhood) : '');
       return head + `<div class="event ${S.eventsMode === 'past' ? 'past' : ''}" data-id="${i.id}">
         <div class="event-date">${dt ? `<b>${dt.getDate()}</b><span>${MONTHS_RU[dt.getMonth()]}</span>` : '<b>—</b>'}</div>
-        <div><div class="event-title">${esc(i.title)}</div><div class="event-meta">${[i.event_date, i.venue_name, i.neighborhood !== 'Other' ? areaLabel(i.neighborhood) : ''].filter(Boolean).map(esc).join(' · ')}</div></div>
+        <div class="event-content">
+          <div class="event-title">${esc(i.title)}</div>
+          <div class="event-meta">
+            ${i.event_date ? `<span class="event-meta-item">${ico('calendar')} ${esc(i.event_date)}</span>` : ''}
+            ${venueStr ? `<span class="event-meta-item event-venue">${ico('pin')} <b>${esc(venueStr)}</b></span>` : ''}
+          </div>
+          ${mUrl ? `
+            <div class="event-actions">
+              <a class="btn btn-sm btn-map" href="${esc(mUrl)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                ${ico('nav')} <span>${t('openOnMap')}</span>
+              </a>
+              ${i.registration_url ? `
+                <a class="btn btn-sm btn-ghost" href="${esc(i.registration_url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                  ${ico('ticket')} <span>${esc(i.registration_label || t('register'))}</span>
+                </a>` : ''}
+            </div>` : ''}
+        </div>
         ${p ? `<img class="event-thumb" src="${esc(p)}" alt="" loading="lazy">` : '<span></span>'}
       </div>`;
     }).join('');

@@ -277,10 +277,30 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
 .event-date { text-align: center; line-height: 1.1; }
 .event-date b { display: block; font-size: 24px; font-weight: 700; }
 .event-date span { font-size: 12px; color: var(--ink-3); text-transform: uppercase; }
-.event-title { font-weight: 600; font-size: 15.5px; margin-bottom: 3px; }
-.event-meta { font-size: 13px; color: var(--ink-2); }
+.event-content { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.event-title { font-weight: 600; font-size: 15.5px; margin-bottom: 2px; }
+.event-meta { display: flex; flex-wrap: wrap; gap: 6px 12px; font-size: 13px; color: var(--ink-2); align-items: center; }
+.event-meta-item { display: inline-flex; align-items: center; gap: 4px; }
+.event-venue { color: var(--ink); font-weight: 500; }
+.event-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.btn-map { background: var(--bg-1); border: 1px solid var(--line-2); color: var(--ink); font-size: 12.5px; padding: 5px 11px; }
+.btn-map:hover { border-color: var(--accent, #d97706); color: var(--accent, #d97706); }
 .event.past { opacity: .6; }
 .event-thumb { width: 72px; height: 72px; border-radius: 10px; object-fit: cover; background: var(--bg-3); }
+
+/* Modal Venue Card */
+.d-venue-card {
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm, 10px);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.d-venue-title { font-size: 15px; color: var(--ink); display: flex; align-items: center; gap: 6px; }
+.d-venue-address { font-size: 13px; color: var(--ink-2); }
+.d-venue-sub { font-size: 12px; color: var(--ink-3); text-transform: uppercase; font-weight: 600; letter-spacing: .03em; margin-top: 2px; }
 
 /* ---------- Routes ---------- */
 .grid-routes { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
