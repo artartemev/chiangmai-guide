@@ -28,6 +28,9 @@
     walk: '<circle cx="13" cy="4" r="1.5"/><path d="m9.5 22 2-8-3-1.5-1 4"/><path d="m14 22-2-6-2.5-2 1-5 3 2 2.5 1"/><path d="M8 9.5 10.5 8"/>',
     money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/>',
     copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    trash: '<path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>',
+    upload: '<path d="M12 3v12"/><path d="m7 8 5-5 5 5"/><path d="M4 21h16"/>',
     heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
@@ -180,6 +183,7 @@
     me: null, // {lat, lng}
     map: null, cluster: null, meMarker: null, markers: new Map(),
     detailId: null, detailMap: null, routeMap: null,
+    admin: false, // true when app.py answers on localhost — enables edit/hide controls
   };
   const $ = (id) => document.getElementById(id);
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -246,9 +250,10 @@
     if (hay.includes(nq)) return true;
     return terms.some((t) => t !== nq && t.length > 1 && new RegExp('(^|[^a-zа-я0-9])' + t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).test(hay));
   }
-  function toast(msg) {
-    const t = $('toast'); t.textContent = msg; t.hidden = false;
-    clearTimeout(toast._t); toast._t = setTimeout(() => (t.hidden = true), 2200);
+  function toast(msg, action) {
+    const el = $('toast'); el.textContent = msg; el.hidden = false;
+    if (action) { const b = document.createElement('button'); b.type = 'button'; b.className = 'toast-btn'; b.textContent = action.label; b.onclick = () => { el.hidden = true; action.fn(); }; el.append(b); }
+    clearTimeout(toast._t); toast._t = setTimeout(() => (el.hidden = true), action ? 6000 : 2200);
   }
   function share(title, url) {
     if (navigator.share) navigator.share({ title, url }).catch(() => {});
@@ -386,7 +391,7 @@
     const price = priceHint(item);
     const ol = openLabel(item);
     return `<article class="card" data-id="${item.id}">
-      <div class="card-img">${imgOrPh(item)}
+      <div class="card-img">${imgOrPh(item)}${admBtn(item.id)}
         <div class="card-badges"><span class="badge">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
       </div>
       <div class="card-body">
@@ -405,6 +410,7 @@
   function bindCards(root) {
     root.querySelectorAll('[data-id]').forEach((el) => el.addEventListener('click', (e) => { if (e.target.closest('a,button')) return; openDetail(+el.dataset.id, true); }));
     bindHearts(root);
+    root.querySelectorAll('[data-hide]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); adminArchive(+b.dataset.hide); }));
   }
 
   function renderPlaces() {
@@ -577,6 +583,7 @@
       <div class="d-hero" id="dHero">${imgOrPh(item)}</div>
       ${photos.length > 1 ? `<div class="d-gallery" id="dGallery">${photos.map((ph, n) => `<img src="${esc(ph)}" alt="" loading="lazy" data-n="${n}" class="${n === 0 ? 'on' : ''}">`).join('')}</div>` : ''}
       <div class="d-body">
+        ${S.admin ? `<div class="adm-bar"><span>#${id}</span><button class="btn btn-sm" id="dEdit" type="button">${ico('edit')} Изменить</button><button class="btn btn-sm adm-danger" id="dHide" type="button">${ico('trash')} Скрыть</button></div>` : ''}
         <div class="d-cat"><span class="cat">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
         <h2 class="d-title">${esc(item.title)}</h2>
         <div class="d-facts">
@@ -619,6 +626,7 @@
     $('detail').hidden = false;
     document.body.style.overflow = 'hidden';
     $('dClose').onclick = () => closeDetail(true);
+    if (S.admin) { $('dEdit').onclick = () => renderEditForm(item); $('dHide').onclick = () => { closeDetail(true); adminArchive(id); }; }
     $('dShare').onclick = () => share(item.title, location.origin + location.pathname + `#/place/${id}`);
     $('dSave').onclick = () => { toggleSaved(id); $('dSave').classList.toggle('on', SAVED.has(id)); $('dSave').querySelector('span').textContent = SAVED.has(id) ? t('savedOk') : t('save'); };
     if ($('dGallery')) $('dGallery').querySelectorAll('img').forEach((im) => im.addEventListener('click', () => { $('dHero').innerHTML = `<img src="${esc(im.src)}" alt="">`; $('dGallery').querySelectorAll('img').forEach((x) => x.classList.toggle('on', x === im)); }));
@@ -649,6 +657,88 @@
       if (S.detailPushed) history.back();
       else history.replaceState(null, '', '#/'); // opened from a shared link: nothing to go back to
     }
+  }
+
+  // ---------- Local admin (app.py on localhost) ----------
+  const admBtn = (id) => S.admin ? `<button class="adm-x" data-hide="${id}" type="button" title="Скрыть из гида">${ico('trash')}</button>` : '';
+  async function adminApi(path, body, method = 'POST') {
+    const r = await fetch('/api/admin/' + path, { method, headers: { 'Content-Type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json().catch(() => ({}));
+    if (!r.ok || j.ok === false) throw new Error(j.detail || j.log || r.statusText);
+    return j;
+  }
+  function rerender() {
+    syncControls(); // chip counts
+    if (S.view === 'places') renderPlaces();
+    else if (S.view === 'events') renderEvents();
+    else if (S.view === 'map') renderMap();
+    else route();
+    adminRefreshBadge();
+  }
+  async function adminRefreshBadge() {
+    try { const j = await adminApi('ping', null, 'GET'); $('publishBtn').classList.toggle('dirty', !!j.dirty); } catch {}
+  }
+  async function adminArchive(id) {
+    const item = S.byId.get(id); if (!item) return;
+    try { await adminApi(`item/${id}/archive`); } catch (e) { return toast('Ошибка: ' + e.message); }
+    S.items = S.items.filter((i) => i.id !== id); S.byId.delete(id);
+    rerender();
+    toast(`Скрыто: ${item.title}`, { label: 'Отменить', fn: async () => {
+      try { await adminApi(`item/${id}/restore`); } catch (e) { return toast('Ошибка: ' + e.message); }
+      S.items.push(item); S.items.sort((a, b) => a.id - b.id); S.byId.set(id, item); rerender(); toast('Вернули');
+    } });
+  }
+  function renderEditForm(item) {
+    const isEvent = item.category === 'event';
+    const areas = [...new Set(S.items.map((i) => i.neighborhood).filter((a) => a && a !== 'Other'))].sort();
+    const f = (label, name, val, kind = 'input', extra = '') => `<label class="adm-field"><span>${label}</span>${kind === 'textarea' ? `<textarea name="${name}" rows="4">${esc(val)}</textarea>` : `<input name="${name}" value="${esc(val)}" ${extra}>`}</label>`;
+    $('detailPanel').querySelector('.d-body').innerHTML = `
+      <form class="adm-form" id="admForm">
+        <div class="adm-bar"><span>#${item.id} · редактирование</span></div>
+        ${f('Название', 'title', item.title)}
+        <label class="adm-field"><span>Категория</span><select name="category">${Object.entries(CATS).map(([k, c]) => `<option value="${k}" ${k === item.category ? 'selected' : ''}>${c.label}</option>`).join('')}</select></label>
+        <label class="adm-field"><span>Район</span><input name="neighborhood" list="admAreas" value="${esc(item.neighborhood === 'Other' ? '' : item.neighborhood)}"><datalist id="admAreas">${areas.map((a) => `<option value="${esc(a)}">`).join('')}</datalist></label>
+        ${f('Описание', 'description', item.description || '', 'textarea')}
+        ${f('Теги (через запятую)', 'tags', (item.tags || []).join(', '))}
+        ${isEvent ? f('Дата (как показывать)', 'event_date', item.event_date || '') + f('Дата ISO (для сортировки)', 'event_iso_date', item.event_iso_date || '', 'input', 'placeholder="2026-09-30"') + f('Площадка', 'venue_name', item.venue_name || '') : ''}
+        ${f('Ссылка Google Maps', 'location_url', item.location_url || '')}
+        ${f('Сайт / Telegram', 'website', item.website || '')}
+        ${f('Телефон', 'phone_contact', item.phone_contact || '')}
+        ${f('Адрес', 'address', item.address || '')}
+        <label class="toggle"><input type="checkbox" name="veg_friendly" ${item.veg_friendly ? 'checked' : ''}><span>Veg-friendly</span></label>
+        <div class="d-actions"><button class="btn btn-primary" type="submit">Сохранить</button><button class="btn" type="button" id="admCancel">Отмена</button></div>
+      </form>`;
+    $('detailPanel').scrollTop = 0;
+    $('admCancel').onclick = () => openDetail(item.id, false);
+    $('admForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const patch = {};
+      for (const [k, v] of fd.entries()) patch[k] = v.trim();
+      patch.tags = patch.tags.split(',').map((x) => x.trim()).filter(Boolean);
+      patch.veg_friendly = fd.has('veg_friendly');
+      if (!patch.neighborhood) patch.neighborhood = 'Other';
+      // only changed fields go to curation.json — untouched ones keep following the pipeline (tags, geocoder)
+      const same = (a, b) => JSON.stringify(a ?? '') === JSON.stringify(b ?? '');
+      for (const k of Object.keys(patch)) if (same(patch[k], k === 'veg_friendly' ? !!item[k] : k === 'tags' ? item.tags || [] : item[k] || '')) delete patch[k];
+      if (!Object.keys(patch).length) return openDetail(item.id, false);
+      const btn = e.target.querySelector('[type=submit]'); btn.disabled = true;
+      try { await adminApi(`item/${item.id}`, patch, 'PATCH'); } catch (err) { btn.disabled = false; return toast('Ошибка: ' + err.message); }
+      Object.assign(item, patch);
+      openDetail(item.id, false); rerender(); toast('Сохранено');
+    };
+  }
+  async function adminPublish() {
+    const b = $('publishBtn'); b.disabled = true; toast('Публикую…');
+    try {
+      const j = await adminApi('publish');
+      toast(j.nothing ? 'Нечего публиковать' : 'Опубликовано — GitHub Pages обновится через минуту');
+    } catch (e) { toast('Ошибка публикации: ' + e.message); console.error(e); }
+    b.disabled = false; adminRefreshBadge();
+  }
+  async function initAdmin() {
+    if (!/^(localhost|127\.0\.0\.1)$/.test(location.hostname)) return;
+    try { const j = await adminApi('ping', null, 'GET'); if (!j.ok) return; S.admin = true; $('publishBtn').hidden = false; $('publishBtn').classList.toggle('dirty', !!j.dirty); $('publishBtn').onclick = adminPublish; } catch {}
   }
 
   // ---------- Events ----------
@@ -689,7 +779,7 @@
                 </a>` : ''}
             </div>` : ''}
         </div>
-        ${p ? `<img class="event-thumb" src="${esc(p)}" alt="" loading="lazy">` : '<span></span>'}
+        ${p ? `<img class="event-thumb" src="${esc(p)}" alt="" loading="lazy">` : '<span></span>'}${admBtn(i.id)}
       </div>`;
     }).join('');
     bindCards(el);
@@ -825,6 +915,7 @@
       // areas by count
       const ac = {};
       for (const i of placeItems()) if (i.neighborhood && i.neighborhood !== 'Other') ac[i.neighborhood] = (ac[i.neighborhood] || 0) + 1;
+      await initAdmin();
       $('areaSelect').innerHTML = '<option value="" data-i18n="allAreas">Все районы</option>' + Object.entries(ac).sort((a, b) => b[1] - a[1]).map(([k, n]) => `<option value="${esc(k)}">${esc(areaLabel(k))} (${n})</option>`).join('');
     } catch (e) {
       $('placesGrid').innerHTML = '<div class="empty"><b>Не удалось загрузить данные</b>Обновите страницу</div>';

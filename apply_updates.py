@@ -14,6 +14,8 @@ import sqlite3
 import subprocess
 import sys
 
+import curation
+
 DB = "chiangmai_guide.db"
 PY = sys.executable
 
@@ -113,6 +115,7 @@ def curate(conn):
     conn.execute("UPDATE items SET title = replace(title, char(8203), '')")  # zero-width spaces from Thai names
     conn.execute("UPDATE collections SET kind='collection' WHERE title='Путь Вегана'")
     conn.commit()
+    curation.apply(conn)    # edits/archives made in the local admin (data/curation.json)
 
 
 def archive_low_signal(conn):

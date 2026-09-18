@@ -1,6 +1,9 @@
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import Request
+import subprocess
+import sys
+import curation
 from fastapi.staticfiles import StaticFiles
 import sqlite3
 import os
@@ -456,6 +459,104 @@ def get_collection(collection_id: int):
     result["items"] = items
     return result
 
+
+# ---------- local admin (only from this machine) ----------
+# The static site detects these endpoints when opened on localhost and turns on
+# edit/hide controls. Every change goes to the DB, to data/curation.json (so the
+# daily pipeline can't undo it) and is exported to static/data.json right away.
+ROOT = os.path.dirname(os.path.abspath(__file__))
+PUBLISH_FILES = ["static/data.json", "static/reviews.json", "chiangmai_guide.db", "data/curation.json"]
+
+
+def _admin_only(request: Request):
+    if request.client is None or request.client.host not in ("127.0.0.1", "::1"):
+        raise HTTPException(403, "admin is local only")
+
+
+def _item_row(conn, item_id):
+    row = conn.execute("SELECT * FROM items WHERE id=?", (item_id,)).fetchone()
+    if not row:
+        raise HTTPException(404, "no such item")
+    return dict(row)
+
+
+def _export():
+    subprocess.run([sys.executable, os.path.join(ROOT, "export_static.py")], check=True, cwd=ROOT)
+
+
+def _git(*args):
+    r = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    return r.returncode, (r.stdout + r.stderr).strip()
+
+
+@app.get("/api/admin/ping")
+def admin_ping(request: Request):
+    _admin_only(request)
+    _, st = _git("status", "--porcelain", "--", *PUBLISH_FILES)
+    return {"ok": True, "dirty": bool(st)}
+
+
+@app.patch("/api/admin/item/{item_id}")
+async def admin_edit(item_id: int, request: Request):
+    _admin_only(request)
+    body = await request.json()
+    fields = {k: v for k, v in body.items() if k in curation.EDITABLE}
+    if not fields:
+        raise HTTPException(400, "nothing to update")
+    conn = get_db()
+    old = _item_row(conn, item_id)
+    cols = dict(fields)
+    if "tags" in cols:
+        cols["tags"] = json.dumps(cols["tags"], ensure_ascii=False)
+    if "veg_friendly" in cols:
+        cols["veg_friendly"] = 1 if cols["veg_friendly"] else 0
+    cols["updated_at"] = datetime.now().isoformat(timespec="seconds")
+    conn.execute(f"UPDATE items SET {', '.join(k + '=?' for k in cols)} WHERE id=?", (*cols.values(), item_id))
+    conn.commit()
+    conn.close()
+    curation.record_edit(item_id, fields, title=fields.get("title") or old["title"])
+    _export()
+    return {"ok": True}
+
+
+@app.post("/api/admin/item/{item_id}/archive")
+def admin_archive(item_id: int, request: Request):
+    _admin_only(request)
+    conn = get_db()
+    row = _item_row(conn, item_id)
+    conn.execute("UPDATE items SET status='archived' WHERE id=?", (item_id,))
+    conn.commit()
+    conn.close()
+    curation.record_archive(item_id, row["title"], True)
+    _export()
+    return {"ok": True}
+
+
+@app.post("/api/admin/item/{item_id}/restore")
+def admin_restore(item_id: int, request: Request):
+    _admin_only(request)
+    conn = get_db()
+    _item_row(conn, item_id)
+    conn.execute("UPDATE items SET status='active' WHERE id=?", (item_id,))
+    conn.commit()
+    conn.close()
+    curation.record_archive(item_id, "", False)
+    _export()
+    return {"ok": True}
+
+
+@app.post("/api/admin/publish")
+def admin_publish(request: Request):
+    _admin_only(request)
+    _export()
+    log = []
+    code, out = _git("add", "--", *PUBLISH_FILES); log.append(out)
+    code, out = _git("commit", "-m", f"admin: curation {datetime.now().strftime('%Y-%m-%d %H:%M')}"); log.append(out)
+    if code != 0 and "nothing to commit" in out:
+        return {"ok": True, "nothing": True, "log": "\n".join(log)}
+    code, out = _git("push", "origin", "HEAD"); log.append(out)
+    return {"ok": code == 0, "log": "\n".join(l for l in log if l)}
+
 @app.get("/", response_class=HTMLResponse)
 def index():
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html"), encoding="utf-8") as f:
@@ -463,4 +564,4 @@ def index():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    uvicorn.run(app, host="127.0.0.1", port=8080)
