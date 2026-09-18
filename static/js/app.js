@@ -27,6 +27,7 @@
     chat: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
     walk: '<circle cx="13" cy="4" r="1.5"/><path d="m9.5 22 2-8-3-1.5-1 4"/><path d="m14 22-2-6-2.5-2 1-5 3 2 2.5 1"/><path d="M8 9.5 10.5 8"/>',
     money: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="3"/><path d="M6 12h.01M18 12h.01"/>',
+    copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
     heart: '<path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3 .5-4.5 2-1.5-1.5-2.7-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
@@ -71,7 +72,8 @@
   // ---------- i18n ----------
   const I18N = {
     ru: {
-      places: 'Места', map: 'Карта', events: 'Афиша', routes: 'Маршруты', wiki: 'Справочник', wikiShort: 'Справка', saved: 'Сохранённые', about: 'О проекте',
+      places: 'Места', map: 'Карта', events: 'Афиша', routes: 'Маршруты', wiki: 'Справочник', wikiShort: 'Справка', saved: 'Сохранённые', about: 'О проекте', support: 'Поддержать проект', copy: 'Скопировать', copiedText: 'Скопировано',
+      supportTitle: 'Поддержать проект', supportLead: 'Гид бесплатный и без рекламы. Если он вам помог — можно сказать спасибо любым удобным способом. Деньги идут на сервер, Google Maps API и время на обновление базы.', supportQrHint: 'Отсканируйте QR в банковском приложении', supportBybitHint: 'Внутренний перевод по UID — без комиссии', supportUsdtHint: 'Сеть TRC20 (Tron)', supportSbp: 'Перевод по СБП', supportSbpHint: 'Сбербанк, по номеру телефона', supportThanks: 'Спасибо! Любая сумма — это ещё один вечер, потраченный на разбор чатов вместо чего-то другого 🙂',
       searchPh: 'Кофе, стоматолог, водопад, Нимман…', searchWiki: 'Поиск по справочнику…', searchEvents: 'Поиск по афише…',
       all: 'Все', allAreas: 'Все районы', near: 'Рядом со мной', nearShort: 'Рядом', veg: 'Только veg-friendly', vegShort: 'Veg', openNow: 'Открыто сейчас',
       sortPopular: 'Популярные в чате', sortRating: 'Рейтинг Google', sortNew: 'Новые', sortAlpha: 'По алфавиту', sortDist: 'По расстоянию',
@@ -88,7 +90,8 @@
       lang: 'EN',
     },
     en: {
-      places: 'Places', map: 'Map', events: 'Events', routes: 'Routes', wiki: 'Guide', wikiShort: 'Guide', saved: 'Saved', about: 'About',
+      places: 'Places', map: 'Map', events: 'Events', routes: 'Routes', wiki: 'Guide', wikiShort: 'Guide', saved: 'Saved', about: 'About', support: 'Support the project', copy: 'Copy', copiedText: 'Copied',
+      supportTitle: 'Support the project', supportLead: 'The guide is free and ad-free. If it helped you, say thanks any way you like. Money goes to hosting, the Google Maps API and the hours spent updating the database.', supportQrHint: 'Scan the QR in your banking app', supportBybitHint: 'Internal transfer by UID — no fee', supportUsdtHint: 'TRC20 network (Tron)', supportSbp: 'SBP transfer (Russia)', supportSbpHint: 'Sberbank, by phone number', supportThanks: 'Thank you! Every bit is one more evening spent digging through chats instead of something else 🙂',
       searchPh: 'Coffee, dentist, waterfall, Nimman…', searchWiki: 'Search the guide…', searchEvents: 'Search events…',
       all: 'All', allAreas: 'All areas', near: 'Near me', nearShort: 'Near me', veg: 'Veg-friendly only', vegShort: 'Veg', openNow: 'Open now',
       sortPopular: 'Popular in chat', sortRating: 'Google rating', sortNew: 'Newest', sortAlpha: 'A–Z', sortDist: 'By distance',
@@ -307,6 +310,8 @@
       showView('saved'); renderSaved((params.get('ids') || '').split(',').map(Number).filter(Boolean));
     } else if (view === 'about') {
       showView('about');
+    } else if (view === 'support') {
+      showView('support');
     } else { location.hash = '#/'; }
   }
   function showView(v) {
@@ -802,6 +807,7 @@
     $('moreBtn').addEventListener('click', () => { S.page++; renderPlaces(); });
     $('eventSeg').querySelectorAll('button').forEach((b) => b.addEventListener('click', () => { S.eventsMode = b.dataset.mode; renderEvents(); }));
     $('detailBackdrop').addEventListener('click', () => closeDetail(true));
+    document.querySelectorAll('.copy-btn').forEach((b) => b.addEventListener('click', () => navigator.clipboard.writeText(b.dataset.copy).then(() => toast(t('copiedText')))));
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('detail').hidden) closeDetail(true); if (e.key === '/' && document.activeElement !== si) { e.preventDefault(); si.focus(); } });
     window.addEventListener('hashchange', route);
   }

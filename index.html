@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.min.css">
-<link rel="stylesheet" href="static/css/app.css?v=7">
+<link rel="stylesheet" href="static/css/app.css?v=9">
 </head>
 <body>
 
@@ -140,8 +140,38 @@
       <p>Наш второй проект: <a href="https://navito.omhome.space" target="_blank" rel="noopener">navito.omhome.space</a> — доска объявлений для тех, кто живёт в Таиланде. Уезжаете и продаёте байк, мебель, технику? Ищете что-то б/у в Чиангмае? Разместите объявление или посмотрите, что продают соседи.</p>
       <h2>Обратная связь</h2>
       <p>Нашли ошибку, знаете место, которого здесь нет, или хотите добавить событие — напишите <a href="https://t.me/artartemev" target="_blank" rel="noopener">@artartemev</a> в Telegram. Правки принимаются с благодарностью.</p>
+      <h2>Поддержать</h2>
+      <p>Гид бесплатный и без рекламы. Если хочется сказать спасибо — реквизиты на странице <a href="#/support">Поддержать проект</a>.</p>
       <h2>Данные</h2>
       <p>Рейтинги, часы работы и телефоны берутся из Google Maps и обновляются автоматически; описания и советы — из сообщений сообщества, ссылка на источник есть в каждой карточке. Список сохранённых мест хранится только в вашем браузере.</p>
+    </article>
+  </section>
+  <!-- Support -->
+  <section id="view-support" class="view">
+    <article class="article support">
+      <div class="page-head">
+        <h1 data-i18n="supportTitle">Поддержать проект</h1>
+        <p class="lead" data-i18n="supportLead">Гид бесплатный и без рекламы. Если он вам помог — можно сказать спасибо любым удобным способом. Деньги идут на сервер, Google Maps API и время на обновление базы.</p>
+      </div>
+      <div class="support-grid">
+        <div class="support-card support-qr">
+          <div class="support-card-head"><b>PromptPay / TrueMoney</b><span data-i18n="supportQrHint">Отсканируйте QR в банковском приложении</span></div>
+          <img src="static/support/promptpay.jpg" alt="PromptPay QR — Artem Artemev" loading="lazy" width="475" height="640">
+        </div>
+        <div class="support-card">
+          <div class="support-card-head"><b>ByBit</b><span data-i18n="supportBybitHint">Внутренний перевод по UID — без комиссии</span></div>
+          <div class="support-row"><code>115189352</code><button class="btn btn-sm copy-btn" type="button" data-copy="115189352"><i data-icon="copy" class="ico-sm"></i><span data-i18n="copy">Скопировать</span></button></div>
+        </div>
+        <div class="support-card">
+          <div class="support-card-head"><b>USDT</b><span data-i18n="supportUsdtHint">Сеть TRC20 (Tron)</span></div>
+          <div class="support-row"><code>TUTZBW9sH341B7Rz43UnTU9sjVdbTCN1F5</code><button class="btn btn-sm copy-btn" type="button" data-copy="TUTZBW9sH341B7Rz43UnTU9sjVdbTCN1F5"><i data-icon="copy" class="ico-sm"></i><span data-i18n="copy">Скопировать</span></button></div>
+        </div>
+        <div class="support-card">
+          <div class="support-card-head"><b data-i18n="supportSbp">Перевод по СБП</b><span data-i18n="supportSbpHint">Сбербанк, по номеру телефона</span></div>
+          <div class="support-row"><code>+7 995 597 0108</code><button class="btn btn-sm copy-btn" type="button" data-copy="+79955970108"><i data-icon="copy" class="ico-sm"></i><span data-i18n="copy">Скопировать</span></button></div>
+        </div>
+      </div>
+      <p class="support-thanks" data-i18n="supportThanks">Спасибо! Любая сумма — это ещё один вечер, потраченный на разбор чатов вместо чего-то другого 🙂</p>
     </article>
   </section>
 </main>
@@ -152,6 +182,7 @@
     <a href="https://navito.omhome.space" target="_blank" rel="noopener"><span data-i18n="footerNavito">Барахолка NaviTo</span> · navito.omhome.space</a>
     <a href="https://t.me/artartemev" target="_blank" rel="noopener"><span data-i18n="footerFeedback">Предложить место или правку</span> · @artartemev</a>
     <a href="#/about" data-i18n="about">О проекте</a>
+    <a href="#/support" data-i18n="support">Поддержать проект</a>
   </div>
 </footer>
 
@@ -174,6 +205,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
-<script src="static/js/app.js?v=8"></script>
+<script src="static/js/app.js?v=10"></script>
 </body>
 </html>

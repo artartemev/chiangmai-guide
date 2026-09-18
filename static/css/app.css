@@ -160,6 +160,18 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -.01em; }
 .footer-brand b { color: var(--ink); }
 .footer a:hover { color: var(--accent); }
 .about { max-width: 720px; }
+.support { max-width: 760px; }
+.support-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.support-card { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.support-qr { grid-row: span 3; align-items: center; }
+.support-qr img { width: 100%; max-width: 300px; height: auto; border-radius: var(--radius-sm); }
+.support-card-head { display: flex; flex-direction: column; gap: 2px; align-self: stretch; }
+.support-card-head b { font-size: 16px; }
+.support-card-head span { font-size: 13px; color: var(--ink-3); }
+.support-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.support-row code { flex: 1; min-width: 0; font-size: 14px; background: var(--bg-3); padding: 8px 10px; border-radius: var(--radius-sm); word-break: break-all; }
+.support-thanks { margin-top: 20px; color: var(--ink-2); }
+@media (max-width: 640px) { .support-grid { grid-template-columns: 1fr; } .support-qr { grid-row: auto; } }
 .view-map.active ~ .footer, body:has(#view-map.active) .footer { display: none; }
 
 /* ---------- Layout ---------- */
