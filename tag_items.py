@@ -60,6 +60,13 @@ RULES = {
     "workspace": [
         ("коворкинги", r"."),
     ],
+    "kids": [
+        ("животные и фермы", r"zoo|animal|farm|bunny|safari|deer|зоопарк|животн|ферм|кролик|олен|капибар|пони|птиц|рыб"),
+        ("игровые и парки", r"play|park|playground|water park|canyon|игров|площадк|парк|аквапарк|батут"),
+        ("кафе с детьми", r"cafe|restaurant|bistro|еда|кафе|ресторан"),
+        ("развитие и творчество", r"museum|art|science|astropark|workshop|музей|наук|планетарий|мастер-класс|творчеств|картинг|circuit"),
+        ("детское здоровье", r"pediatric|clinic|педиатр|клиник|врач"),
+    ],
 }
 
 

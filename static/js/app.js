@@ -31,21 +31,23 @@
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
     info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
     ticket: '<path d="M2 9a3 3 0 0 1 0 6v2a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-2a3 3 0 0 1 0-6V7a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/><path d="M13 5v2M13 11v2M13 17v2"/>',
+    smile: '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>',
   };
   const ico = (name, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${PATHS[name] || ''}</svg>`;
 
   const CATS = {
     cafe_restaurant: { label: 'Еда и кофе', icon: 'coffee', color: '#d97706' },
+    nature:          { label: 'Природа', icon: 'leaf', color: '#16a34a' },
+    kids:            { label: 'Детям', icon: 'smile', color: '#ea580c' },
     wellness:        { label: 'Спа и здоровье', icon: 'spa', color: '#db2777' },
     services:        { label: 'Сервисы и клиники', icon: 'cross', color: '#2563eb' },
     stay:            { label: 'Жильё', icon: 'bed', color: '#7c3aed' },
     workspace:       { label: 'Коворкинги', icon: 'laptop', color: '#0891b2' },
-    nature:          { label: 'Природа', icon: 'leaf', color: '#16a34a' },
     hiking_trail:    { label: 'Тропы', icon: 'mountain', color: '#65a30d' },
     event:           { label: 'Событие', icon: 'calendar', color: '#dc2626' },
   };
   const catIcon = (cat) => ico((CATS[cat] || {}).icon || 'pin');
-  const CAT_ORDER = ['cafe_restaurant', 'nature', 'wellness', 'services', 'workspace', 'stay'];
+  const CAT_ORDER = ['cafe_restaurant', 'nature', 'kids', 'wellness', 'services', 'workspace', 'stay'];
   const CAT_GROUP = { nature: ['nature', 'hiking_trail'] };
   const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const DAYS_RU = { Mon: 'пн', Tue: 'вт', Wed: 'ср', Thu: 'чт', Fri: 'пт', Sat: 'сб', Sun: 'вс' };
@@ -80,7 +82,7 @@
       chatSays: 'Что говорят в чате', prices: 'Цены', tips: 'Советы', desc: 'Описание', address: 'Адрес', hours: 'Часы работы', inWiki: 'В справочнике', nearby: 'Рядом', chatMsgs: 'Сообщения из чата', loading: 'Загрузка…', noMsgs: 'Пока нет сообщений', openTg: 'Открыть в Telegram ↗',
       dirs: 'Маршрут в Google Maps', openOnMap: 'Открыть на карте', venue: 'Место проведения', site: 'Сайт', share: 'Поделиться', save: 'Сохранить', savedOk: 'Сохранено', fromYou: 'от вас', today: 'сегодня', reviews: 'отзывов', register: 'Записаться',
       open: 'Открыто', openUntil: 'до', closed: 'Закрыто', opensAt: 'откроется в', open24: 'Круглосуточно',
-      todayIn: 'Сегодня в Чиангмае', openNowN: 'мест открыто сейчас', eventsSoon: 'Ближайшие события', quick: 'Быстрый выбор', qBreakfast: 'Завтрак', qCoffee: 'Кофе', qVegan: 'Веган', qNature: 'На природу', qSauna: 'Сауна', qBars: 'Вечером',
+      todayIn: 'Сегодня в Чиангмае', openNowN: 'мест открыто сейчас', eventsSoon: 'Ближайшие события', quick: 'Быстрый выбор', qBreakfast: 'Завтрак', qCoffee: 'Кофе', qKids: 'С детьми', qVegan: 'Веган', qNature: 'На природу', qSauna: 'Сауна', qBars: 'Вечером',
       savedTitle: 'Сохранённые места', savedLead: 'Список живёт в этом браузере. Чтобы не потерять — поделитесь ссылкой (например, отправьте себе в Telegram): она откроется на любом устройстве.', savedEmpty: 'Пока пусто — нажмите ♡ на любом месте', shareList: 'Поделиться списком', sharedList: 'Список из ссылки', saveAll: 'Сохранить себе', clear: 'Очистить', copied: 'Ссылка скопирована', listMaps: 'Открыть в Google Maps',
       aboutTitle: 'О проекте', footerMade: 'Сделано в', footerNavito: 'Барахолка NaviTo', footerFeedback: 'Предложить место или правку', locating: 'Определяю местоположение…', noGeo: 'Геолокация недоступна', geoFail: 'Не удалось получить местоположение', farAway: 'Похоже, вы не в Чиангмае — покажу расстояния до города',
       lang: 'EN',
@@ -97,18 +99,19 @@
       chatSays: 'What the chat says', prices: 'Prices', tips: 'Tips', desc: 'About', address: 'Address', hours: 'Opening hours', inWiki: 'In the guide', nearby: 'Nearby', chatMsgs: 'Chat messages', loading: 'Loading…', noMsgs: 'No messages yet', openTg: 'Open in Telegram ↗',
       dirs: 'Directions in Google Maps', openOnMap: 'Open on Map', venue: 'Venue', site: 'Website', share: 'Share', save: 'Save', savedOk: 'Saved', fromYou: 'from you', today: 'today', reviews: 'reviews', register: 'Register',
       open: 'Open', openUntil: 'until', closed: 'Closed', opensAt: 'opens at', open24: 'Open 24 hours',
-      todayIn: 'Today in Chiang Mai', openNowN: 'places open now', eventsSoon: 'Upcoming events', quick: 'Quick picks', qBreakfast: 'Breakfast', qCoffee: 'Coffee', qVegan: 'Vegan', qNature: 'Nature', qSauna: 'Sauna', qBars: 'Tonight',
+      todayIn: 'Today in Chiang Mai', openNowN: 'places open now', eventsSoon: 'Upcoming events', quick: 'Quick picks', qBreakfast: 'Breakfast', qCoffee: 'Coffee', qKids: 'Kids', qVegan: 'Vegan', qNature: 'Nature', qSauna: 'Sauna', qBars: 'Tonight',
       savedTitle: 'Saved places', savedLead: 'The list lives in this browser. To keep it, share the link (e.g. send it to yourself in Telegram) — it opens on any device.', savedEmpty: 'Nothing yet — tap ♡ on any place', shareList: 'Share list', sharedList: 'Shared list', saveAll: 'Save to mine', clear: 'Clear', copied: 'Link copied', listMaps: 'Open in Google Maps',
       aboutTitle: 'About', footerMade: 'Made at', footerNavito: 'NaviTo classifieds', footerFeedback: 'Suggest a place or a fix', locating: 'Locating…', noGeo: 'Geolocation unavailable', geoFail: 'Could not get your location', farAway: 'Looks like you are not in Chiang Mai — showing distance to the city',
       lang: 'RU',
     },
   };
-  const CAT_EN = { cafe_restaurant: 'Food & coffee', wellness: 'Spa & wellness', services: 'Services & clinics', stay: 'Stay', workspace: 'Coworking', nature: 'Nature', hiking_trail: 'Trails', event: 'Event' };
+  const CAT_EN = { cafe_restaurant: 'Food & coffee', wellness: 'Spa & wellness', services: 'Services & clinics', stay: 'Stay', workspace: 'Coworking', nature: 'Nature', kids: 'Kids', hiking_trail: 'Trails', event: 'Event' };
   const TAG_EN = { 'кофе': 'coffee', 'завтраки': 'breakfast', 'тайская': 'thai', 'азия': 'asian', 'европа': 'european', 'бары': 'bars', 'с видом': 'with a view', 'веган': 'vegan',
     'массаж и спа': 'massage & spa', 'сауна и ice bath': 'sauna & ice bath', 'йога': 'yoga', 'фитнес и бассейн': 'gym & pool', 'красота': 'beauty',
     'стоматологи': 'dentists', 'ветеринары': 'vets', 'врачи и госпитали': 'doctors & hospitals', 'прокат': 'rentals', 'визы и документы': 'visas & papers', 'воркшопы': 'workshops', 'магазины': 'shops',
     'водопады': 'waterfalls', 'озёра': 'lakes', 'смотровые и горы': 'viewpoints', 'парки и сады': 'parks & gardens', 'храмы': 'temples', 'пещеры и источники': 'caves & hot springs', 'тропы': 'trails',
-    'отели': 'hotels', 'кондо и квартиры': 'condos', 'глэмпинги и кемпинг': 'glamping & camping', 'резорты и виллы': 'resorts & villas', 'коворкинги': 'coworking' };
+    'отели': 'hotels', 'кондо и квартиры': 'condos', 'глэмпинги и кемпинг': 'glamping & camping', 'резорты и виллы': 'resorts & villas', 'коворкинги': 'coworking',
+    'животные и фермы': 'animals & farms', 'игровые и парки': 'playgrounds & parks', 'кафе с детьми': 'family cafes', 'развитие и творчество': 'activities & science', 'детское здоровье': 'pediatrics' };
   let LANG = 'ru';
   try { LANG = localStorage.getItem('cm_lang') || 'ru'; } catch {} // Russian-speaking community: RU unless switched explicitly
   const t = (k) => (I18N[LANG] && I18N[LANG][k]) || I18N.ru[k] || k;
@@ -429,7 +432,7 @@
     const today = todayISO();
     const soon = S.items.filter((i) => i.category === 'event' && i.event_iso_date && i.event_iso_date >= today).sort((a, b) => a.event_iso_date.localeCompare(b.event_iso_date)).slice(0, 3);
     const dateStr = now.toLocaleDateString(LANG === 'en' ? 'en-GB' : 'ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
-    const quick = [['qBreakfast', { cat: 'cafe_restaurant', tag: 'завтраки' }], ['qCoffee', { cat: 'cafe_restaurant', tag: 'кофе' }], ['qVegan', { cat: 'cafe_restaurant', veg: true }], ['qNature', { cat: 'nature' }], ['qSauna', { cat: 'wellness', tag: 'сауна и ice bath' }], ['qBars', { cat: 'cafe_restaurant', tag: 'бары' }]];
+    const quick = [['qBreakfast', { cat: 'cafe_restaurant', tag: 'завтраки' }], ['qCoffee', { cat: 'cafe_restaurant', tag: 'кофе' }], ['qKids', { cat: 'kids' }], ['qVegan', { cat: 'cafe_restaurant', veg: true }], ['qNature', { cat: 'nature' }], ['qSauna', { cat: 'wellness', tag: 'сауна и ice bath' }], ['qBars', { cat: 'cafe_restaurant', tag: 'бары' }]];
     el.hidden = false;
     el.innerHTML = `<div class="today-head">${ico('sun')}<b>${t('todayIn')}</b><span>${esc(dateStr)}, ${fmtMin(now.getHours() * 60 + now.getMinutes())}</span></div>
       <div class="today-row">
