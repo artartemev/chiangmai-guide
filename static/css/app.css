@@ -537,3 +537,56 @@ details.d-details > div { margin-top: 10px; }
 .adm-field input:focus, .adm-field textarea:focus, .adm-field select:focus { outline: 2px solid color-mix(in srgb, var(--accent) 35%, transparent); border-color: var(--accent); }
 .toast { display: inline-flex; align-items: center; gap: 12px; }
 .toast-btn { border: 0; background: none; color: #f6b48a; font: inherit; font-weight: 600; cursor: pointer; padding: 0; }
+
+/* ---------- VIP Items & Styling ---------- */
+.card.card-vip {
+  border: 1.5px solid rgba(217, 119, 6, 0.45);
+  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.1);
+}
+.card.card-vip:hover {
+  border-color: #d97706;
+  box-shadow: 0 8px 24px rgba(217, 119, 6, 0.22);
+}
+.vip-mark {
+  color: #d97706;
+  margin-left: 5px;
+  font-size: 14px;
+}
+.badge.badge-vip {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+  letter-spacing: .03em;
+  box-shadow: 0 2px 6px rgba(180, 83, 9, 0.35);
+}
+.pin.pin-vip {
+  background: linear-gradient(135deg, #d97706, #f59e0b) !important;
+  color: #fff !important;
+  font-weight: 700;
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.5) !important;
+  border: 2px solid #fff;
+}
+.event.event-vip {
+  border-left: 4px solid #d97706;
+  box-shadow: 0 2px 12px rgba(217, 119, 6, 0.08);
+}
+.event-day.event-day-vip {
+  color: #d97706;
+  font-weight: 700;
+  font-size: 13.5px;
+  letter-spacing: .02em;
+}
+.badge-vip-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #d97706, #b45309);
+  color: #fff;
+  vertical-align: middle;
+  margin-left: 6px;
+  box-shadow: 0 1px 4px rgba(180, 83, 9, 0.3);
+}

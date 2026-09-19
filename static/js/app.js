@@ -342,19 +342,28 @@
   function placeItems() { return S.items.filter((i) => i.category !== 'event'); }
   function filtered() {
     let list = placeItems().filter((i) => {
-      if (S.cat !== 'all') { const g = CAT_GROUP[S.cat] || [S.cat]; if (!g.includes(i.category)) return false; }
-      if (S.area && i.neighborhood !== S.area) return false;
-      if (S.tag && !(i.tags || []).includes(S.tag)) return false;
-      if (S.veg && !i.veg_friendly) return false; // strict: only places known to be veg-friendly
-      if (S.open && !(openState(i) || {}).open) return false;
+      const isUniversalVip = i.is_vip && (i.no_category_bind || i.id === 573);
+      if (S.cat !== 'all') {
+        const g = CAT_GROUP[S.cat] || [S.cat];
+        if (!g.includes(i.category) && !isUniversalVip) return false;
+      }
+      if (S.area && i.neighborhood !== S.area && !isUniversalVip) return false;
+      if (S.tag && !(i.tags || []).includes(S.tag) && !isUniversalVip) return false;
+      if (S.veg && !i.veg_friendly && !isUniversalVip) return false; // strict: only places known to be veg-friendly
+      if (S.open && !(openState(i) || {}).open && !isUniversalVip) return false;
       return matches(i, S.q);
     });
     const sort = S.sort === 'distance' && !S.me ? 'popular' : S.sort;
-    if (sort === 'rating') list.sort((a, b) => (b.rating || 0) - (a.rating || 0) || (b.rating_count || 0) - (a.rating_count || 0));
-    else if (sort === 'newest') list.sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || ''));
-    else if (sort === 'alpha') list.sort((a, b) => a.title.localeCompare(b.title, 'ru'));
-    else if (sort === 'distance') list.sort((a, b) => (distOf(a) ?? 1e9) - (distOf(b) ?? 1e9));
-    else list.sort((a, b) => (b.mention_count || 0) - (a.mention_count || 0) || (b.rating_count || 0) - (a.rating_count || 0));
+    list.sort((a, b) => {
+      const vipA = a.is_vip ? 1 : 0;
+      const vipB = b.is_vip ? 1 : 0;
+      if (vipA !== vipB) return vipB - vipA; // VIP items are always first!
+      if (sort === 'rating') return (b.rating || 0) - (a.rating || 0) || (b.rating_count || 0) - (a.rating_count || 0);
+      if (sort === 'newest') return (b.updated_at || '').localeCompare(a.updated_at || '');
+      if (sort === 'alpha') return a.title.localeCompare(b.title, 'ru');
+      if (sort === 'distance') return (distOf(a) ?? 1e9) - (distOf(b) ?? 1e9);
+      return (b.mention_count || 0) - (a.mention_count || 0) || (b.rating_count || 0) - (a.rating_count || 0);
+    });
     return list;
   }
 
@@ -390,12 +399,22 @@
     const d = distOf(item);
     const price = priceHint(item);
     const ol = openLabel(item);
-    return `<article class="card" data-id="${item.id}">
+    const isVip = !!item.is_vip;
+    const isUniversal = isVip && (item.no_category_bind || item.id === 573);
+    const catTxt = isUniversal ? (LANG === 'en' ? 'Community Space' : 'Пространство') : catLabel(item.category);
+    const catIco = isUniversal ? ico('pin') : catIcon(item.category);
+    return `<article class="card ${isVip ? 'card-vip' : ''}" data-id="${item.id}">
       <div class="card-img">${imgOrPh(item)}${admBtn(item.id)}
-        <div class="card-badges"><span class="badge">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}</div>
+        <div class="card-badges">
+          <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+            ${isVip ? `<span class="badge badge-vip">★ VIP</span>` : ''}
+            <span class="badge">${catIco}${esc(catTxt)}</span>
+          </div>
+          ${d != null ? `<span class="badge dist">${fmtKm(d)}</span>` : ''}
+        </div>
       </div>
       <div class="card-body">
-        <div class="card-title">${esc(item.title)}${heartBtn(item.id, 'heart-card')}</div>
+        <div class="card-title">${esc(item.title)}${isVip ? `<span class="vip-mark" title="VIP">★</span>` : ''}${heartBtn(item.id, 'heart-card')}</div>
         <div class="card-meta">${item.neighborhood && item.neighborhood !== 'Other' ? `<span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${ol ? `<span class="dot"></span>${ol}` : ''}</div>
         <div class="card-text">${esc(highlight(item))}</div>
         <div class="card-foot">
@@ -440,8 +459,12 @@
     if (!pristine) { el.hidden = true; return; }
     const now = bangkokNow();
     const openN = placeItems().filter((i) => (openState(i) || {}).open).length;
-    const today = todayISO();
-    const soon = S.items.filter((i) => i.category === 'event' && i.event_iso_date && i.event_iso_date >= today).sort((a, b) => a.event_iso_date.localeCompare(b.event_iso_date)).slice(0, 3);
+    const soon = S.items.filter((i) => i.category === 'event' && i.event_iso_date && i.event_iso_date >= today).sort((a, b) => {
+      const vipA = a.is_vip ? 1 : 0;
+      const vipB = b.is_vip ? 1 : 0;
+      if (vipA !== vipB) return vipB - vipA;
+      return a.event_iso_date.localeCompare(b.event_iso_date);
+    }).slice(0, 3);
     const dateStr = now.toLocaleDateString(LANG === 'en' ? 'en-GB' : 'ru-RU', { weekday: 'long', day: 'numeric', month: 'long' });
     const quick = [['qBreakfast', { cat: 'cafe_restaurant', tag: 'завтраки' }], ['qCoffee', { cat: 'cafe_restaurant', tag: 'кофе' }], ['qKids', { cat: 'kids' }], ['qVegan', { cat: 'cafe_restaurant', veg: true }], ['qNature', { cat: 'nature' }], ['qSauna', { cat: 'wellness', tag: 'сауна и ice bath' }], ['qBars', { cat: 'cafe_restaurant', tag: 'бары' }]];
     el.hidden = false;
@@ -497,7 +520,14 @@
   }
   function pinIcon(item) {
     const c = CATS[item.category] || {};
-    return L.divIcon({ className: '', html: `<div class="pin" style="background:${c.color || '#888'}"><span>${catIcon(item.category)}</span></div>`, iconSize: [28, 28], iconAnchor: [14, 28], popupAnchor: [0, -26] });
+    const isVip = !!item.is_vip;
+    return L.divIcon({
+      className: '',
+      html: `<div class="pin ${isVip ? 'pin-vip' : ''}" style="background:${isVip ? '#d97706' : (c.color || '#888')}"><span>${isVip ? '★' : catIcon(item.category)}</span></div>`,
+      iconSize: isVip ? [32, 32] : [28, 28],
+      iconAnchor: isVip ? [16, 32] : [14, 28],
+      popupAnchor: [0, -26]
+    });
   }
   function ensureMap() {
     if (S.map) return;
@@ -584,7 +614,7 @@
       ${photos.length > 1 ? `<div class="d-gallery" id="dGallery">${photos.map((ph, n) => `<img src="${esc(ph)}" alt="" loading="lazy" data-n="${n}" class="${n === 0 ? 'on' : ''}">`).join('')}</div>` : ''}
       <div class="d-body">
         ${S.admin ? `<div class="adm-bar"><span>#${id}</span><button class="btn btn-sm" id="dEdit" type="button">${ico('edit')} Изменить</button><button class="btn btn-sm adm-danger" id="dHide" type="button">${ico('trash')} Скрыть</button></div>` : ''}
-        <div class="d-cat"><span class="cat">${catIcon(item.category)}${esc(catLabel(item.category))}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
+        <div class="d-cat">${item.is_vip ? `<span class="badge badge-vip" style="margin-right:6px">★ VIP</span>` : ''}<span class="cat">${(item.is_vip && (item.no_category_bind || item.id === 573)) ? ico('pin') : catIcon(item.category)}${esc((item.is_vip && (item.no_category_bind || item.id === 573)) ? (LANG === 'en' ? 'Community Space' : 'Комьюнити-пространство') : catLabel(item.category))}</span>${item.neighborhood && item.neighborhood !== 'Other' ? `<span>·</span><span>${esc(areaLabel(item.neighborhood))}</span>` : ''}${item.google_category ? `<span>·</span><span>${esc(item.google_category)}</span>` : ''}</div>
         <h2 class="d-title">${esc(item.title)}</h2>
         <div class="d-facts">
           ${item.rating ? `<span><b>★ ${item.rating}</b> · ${(item.rating_count || 0).toLocaleString('ru')} ${t('reviews')}</span>` : ''}
@@ -745,8 +775,18 @@
   function renderEvents() {
     const today = todayISO();
     const all = S.items.filter((i) => i.category === 'event' && matches(i, S.q));
-    const upcoming = all.filter((i) => !i.event_iso_date || i.event_iso_date >= today).sort((a, b) => (a.event_iso_date || '9999').localeCompare(b.event_iso_date || '9999'));
-    const past = all.filter((i) => i.event_iso_date && i.event_iso_date < today).sort((a, b) => b.event_iso_date.localeCompare(a.event_iso_date));
+    const upcoming = all.filter((i) => !i.event_iso_date || i.event_iso_date >= today).sort((a, b) => {
+      const vipA = a.is_vip ? 1 : 0;
+      const vipB = b.is_vip ? 1 : 0;
+      if (vipA !== vipB) return vipB - vipA;
+      return (a.event_iso_date || '9999').localeCompare(b.event_iso_date || '9999');
+    });
+    const past = all.filter((i) => i.event_iso_date && i.event_iso_date < today).sort((a, b) => {
+      const vipA = a.is_vip ? 1 : 0;
+      const vipB = b.is_vip ? 1 : 0;
+      if (vipA !== vipB) return vipB - vipA;
+      return b.event_iso_date.localeCompare(a.event_iso_date);
+    });
     const list = S.eventsMode === 'upcoming' ? upcoming : past;
     $('eventSeg').querySelectorAll('button').forEach((b) => { b.classList.toggle('active', b.dataset.mode === S.eventsMode); b.textContent = b.dataset.mode === 'upcoming' ? `${t('upcoming')} (${upcoming.length})` : `${t('past')} (${past.length})`; });
     const el = $('eventsList');
@@ -754,16 +794,19 @@
     let lastMonth = '';
     el.innerHTML = list.map((i) => {
       const dt = i.event_iso_date ? new Date(i.event_iso_date + 'T00:00:00') : null;
-      const monthKey = dt ? `${MONTHS_RU[dt.getMonth()]} ${dt.getFullYear()}` : t('noDate');
-      const head = monthKey !== lastMonth ? `<div class="event-day">${monthKey}</div>` : '';
+      let monthKey = dt ? `${MONTHS_RU[dt.getMonth()]} ${dt.getFullYear()}` : t('noDate');
+      if (i.is_vip) {
+        monthKey = LANG === 'en' ? '⭐ Recommended · OmHome' : '⭐ Рекомендуемые события · OmHome';
+      }
+      const head = monthKey !== lastMonth ? `<div class="event-day ${i.is_vip ? 'event-day-vip' : ''}">${monthKey}</div>` : '';
       lastMonth = monthKey;
       const p = photoOf(i);
       const mUrl = mapsUrl(i);
       const venueStr = i.venue_name || (i.neighborhood && i.neighborhood !== 'Other' ? areaLabel(i.neighborhood) : '');
-      return head + `<div class="event ${S.eventsMode === 'past' ? 'past' : ''}" data-id="${i.id}">
+      return head + `<div class="event ${S.eventsMode === 'past' ? 'past' : ''} ${i.is_vip ? 'event-vip' : ''}" data-id="${i.id}">
         <div class="event-date">${dt ? `<b>${dt.getDate()}</b><span>${MONTHS_RU[dt.getMonth()]}</span>` : '<b>—</b>'}</div>
         <div class="event-content">
-          <div class="event-title">${esc(i.title)}</div>
+          <div class="event-title">${esc(i.title)}${i.is_vip ? ' <span class="badge-vip-pill">★ VIP</span>' : ''}</div>
           <div class="event-meta">
             ${i.event_date ? `<span class="event-meta-item">${ico('calendar')} ${esc(i.event_date)}</span>` : ''}
             ${venueStr ? `<span class="event-meta-item event-venue">${ico('pin')} <b>${esc(venueStr)}</b></span>` : ''}

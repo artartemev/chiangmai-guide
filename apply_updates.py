@@ -27,7 +27,7 @@ ARCHIVE_ITEM_IDS = [  # existing catalogue rows reviewed by hand (ids are stable
     521,  # "Air Purifier Cafes (Community List)" — a list, not a place
     439, 464, 481, 161, 135, 276, 383, 382, 258, 422, 470, 252,  # unrated / low-signal clinics, stays, spa
 ]
-KEEP_ACTIVE_IDS = [10]  # Pun Pun vegetarian cafe: no Google link, but a known place
+KEEP_ACTIVE_IDS = [10, 573]  # Pun Pun (known place without Google link), OmHome Space (VIP community venue)
 RECATEGORIZE = {207: ("nature", ["храмы"]), 253: ("nature", ["парки и сады"])}
 TITLE_FIXES = {  # by Google place id, for ingested rows with messy Google names
     "0x30da476efedcb06d:0xf02a2e6ea2edfc69": "Klin Ai Mok Homestay (กลิ่นไอหมอก โฮมสเตย์)",
@@ -90,7 +90,8 @@ def run(script, *args):
 def ensure_schema(conn):
     cols = {r[1] for r in conn.execute("PRAGMA table_info(items)")}
     for name, ddl in [("status", "TEXT DEFAULT 'active'"), ("tags", "TEXT DEFAULT '[]'"), ("rating", "REAL"),
-                      ("rating_count", "INTEGER"), ("google_category", "TEXT"), ("place_id", "TEXT")]:
+                      ("rating_count", "INTEGER"), ("google_category", "TEXT"), ("place_id", "TEXT"),
+                      ("is_vip", "BOOLEAN DEFAULT 0")]:
         if name not in cols:
             conn.execute(f"ALTER TABLE items ADD COLUMN {name} {ddl}")
     ccols = {r[1] for r in conn.execute("PRAGMA table_info(collections)")}
@@ -106,6 +107,7 @@ def curate(conn):
         conn.execute("UPDATE items SET status='archived' WHERE place_id = ?", (pid,))
     conn.execute(f"UPDATE items SET status='archived' WHERE id IN ({','.join('?' * len(ARCHIVE_ITEM_IDS))})", ARCHIVE_ITEM_IDS)
     conn.execute(f"UPDATE items SET status='active' WHERE id IN ({','.join('?' * len(KEEP_ACTIVE_IDS))})", KEEP_ACTIVE_IDS)
+    conn.execute("UPDATE items SET is_vip = 1 WHERE id = 573 OR venue_name LIKE '%OmHome%' OR title LIKE '%OmHome%'")
     for iid, (cat, tags) in RECATEGORIZE.items():
         conn.execute("UPDATE items SET category=?, tags=? WHERE id=?", (cat, json.dumps(tags, ensure_ascii=False), iid))
     for pid, title in TITLE_FIXES.items():

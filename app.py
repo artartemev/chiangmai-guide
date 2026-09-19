@@ -44,9 +44,9 @@ def get_items(
     
     if category and category != "all":
         if category == "nature":
-            query += " AND category IN ('nature', 'hiking_trail')"
+            query += " AND (category IN ('nature', 'hiking_trail') OR (is_vip = 1 AND id = 573))"
         else:
-            query += " AND category = ?"
+            query += " AND (category = ? OR (is_vip = 1 AND id = 573))"
             params.append(category)
     elif exclude_events:
         query += " AND category != 'event'"
@@ -91,14 +91,15 @@ def get_items(
         query += " AND (LOWER(title) LIKE ? OR LOWER(description) LIKE ? OR LOWER(neighborhood) LIKE ? OR LOWER(venue_name) LIKE ?)"
         params.extend([f"%{q_lower}%", f"%{q_lower}%", f"%{q_lower}%", f"%{q_lower}%"])
         
+    vip_sort = "COALESCE(is_vip, 0) DESC, "
     if sort_by == "newest":
-        query += " ORDER BY updated_at DESC, mention_count DESC"
+        query += f" ORDER BY {vip_sort}updated_at DESC, mention_count DESC"
     elif sort_by == "alpha":
-        query += " ORDER BY title ASC"
+        query += f" ORDER BY {vip_sort}title ASC"
     elif category == "event":
-        query += " ORDER BY (CASE WHEN event_iso_date IS NULL THEN '9999' ELSE event_iso_date END) ASC, mention_count DESC"
+        query += f" ORDER BY {vip_sort}(CASE WHEN event_iso_date IS NULL THEN '9999' ELSE event_iso_date END) ASC, mention_count DESC"
     else:
-        query += " ORDER BY mention_count DESC, id DESC"
+        query += f" ORDER BY {vip_sort}mention_count DESC, id DESC"
         
     cursor.execute(query, params)
     rows = []

@@ -93,6 +93,9 @@ def export():
         reviews_map[item_id] = [dict(r) for r in cursor.fetchall()]
         d["review_count"] = len(reviews_map[item_id])
         d["veg_friendly"] = bool(d.get("veg_friendly"))
+        d["is_vip"] = bool(d.get("is_vip"))
+        if item_id == 573:
+            d["no_category_bind"] = True
         d.pop("photos_json", None)
         d.pop("status", None)
         try:
